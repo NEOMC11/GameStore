@@ -1399,30 +1399,16 @@ function createItemCard(it, sectionKey) {
     });
 
     // Generate dynamic section link
-    let sectionId = '';
-let versionId = '';
+    const parts = sectionKey.split('/');
+let sectionId = parts[0];
+let versionId = parts.length > 1 ? parts[1] : '';
 
-for (const section of DATA.sections) {
-    // Productos directamente en la sección (como neocraft, Craftsman-ONE, etc.)
-    if (DATA.items[section.id]?.some(item => item.id === it.id)) {
-        sectionId = section.id;
-        break;
-    }
-
-    // Productos dentro de una versión
-    if (section.versions) {
-        for (const version of section.versions) {
-            if (DATA.items[version.id]?.some(item => item.id === it.id)) {
-                sectionId = section.id;
-                versionId = version.id;
-                break;
-            }
-        }
-        if (sectionId && versionId) break;
-    }
+// Corrección clave: si la segunda parte es en realidad un ID de sección válido, entonces es sección principal
+if (parts.length === 2 && DATA.sections.some(s => s.id === parts[1])) {
+  sectionId = parts[1];
+  versionId = '';
 }
-
-const link = `https://game-store-self.vercel.app/#\( {sectionId} \){versionId ? '/' + versionId : ''}/${it.id}`;
+const link = `https://game-store.self.vercel.app/#${sectionId}${versionId ? '/' + versionId : ''}/${it.id}`;
 
     // Long press on image to copy share link
     let longPressTimeout;
