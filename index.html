@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameStore</title>
+    <!-- Favicon -->
+    <link rel="icon" href="NEOCRAFTss.png" type="image/png">
+    <link rel="icon" type="image/png" sizes="32x32" href="NEOCRAFTss.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="NEOCRAFTss.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="NEOCRAFTss.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="NEOCRAFTss.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="NEOCRAFTss.png">
+    <meta name="msapplication-TileImage" content="NEOCRAFTss.png">
+    <meta name="msapplication-TileColor" content="#0a0b1a">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    <div id="sidebar">
+        <div class="sidebar-section">
+            <h3>Redes Sociales</h3>
+            <a href="https://youtube.com/@jlmc2?si=qHmc0eB24stW3Kcv" class="social-link" aria-label="Visitar nuestro canal de YouTube">
+                <img src="./port/yt.png" alt="Ícono de YouTube"> YouTube
+            </a>
+            <a href="https://www.tiktok.com/@neomc1?_t=ZS-8zkfUb8Lnjm&_r=1" class="social-link" aria-label="Visitar nuestro perfil de TikTok">
+                <img src="./port/tiktok.jpg" alt="Ícono de TikTok"> TikTok
+            </a>
+            <a href="https://www.instagram.com/neomc12?igsh=MXNqYmcwNHZmOGx3Yg==" class="social-link" aria-label="Visitar nuestro perfil de Instagram">
+                <img src="./port/inta.jpg" alt="Ícono de Instagram"> Instagram
+            </a>
+            <a href="https://whatsapp.com/channel/0029Vb5HMI2GJP8EjrRAXq2i" class="social-link" aria-label="Ver contenido adicional">
+                <img src="./port/whatsapp.png" alt="Ícono de Instagram">Whatsapp
+            </a>
+            <a href="https://learningkodes.github.io/GameStore/" class="social-link" aria-label="Ver contenido adicional">
+                <img src="./port/foldee.jpg" alt="Ícono de Instagram">Content
+            </a>
+        </div>
+        <div class="sidebar-section">
+            <h3>Subir Contenido</h3>
+            <a href="./apk.html" class="sidebar-upload-btn" aria-label="Subir un APK">SUBIR APK</a>
+        </div>
+        <div class="sidebar-section">
+            <button id="themeToggle" aria-label="Cambiar entre modo claro y oscuro">Modo Claro</button>
+        </div>
+    </div>
+
+    <header>
+        <button id="sidebarToggle" aria-label="Abrir o cerrar la barra lateral">☰</button>
+        <img class="logo" src="NEOCRAFT.png" alt="Logo de GameStore">
+        <h1>GameStore</h1>
+    </header>
+
+    <div class="main" id="mainContent">
+        <!-- Home Screen -->
+        <div id="homeScreen">
+            <div class="hero-section">
+                <h2>Descubre el Mundo de GameStore</h2>
+                <p>Tu plataforma definitiva para descargar APKs de Minecraft, texturas, shaders y mucho más. Explora colecciones exclusivas como Craftsman, NeoCraft,y Hypercraft en un entorno moderno e intuitivo.</p>
+                <div class="facts">
+                    <h3>Datos Curiosos</h3>
+                    <ul>
+                        <li>Minecraft ha vendido más de 300 millones de copias en todo el mundo.</li>
+                        <li>Los shaders transforman la iluminación en Minecraft para un realismo impresionante.</li>
+                        <li>Craftsman es una versión modificada favorita para dispositivos móviles.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="carousel">
+                <div class="slides">
+                    <div class="slide active">
+                        <img src="./port/craftsman.png" alt="Craftsman">
+                        <div class="caption">Craftsman</div>
+                    </div>
+                    <div class="slide">
+                        <img src="neocraft/2NEOCRAFT.png" alt="NeoCraft">
+                        <div class="caption">NEOCRAFT</div>
+                    </div>
+                    <div class="slide">
+                        <img src="./port/texturaa.jpg" alt="Complementos">
+                        <div class="caption">Complementos</div>
+                    </div>
+                    <div class="slide">
+                        <img src="./port/extras.png" alt="Otras Apps">
+                        <div class="caption">Otras Apps</div>
+                    </div>
+                </div>
+                <button class="prev" onclick="moveSlide(-1)" aria-label="Diapositiva anterior">❮</button>
+                <button class="next" onclick="moveSlide(1)" aria-label="Diapositiva siguiente">❯</button>
+            </div>
+            <div id="mainMenu" class="items-grid"></div>
+            <button id="backBtn" class="back-btn" onclick="goBack()" style="display: none;" aria-label="Volver atrás">Atrás</button>
+            <div id="contentMenu" class="items-grid"></div>
+        </div>
+
+        <!-- Search Screen -->
+        <div id="searchScreen">
+            <input id="searchInput" type="text" placeholder="Buscar apps, texturas, versiones..." aria-label="Buscar contenido">
+            <div id="searchResults" class="items-grid"></div>
+            <button id="backBtnSearch" class="back-btn" onclick="goBackSearch()" aria-label="Volver atrás desde búsqueda">Atrás</button>
+        </div>
+
+        <!-- APK Contact Screen -->
+        <div id="apkScreen" style="display: none;">
+            <div class="apk-contact">
+                <b>¿Quieres que tu APK aparezca aquí?</b><br>
+                Contáctanos vía Telegram para enviar tu APK, portada, descripción y enlace:<br>
+                <a href="https://t.me/+573046128902" class="telegram-btn" aria-label="Contactar por Telegram">
+                    <img src="./port/telegram.png" alt="Ícono de Telegram">
+                    Contactar por Telegram
+                </a><br>
+                <a href="./apk.html" class="btn-subir-apk" aria-label="Cómo subir un APK">Como Subir un APK?</a><br>
+                <span style="font-size: 0.9rem;">¡Envíanos tu contenido y lo publicaremos en GameStore!</span>
+            </div>
+        </div>
+
+        <!-- Videos Screen -->
+        <div id="videosScreen" style="display: none;">
+            <div class="videos-grid" id="videosContainer"></div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav id="bottomNav">
+        <button id="navHome" aria-label="Ir a la página de inicio">
+            <img src="./port/home.png" alt="Ícono de Inicio">
+            Inicio
+        </button>
+        <button id="navApk" aria-label="Ir a la sección de subir APK">
+            <img src="./port/telegram.png" alt="Ícono de Subir APK">
+            Subir APK
+        </button>
+        <button id="navVideos" aria-label="Ir a la sección de videos">
+            <img src="./port/video.png" alt="Ícono de Videos">
+            Videos
+        </button>
+        <button id="navSearch" aria-label="Ir a la sección de búsqueda">
+            <img src="./port/serch.png" alt="Ícono de Buscar">
+            Buscar
+        </button>
+    </nav>
+
+    <!-- Toast -->
+    <div id="toast"></div>
+
+    <!-- Install Button -->
+    <button id="installButton" aria-label="Instalar la aplicación">📱 Instalar App</button>
+
+    <!-- Highlight Sound -->
+    <audio id="highlightSound" src="correcto.mp3" preload="auto"></audio>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+    --bg: #0a0b1a;
+    --panel: rgba(20, 22, 36, 0.85);
+    --glass: rgba(255, 255, 255, 0.1);
+    --accent1: #3b82f6;
+    --accent2: #1d4ed8;
+    --accent3: #06b6d4;
+    --text: #e6f1ff;
+    --muted: #94a3b8;
+    --radius: 12px;
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+    --gradient: linear-gradient(135deg, var(--accent1), var(--accent2));
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+}
+
+body.light {
+    --bg: #f0f4f8;
+    --panel: rgba(248, 250, 252, 0.9);
+    --glass: rgba(0, 0, 0, 0.05);
+    --accent1: #3b82f6;
+    --accent2: #1d4ed8;
+    --accent3: #06b6d4;
+    --text: #1e293b;
+    --muted: #64748b;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --gradient: linear-gradient(135deg, var(--accent1), var(--accent2));
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    min-height: 100vh;
+    letter-spacing: 0.01em;
+}
+
+/* ===== Particles Background ===== */
+canvas#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    opacity: 0.95;
+}
+
+/* ===== Sidebar ===== */
+#sidebar {
+    position: fixed;
+    top: 80px;
+    left: -250px;
+    width: 250px;
+    height: calc(100vh - 80px);
+    background: var(--panel);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
+    padding: 1rem;
+    z-index: 9;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+}
+
+#sidebar.open {
+    left: 0;
+}
+
+.sidebar-section {
+    margin-bottom: 2rem;
+}
+
+.sidebar-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--accent1);
+}
+
+.social-link {
+    display: block;
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    background: var(--glass);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.3s;
+}
+
+.social-link:hover {
+    background: var(--gradient);
+    color: #ffffff;
+    transform: translateX(4px);
+}
+
+.social-link img {
+    width: 24px;
+    height: 24px;
+    border-radius: 20px;
+}
+
+#themeToggle {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--glass);
+    border: none;
+    border-radius: var(--radius);
+    color: var(--text);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#themeToggle:hover {
+    background: var(--gradient);
+    color: #ffffff;
+}
+
+.sidebar-upload-btn {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.35);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+.sidebar-upload-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent3);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+/* ===== Header ===== */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 10;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#sidebarToggle {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+#sidebarToggle:hover {
+    background: var(--glass);
+}
+
+.logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: var(--gradient);
+    box-shadow: 0 0 20px var(--accent3);
+    animation: glow 3s infinite;
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 0 20px var(--accent3); }
+    50% { box-shadow: 0 0 30px var(--accent1); }
+    100% { box-shadow: 0 0 20px var(--accent3); }
+}
+
+header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===== Main Container ===== */
+.main {
+    padding: 80px 2rem 100px 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* ===== Hero Section ===== */
+.hero-section {
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+}
+
+.hero-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.hero-section p {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+}
+
+.facts {
+    display: grid;
+    gap: 1rem;
+}
+
+.facts h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--accent1);
+    margin-bottom: 1rem;
+}
+
+.facts ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.facts li {
+    padding: 0.5rem;
+    background: var(--glass);
+    border-radius: 8px;
+    color: var(--text);
+}
+
+/* ===== Items Grid ===== */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+/* ===== Cards ===== */
+.card {
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+    min-height: 70px;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--gradient);
+    opacity: 0.9;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 24px var(--accent2);
+}
+
+.card img {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: var(--bg);
+    box-shadow: 0 0 8px var(--accent1);
+    flex-shrink: 0;
+    touch-action: manipulation;
+}
+
+.card .info .title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card .info .desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.card.highlight {
+    border: 2px solid var(--accent2);
+    box-shadow: 0 0 24px var(--accent2);
+    animation: highlightPulse 1.5s infinite;
+}
+
+@keyframes highlightPulse {
+    0% { box-shadow: 0 0 24px var(--accent2); opacity: 1; }
+    50% { box-shadow: 0 0 32px var(--accent2); opacity: 0.7; }
+    100% { box-shadow: 0 0 24px var(--accent2); opacity: 1; }
+}
+
+.card.opening {
+    animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* ===== Carousel ===== */
+.carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    max-width: 800px;
+    margin: 1rem auto;
+    background: var(--panel);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.slide {
+    min-width: 100%;
+    position: relative;
+    transition: transform 0.5s, opacity 0.5s;
+}
+
+.slide img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    filter: brightness(0.95) saturate(1.2);
+}
+
+.slide.active img {
+    transform: scale(1.05);
+}
+
+.caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20, 22, 36, 0.7);
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    backdrop-filter: blur(8px);
+    animation: captionFade 0.5s ease-in-out;
+}
+
+@keyframes captionFade {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.carousel button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--gradient);
+    border: none;
+    color: #ffffff;
+    font-size: 1.2rem;
+    padding: 0.6rem;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent1);
+}
+
+.carousel button:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 0 20px var(--accent3);
+}
+
+.carousel .prev { left: 1rem; }
+.carousel .next { right: 1rem; }
+
+/* ===== Back Button ===== */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: var(--gradient);
+    color: #ffffff;
+    box-shadow: 0 0 12px var(--accent1);
+    max-width: 200px;
+    margin: 1rem 0;
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent3);
+}
+
+/* ===== Navigation Bar ===== */
+nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    padding: 0.8rem 0;
+    box-shadow: 0 -2px 12px var(--shadow);
+    z-index: 10;
+}
+
+nav button {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.8rem 0.5rem;
+    min-width: 60px;
+}
+
+nav button:hover {
+    color: var(--accent2);
+    transform: scale(1.1);
+}
+
+nav button img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(100%) contrast(100%);
+}
+
+nav button::after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: var(--accent2);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+}
+
+nav button:hover::after {
+    transform: scaleX(1);
+}
+
+/* ===== APK Contact Section ===== */
+#apkScreen {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 160px);
+}
+
+.apk-contact {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--panel);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(20px);
+    text-align: center;
+    color: var(--text);
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.apk-contact::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--gradient);
+    opacity: 0.9;
+}
+
+.apk-contact b {
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.apk-contact .telegram-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--gradient);
+    color: #ffffff;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: 0 0 12px var(--accent1);
+    margin: 1rem 0;
+    max-width: 250px;
+}
+
+.apk-contact .telegram-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent3);
+    background: linear-gradient(135deg, var(--accent3), var(--accent1));
+}
+
+.apk-contact .telegram-btn img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(100%) contrast(100%);
+}
+
+.btn-subir-apk {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.35);
+    margin: 1rem 0;
+    max-width: 250px;
+}
+
+.btn-subir-apk:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent3);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+/* ===== Videos Section ===== */
+.videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.video-card {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+}
+
+.video-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 24px var(--accent2);
+}
+
+.video-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.video-card .play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(20, 22, 36, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+}
+
+.video-card:hover .play-overlay {
+    opacity: 1;
+}
+
+.video-card .play-overlay::before {
+    content: '▶';
+    font-size: 2rem;
+    color: var(--accent1);
+}
+
+.video-card iframe {
+    width: 100%;
+    height: 160px;
+    border: none;
+    display: none;
+}
+
+.video-card.active iframe {
+    display: block;
+}
+
+.video-card.active img,
+.video-card.active .play-overlay {
+    display: none;
+}
+
+.video-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(20, 22, 36, 0.7);
+    padding: 0.5rem;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* ===== Search Screen ===== */
+#searchScreen {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 2rem;
+}
+
+#searchScreen #searchInput {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid var(--accent1);
+    background: var(--glass);
+    color: var(--text);
+    font-size: 0.95rem;
+    outline: none;
+    margin: 0 1rem;
+}
+
+#searchScreen #searchInput:focus {
+    border-color: var(--accent2);
+    box-shadow: 0 0 12px var(--accent2);
+}
+
+#searchScreen #searchInput::placeholder {
+    color: var(--muted);
+    opacity: 0.8;
+}
+
+#searchScreen .items-grid {
+    margin-top: 1rem;
+}
+
+/* ===== Toast ===== */
+#toast {
+    position: fixed;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gradient);
+    color: #ffffff;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 20;
+    transition: opacity 0.3s, visibility 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#toast.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ===== Install Button ===== */
+#installButton {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+    padding: 10px 20px;
+    background: var(--gradient);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    display: none;
+}
+
+#installButton:hover {
+    background: linear-gradient(135deg, var(--accent3), var(--accent1));
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+    header {
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+    }
+
+    .logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .main {
+        padding: 80px 1rem 100px 1rem;
+    }
+
+    .hero-section h2 {
+        font-size: 1.6rem;
+    }
+
+    .hero-section p {
+        font-size: 1rem;
+    }
+
+    .carousel {
+        margin: 1rem 0.5rem;
+    }
+
+    .slide img {
+        height: 200px;
+    }
+
+    .items-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .card img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .card .info .title {
+        font-size: 1rem;
+    }
+
+    .card .info .desc {
+        font-size: 0.85rem;
+    }
+
+    nav button {
+        font-size: 0.9rem;
+        padding: 0.6rem 0.4rem;
+    }
+
+    nav button img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    #sidebar {
+        width: 200px;
+        left: -200px;
+    }
+
+    .items-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-section {
+        padding: 1.5rem;
+    }
+
+    .hero-section h2 {
+        font-size: 1.4rem;
+    }
+
+    .hero-section p {
+        font-size: 0.9rem;
+    }
+
+    .facts h3 {
+        font-size: 1.1rem;
+    }
+
+    .facts li {
+        font-size: 0.9rem;
+    }
+
+    .carousel {
+        margin: 0.5rem;
+    }
+
+    .slide img {
+        height: 180px;
+    }
+
+    .caption {
+        font-size: 1rem;
+    }
+
+    .apk-contact {
+        padding: 1.5rem;
+    }
+
+    .apk-contact b {
+        font-size: 1.2rem;
+    }
+
+    .apk-contact .telegram-btn,
+    .btn-subir-apk {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        max-width: 200px;
+    }
+}
+    </style>
+    <script>
+        // Particle Background (Optimized for Mobile)
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.6 + 0.4;
+        const blueShades = ['#3b82f6', '#1d4ed8', '#06b6d4'];
+        this.color = blueShades[Math.floor(Math.random() * blueShades.length)];
+        this.glow = Math.random() * 6 + 3;
+    }
+
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        this.opacity = Math.max(0.3, this.opacity + (Math.random() - 0.5) * 0.01);
+    }
+
+    draw() {
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = this.glow;
+        ctx.shadowColor = this.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+    }
+}
+
+function connectParticles() {
+    for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 120) {
+                ctx.strokeStyle = `rgba(59, 130, 246, ${0.6 - distance / 120})`;
+                ctx.lineWidth = 0.8;
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+function initParticles() {
+    particles = [];
+    if (window.innerWidth < 768) return; // Desactivar partículas en móviles
+    const particleCount = Math.min(window.innerWidth / 8, 100);
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+}
+
+function animateParticles() {
+    if (window.innerWidth < 768) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        return;
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        p.update();
+        p.draw();
+    });
+    connectParticles();
+    requestAnimationFrame(animateParticles);
+}
+
+initParticles();
+animateParticles();
+
+// Toast Function
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.innerHTML = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+let DATA = {
+    sections: [
+        {
+            id: "craftsman",
+            title: "Craftsman",
+            desc: "Colección Craftsman",
+            versions: [
+                {id: "craftsman-main", title: "Craftsman"},
+                {id: "craftsman-zero", title: "Craftsman Zero"},
+                {id: "craftsman-01510", title: "Craftsman 0.15.10 & 0.14.3"}
+            ]
+        },
+        {
+            id: "neocraft",
+            title: "NEOCRAFT",
+            desc: "TODAS LAS VERSIONES DE NEOCRAFT EN UN SOLO LUGAR!!"
+        },
+        {
+            id: "complementos",
+            title: "Complementos",
+            desc: "Texturas, Shaders, Mundos y Addons",
+            versions: [
+                {id: "texturas", title: "Texturas"},
+                {id: "shaders", title: "Shaders"},
+                {id: "mundos", title: "Mundos"},
+                {id: "addons", title: "Addons"}
+            ]
+        },{
+            id: "Craftsman-ONE",
+            title: "Craftsman ONE",
+            desc: "Todas las versiónes de Craftsman ONE en un solo lugar "
+        },
+        {
+            id: "otras-apps",
+            title: "Otras Apps",
+            desc: "Otras aplicaciones increíbles",
+            versions: [
+                {id: "minecraft", title: "Minecraft"},
+                {id: "ultra-raft", title: "Ultra Raft"},
+                {id: "balioncraft", title: "BALIONCRAFT"},
+                {id: "hipercraft", title: "Hypercraft"},
+                {id: "gamestore", title: "GameStore"}
+            ]
+        }
+        
+    ],
+    items: {
+        "craftsman-main": [
+            { id: "c-1", title: "Craftsman AB", version: "1.19.50", img: "./port/craftsman.png", desc: "", url: "https://www.mediafire.com/file/ah73nfy17woyh7j/Craftsman_AB.apk/file" },
+            { id: "c-2", title: "Craftsman EMOTES", version: "1.18", img: "./port/craftsman.png", desc: "PARA GRABAR EMOTES DESDE CRAFTSMAN", url: "https://www.mediafire.com/file/1l0wno4u23when8/Craftsman_emotes.apk/file" },
+            { id: "c-3", title: "Craftsmine", version: "1.??", img: "./port/craftsman.png", desc: "", url: "https://www.mediafire.com/file/42lo3yruc2rh4bo/CraftMine_V2.apk/file" },
+            { id: "c-4", title: "Craftsman PE", version: "", img: "./port/craftsman.png", desc: "", url: "https://www.mediafire.com/file/r0ummjkdjinpnn1/Craftsman_Pe.apk/file" },
+            { id: "c-5", title: "Craftsman Trial", version: "1.0", img: "./port/craftsman.png", desc: "", url: "https://www.mediafire.com/file/p2vj2wjczn2qf3j/Craftsman_Trial_1.0.0.16.apk/file" },
+            { id: "c-6", title: "Craftsman uno", version: "0.15.10", img: "./port/craftsman.png", desc: "", url: "https://www.mediafire.com/file/briwk3jkzyald7o/Craftsman_UNO.apk/file" },
+            { id: "c-7", title: "Craftsman ??", version: "", img: "./port/craftsman.png", desc: "", url: "https://www.mediafire.com/file/i2jyn06j46j8jur/Craftsman__signed.apk/file" },
+            { id: "c-8", title: "Craftsman 1.17", version: "", img: "./port/craftsman.png", desc: "", url: "https://www.mediafire.com/file/drep2uik81qjuqm/minecraft-1-17-2_mod.apk/file" },
+            { id: "c-9", title: "Craftsman VI", version: "1.16.20", img: "./port/craftsman.png", desc: "", url: "https://www.mediafire.com/file/hgi53l00ce4okrc/Craftsman+VI+1.16+NEOFACE.apk/file" }
+        ],
+        "craftsman-01510": [
+            { id: "c01510-1", title: "Craftsman 0.15.10", version: "0.15.10", img: "./port/craftsman.png", desc: "CRAFTSMAN 0.15.10 PARA ANDROID 14 Y 15 EN ADELANTE", url: "https://www.mediafire.com/file/38z1flqyp7jkvwi/CRAFTSMAN_FOR_ANDROID_13-14_BY_NEOMC11.apk/file" },
+            { id: "c01510-2", title: "Craftsman 0.15.10", version: "0.15.10", img: "./port/craftsman.png", desc: "CRAFTSMAN 0.15.10", url: "https://www.mediafire.com/file/38z1flqyp7jkvwi/CRAFTSMAN_FOR_ANDROID_13-14_BY_NEOMC11.apk/file" },
+            { id: "c01510-3", title: "Craftsman 0.14.3 Mod 1.19", version: "0.14.3", img: "./port/Minecraft_Mod.png", desc: "Craftsman 0.14.3 - Mod 1.19 Update By GOBLINyt y AlexMC", url: "https://www.mediafire.com/file/ppotbt1nxvf8tzi/Mod_1.19_Upcade_By_GOBLINyt_y_AlexMC.apk/file" }
+        ],
+        "craftsman-zero": [
+            { id: "cz-1", title: "Craftsman zero", version: "DEMO 1", img: "./port/zero.png", desc: "", url: "https://www.mediafire.com/file/k4krz1ww0299fvk/Craftsman+Zero+Demo+1.apk/file" },
+            { id: "cz-2", title: "Craftsman zero", version: "1.1.5", img: "./port/zero.png", desc: "", url: "https://www.mediafire.com/file/vudh0hmv9mjh2tz/Cratsman+Zero+1.1.apk/file" },
+            { id: "cz-3", title: "Craftsman zero NAVIDAD", version: "1.1.5", img: "./port/zero.png", desc: "", url: "https://www.mediafire.com/file/guv0t148wko9h0i/Craftsman+Zero+Navidad.apk/file" },
+            { id: "cz-4", title: "Craftsman zero", version: "DEMO 2", img: "./port/zero.png", desc: "", url: "https://www.mediafire.com/file/7ds74aevus10761/Craftsman+Zero+Demo+2+Sin+Bugs.apk/file" },
+            { id: "cz-5", title: "Craftsman zero", version: "DEMO 3", img: "./port/zero.png", desc: "", url: "https://www.mediafire.com/file/ev9m698nl3sjjxt/CRAFTSMAN_ZERO_DEMO_3_WITH_ANIMATIONS__by_NEOMC11.apk/file" },
+            { id: "cz-6", title: "Craftsman zero", version: "DEMO 3 SKINS", img: "./port/zero.png", desc: "", url: "https://www.mediafire.com/file/4koz7twgiqge5lu/CRAFTSMAN_ZERO_DEMO_3_FOR_SKINS_BY_NEOMC11.apk/file" },
+            { id: "cz-7", title: "Craftsman zero", version: "SIN ANUNCIOS", img: "./port/zero.png", desc: "", url: "https://www.mediafire.com/file/0h2pdhzy9wktolw/Craftsman_zero_sin_anuncios_By_NEOMC11.apk/file" },
+            { id: "cz-8", title: "Craftsman zero", version: "1.16.40", img: "./port/zero.png", desc: "", url: "https://www.mediafire.com/file/bdvo2pcqrp5n7g4/Craftsman+Zero+1.16.apk/file" }
+        ],
+        "neocraft": [
+            { id: "n-1", title: "NEOCRAFT v1", version: "1.20.12", img: "neocraft/NEOCRAFT.png", desc: "", url: "https://www.mediafire.com/file/cxqj0b3t0syd6vi/NEOCRAFT.apk/file" },
+            { id: "n-2", title: "NEOCRAFT v2", version: "", img: "neocraft/1NEOCRAFT.png", desc: "", url: "https://www.mediafire.com/file/9jc389tiz5qkcy4/NeoCraft+Old+Edition_optimized.apk/file" },
+            { id: "n-3", title: "NEOCRAFT, trailer edition", version: "", img: "neocraft/2NEOCRAFT.png", desc: "", url: "https://www.mediafire.com/file/mookw5z8qrbintj/NEOCRAFT_Trailer_Edition_mod.apk/file" },
+            { id: "n-4", title: "NEOCRAFT SE", version: "", img: "neocraft/3NEOCRAFT.png", desc: "", url: "https://www.mediafire.com/file/d9942l6uw7whh2n/NEOCRAFT_SE.apk/file" },
+            { id: "n-5", title: "NEOCRAFT AS", version: "", img: "neocraft/4NEOCRAFT.jpeg", desc: "", url: "https://www.mediafire.com/file/23a74qf7fbv9s7n/Neocraft_AS_V1.apk/file" },
+            { id: "n-6", title: "NEOCRAFT", version: "1.21.92", img: "neocraft/5NEOCRAFT.jpeg", desc: "", url: "https://www.mediafire.com/file/xml11u44xavdzs6/NEOCRAFT.apk/file" },
+            { id: "n-7", title: "NEOCRAFT", version: "1.21.92", img: "neocraft/6NEOCRAFT.jpeg", desc: "", url: "https://www.mediafire.com/file/gbqt15tt1htjijv/NEOCRAFT_LTE.apk/file" }
+        ],
+        "shaders": [
+            { id: "s-1", title: "NEW X DRAGON COMPLEMENTARY", version: "", img: "./port/texturaa.jpg", desc: "(SHADER) MINECRAFT PATCH", url: "https://www.mediafire.com/file/tk98dpuu1vfdfl4/Newb_X_Dragon_ComECCE_Complementary_Reimagined_-_Android.mcpack/file" },
+            { id: "s-2", title: "NEWB X LEGACY", version: "1.21+", img: "./port/texturaa.jpg", desc: "(SHADER) MINECRAFT PATCH 1.21+", url: "https://www.mediafire.com/file/8qmz4j57gi45ekd/Newb_X_Legacy_Mcpe_1.21.mcpack.zip/file" }
+        ],
+        "mundos": [
+            { id: "m-1", title: "ONE BLOCK", version: "1.5", img: "./port/texturaa.jpg", desc: "(MUNDO) PARA MINECRAFT 1.18 EN ADELANTE", url: "https://www.mediafire.com/file/fwxue1q70q93ybw/One_Block_%2528Spring_to_Life%2529_v%253D1.5.9_By_DtA_MC.mcworld/file" },
+            { id: "m-2", title: "LUCKY BLOCK", version: "", img: "./port/texturaa.jpg", desc: "(MUNDO) MINECRAFT 1.18+", url: "https://www.mediafire.com/file/x1fqf8d1d76a9zn/RainbowLuckyBlockRaceV1.1.mcworld/file" }
+        ],
+        "texturas": [
+            { id: "tx-1", title: "TEXTURA OUTPUT", version: "", img: "./port/texturaa.jpg", desc: "(TEXTURA) PARA MINECRAFT 1.18+", url: "https://www.mediafire.com/file/yxuie1v5m6v0khg/outcut2.mcpack/file" },
+            { id: "tx-2", title: "BARE BONES", version: "", img: "./port/texturaa.jpg", desc: "(TEXTURA) PARA MINECRAFT 1.18", url: "https://www.mediafire.com/file/s1ridznky8rp0fn/RP_BB.mcpack/file" },
+            { id: "tx-3", title: "I SEE YOU NOW", version: "", img: "./port/texturaa.jpg", desc: "TEXTURA PARA VER SKINS EN CRAFTING AND BUILDING", url: "https://www.mediafire.com/file/ykl2qy2d62fdnaw/I_SEE_YOU%2521_by_NEOMC11.mcpack/file" },
+            { id: "tx-4", title: "Texturas Vanilla", version: "1.3", img: "./port/texturaa.jpg", desc: "PARA CRAFTSMAN 1.18+", url: "https://www.mediafire.com/file/2wsc0bpel7frifo/Texturas_Vanillas_1.18.0_By_NEOFACEMC.mcpack/file" }
+        ],
+        "addons": [],
+        "minecraft": [
+            { id: "mc-1", title: "Minecraft", version: "1.21.113", img: "port/Minecraft_Bedrock.png", desc: "Minecraft 1.21.113 ya esta aqui... lo mejor, en un solo link podras encontra muchas versiones de MINECRAFT BEDROCK, disfrúta!", url: "https://app.mediafire.com/folder/6vzirxgmdn4r2/1.21.94+Oficial+Grissby.com" }
+        ],
+        "ultra-raft": [
+            { id: "ur-1", title: "Ultracraft", version: "1.0", img: "port/ultra.png", desc: "Primera version de UltraCraft... CREADOR:Gabito", url: "https://www.mediafire.com/file/jkyr6jvpal1vfl5/ULTRACRAFT_Gabito.Gaming.apk/file" },
+            { id: "ur-2", title: "Ultracraft", version: "1.1.1", img: "port/ultra.png", desc: "Segunda version de UltraCraft... CREADOR:Gabito", url: "https://www.mediafire.com/file/73vyix8atnk2k2f/ULTRACRAFT_%25E2%259C%2585_ACTUALIZADO_%25E2%259C%25A8_Gabito.Gaming.apk/file" },
+            { id: "ur-3", title: "Ultracraft", version: "1.1.5", img: "port/ultra.png", desc: "Tercera version (todas las versiones siguiente) de UltraCraft... CREADOR:Gabito", url: "https://www.mediafire.com/folder/h98zm2afn6tju/Updates" }
+        ],
+        "balioncraft": [
+            {id: "balion-1", title: "BalionCraft", version: "0.14.3 - 0.15.10 - 1.1.5", img: "./port/balion.png", desc: " Launcher de BALIONCRAF con las versiones 0.14.3, 0.15.10, y 1.1.5", url: "https://www.mediafire.com/folder/b5g5722h3gwry/BalionLauncher" },
+            {id: "balion-2", title: "BalionCraft", version: "1.12", img: "./port/balion.png", desc: " BALIONCRAFT 1.12", url: "https://www.mediafire.com/file/59f4tfpqzms4aoa/Balioncraft_1.12.1_oficial.apk/file" }
+        ],
+        "hipercraft": [
+            {id: "hiper-1", title: "Hypercraft", version: "1.21.100", img: "./port/hiper.png", desc: " HIPERCRAFT EN LA VERSIÓN 1.21.100", url: "https://www.mediafire.com/file/jzeipqgtevpowca/HyperCraft_signed.apk/file" }
+        ],
+        "gamestore": [
+            { id: "gs-1", title: "GameStore", version: "1.0", img: "./port/texturaa.jpg", desc: "Lleva GameStore contigo! La misma tienda, ahora en una app (apk). Decubre juegos y novedades con una navegacion rapida y fluida. Descarga GameStore AHORA!!", url: "https://www.mediafire.com/file/22blvwo2yeaxmea/GStore.apk/file" }
+        ],
+        "otras-apks": [],
+        "Craftsman-ONE": [
+        { id: "co-1", title: "Craftsman ONE ANDROID 14-15", version: "1.1.5", img: "./port/craftsman-one.jpg", desc: "Craftsman ONE ANDROID 14-15", url: "https://www.mediafire.com/file/5w2bbb09dsm5jpt/CRAFTSMAN_ONE_14-15_%25F0%259F%2591%25BE%25F0%259F%258E%2581.apk/file" },
+        { id: "co-2", title: "Craftsman ONE", version: "OFICIAL!!", img: "./port/craftsman-one.jpg", desc: "Craftsman ONE", url: "https://www.mediafire.com/file/v32npfacwwl168i/CRAFTSMAN_ONE_%25F0%259F%258E%2584%25E2%259C%25A8.apk/file" },
+        { id: "co-3", title: "Craftsman ONE - OPTICRAFT ONE", version: "1.1.5 OPTIMIZADO.", img: "./port/craftsman-one.jpg", desc: "Craftsman ONE SUPER OPTIMIZADO", url: "https://www.mediafire.com/file/2jkfza0klfxe0c9/OPTICRAFT_ONE_%25F0%259F%25A5%2594%25E2%259B%2584.apk/file" }
+        ]
+    },
+    videos: [
+        { id: "v-1", title: "I SEE YOU NOW 👀", url: "https://www.youtube.com/embed/TpIy0LwxfGA?si=WICy3XEOVsV_YRLC", thumbnail: "./port/miniatura1 (1).jpg" },
+        { id: "v-2", title: "NEW UPDATE OF CRAFTING", url: "https://www.youtube.com/embed/b35C_J-j5fk?si=WxQgWkuyTpzcb0yJ", thumbnail: "./port/miniatura.jpg" },
+        { id: "v-3", title: "HOW LOGIN IN TO CRAFTING", url: "https://youtu.be/RdriwySSGcA?si=qCiL3p9gtPzIw00k", thumbnail: "./port/miniatura2.jpg" }
+    ]
+};
+
+const mainMenu = document.getElementById('mainMenu');
+const contentMenu = document.getElementById('contentMenu');
+const searchResults = document.getElementById('searchResults');
+const backBtn = document.getElementById('backBtn');
+const backBtnSearch = document.getElementById('backBtnSearch');
+const searchInput = document.getElementById('searchInput');
+let state = { section: null, version: null };
+
+function renderMainMenu() {
+    mainMenu.innerHTML = "";
+    contentMenu.innerHTML = "";
+    backBtn.style.display = 'none';
+    DATA.sections.forEach(sec => {
+        const c = document.createElement('div');
+        c.className = 'card';
+        let imgSrc = "./port/extras.png";
+        if (sec.id === "craftsman") imgSrc = "./port/craftsman.png";
+        else if (sec.id === "neocraft") imgSrc = "neocraft/NEOCRAFT.png";
+        else if (sec.id === "complementos") imgSrc = "./port/texturaa.jpg";
+        else if (sec.id === "otras-apps") imgSrc = "./port/otras_apps.jpg";
+        else if (sec.id === "Craftsman-ONE") imgSrc = "./port/craftsman-one.jpg";
+        const img = document.createElement('img');
+        img.src = imgSrc;
+        img.alt = `Ícono de ${sec.title}`;
+        const info = document.createElement('div');
+        info.className = 'info';
+        info.innerHTML = `<div class="title">${sec.title}</div><div class="desc">${sec.desc || ''}</div>`;
+        c.appendChild(img);
+        c.appendChild(info);
+        c.onclick = () => openSection(sec.id);
+        mainMenu.appendChild(c);
+    });
+}
+
+function openSection(id, versionId = null, targetItemId = null) {
+    state.section = id;
+    state.version = versionId;
+    mainMenu.innerHTML = "";
+    contentMenu.innerHTML = "";
+    backBtn.style.display = 'inline-flex';
+    const sec = DATA.sections.find(s => s.id === id);
+    if (sec.versions && !versionId) {
+        sec.versions.forEach(v => {
+            const c = document.createElement('div');
+            c.className = 'card';
+            let imgSrc = "./port/extras.png";
+            if (id === "craftsman") {
+                if (v.id === "craftsman-main" || v.id === "craftsman-01510") imgSrc = "./port/craftsman.png";
+                else if (v.id === "craftsman-zero") imgSrc = "./port/zero.png";
+            } else if (id === "complementos") {
+                imgSrc = "./port/texturaa.jpg";
+            } else if (id === "otras-apps") {
+                if (v.id === "minecraft") imgSrc = "port/Minecraft_Bedrock.png";
+                else if (v.id === "ultra-raft") imgSrc = "port/ultra.png";
+                else if (v.id === "balioncraft") imgSrc = "./port/balion.png";
+                else if (v.id === "hipercraft") imgSrc = "./port/hiper.png";
+                else if (v.id === "gamestore") imgSrc = "./port/texturaa.jpg";
+            }
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.alt = `Ícono de ${v.title}`;
+            const info = document.createElement('div');
+            info.className = 'info';
+            info.innerHTML = `<div class="title">${v.title}</div>`;
+            c.appendChild(img);
+            c.appendChild(info);
+            c.onclick = () => openSection(id, v.id, targetItemId);
+            contentMenu.appendChild(c);
+        });
+    } else {
+        renderItems(versionId || id, targetItemId);
+    }
+}
+
+function renderItems(key, targetItemId = null) {
+    contentMenu.innerHTML = "";
+    let list = DATA.items[key] || [];
+    if (list.length === 0) {
+        contentMenu.innerHTML = "<div style='padding:12px;color: var(--muted); grid-column: 1/-1;'>Próximamente...</div>";
+        return;
+    }
+    list.forEach(it => {
+        const c = createItemCard(it, key);
+        if (targetItemId && it.id === targetItemId) {
+            c.classList.add('highlight');
+            setTimeout(() => {
+                c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const sound = document.getElementById('highlightSound');
+                if (sound) sound.play();
+            }, 100);
+        }
+        contentMenu.appendChild(c);
+    });
+}
+
+function createItemCard(it, sectionKey) {
+    const c = document.createElement('div');
+    c.className = 'card';
+    const img = document.createElement('img');
+    img.src = it.img || './port/extras.png';
+    img.alt = `Ícono de ${it.title}`;
+    const info = document.createElement('div');
+    info.className = 'info';
+    info.innerHTML = `<div class="title">${it.title}</div><div class="desc">${it.version || ''} - ${it.desc || ''}</div>`;
+    c.appendChild(img);
+    c.appendChild(info);
+
+    // Click on the entire card to open the download link with animation
+    c.addEventListener('click', (e) => {
+        c.classList.add('opening');
+        fetch(it.url, { method: 'HEAD' })
+            .then(response => {
+                c.classList.remove('opening');
+                if (response.ok) {
+                    window.open(it.url, '_blank');
+                } else {
+                    showToast('El enlace no está disponible. Intenta de nuevo más tarde.');
+                }
+            })
+            .catch(() => {
+                c.classList.remove('opening');
+                showToast('Error de red. Verifica tu conexión e intenta de nuevo.');
+            });
+    });
+
+    // Generate dynamic section link
+    const section = DATA.sections.find(s => s.versions ? s.versions.some(v => v.id === sectionKey) : s.id === sectionKey);
+    const sectionId = section ? section.id : sectionKey;
+    const versionId = section && section.versions ? sectionKey : '';
+    const link = `https://learningkodes.github.io/GStore/#${sectionId}${versionId ? '/' + versionId : ''}/${it.id}`;
+
+    // Long press on image to copy share link
+    let longPressTimeout;
+    let copied = false;
+    img.addEventListener('mousedown', (e) => {
+        longPressTimeout = setTimeout(() => {
+            copied = true;
+            navigator.clipboard.writeText(link).then(() => {
+                showToast('¡Link compartido copiado!');
+            }).catch(() => {
+                showToast('Error al copiar el enlace');
+            });
+        }, 500);
+    });
+    img.addEventListener('mouseup', () => clearTimeout(longPressTimeout));
+    img.addEventListener('mouseleave', () => clearTimeout(longPressTimeout));
+
+    img.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        longPressTimeout = setTimeout(() => {
+            copied = true;
+            navigator.clipboard.writeText(link).then(() => {
+                showToast('¡Link compartido copiado!');
+            }).catch(() => {
+                showToast('Error al copiar el enlace');
+            });
+        }, 500);
+    }, { passive: false });
+    img.addEventListener('touchend', () => clearTimeout(longPressTimeout), { passive: false });
+    img.addEventListener('touchcancel', () => clearTimeout(longPressTimeout));
+
+    return c;
+}
+
+function goBack() {
+    if (state.version) {
+        state.version = null;
+        openSection(state.section);
+    } else {
+        state.section = null;
+        renderMainMenu();
+    }
+    window.location.hash = '';
+}
+
+/* ===== Deep Linking ===== */
+function handleDeepLink() {
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+        const parts = hash.split('/');
+        if (parts.length >= 1) {
+            const sectionId = parts[0];
+            const subKey = parts[1];
+            const itemId = parts[2] || null;
+            const section = DATA.sections.find(s => s.id === sectionId);
+            if (section) {
+                showScreen('home');
+                if (section.versions && subKey && section.versions.some(v => v.id === subKey)) {
+                    openSection(sectionId, subKey, itemId);
+                } else {
+                    openSection(sectionId, subKey, itemId);
+                }
+            }
+        }
+    }
+}
+
+/* ===== Search Logic ===== */
+searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.trim().toLowerCase();
+    if (query === '') {
+        searchResults.innerHTML = "<div style='padding:12px;color: var(--muted); grid-column: 1/-1;'>Ingresa un término para buscar</div>";
+    } else {
+        performSearch(query);
+    }
+});
+
+function performSearch(query) {
+    searchResults.innerHTML = "";
+    if (!query) {
+        searchResults.innerHTML = "<div style='padding:12px;color: var(--muted); grid-column: 1/-1;'>Ingresa un término para buscar</div>";
+        return;
+    }
+    let matches = [];
+
+    DATA.sections.forEach(sec => {
+        if (sec.title.toLowerCase().includes(query) || (sec.desc && sec.desc.toLowerCase().includes(query))) {
+            matches.push({ type: 'section', data: sec });
+        }
+        if (sec.versions) {
+            sec.versions.forEach(v => {
+                if (v.title.toLowerCase().includes(query)) {
+                    matches.push({ type: 'subsection', data: v, sectionId: sec.id });
+                }
+            });
+        }
+    });
+
+    Object.keys(DATA.items).forEach(key => {
+        DATA.items[key].forEach(it => {
+            if (it.title.toLowerCase().includes(query) || 
+                (it.version && it.version.toLowerCase().includes(query)) || 
+                (it.desc && it.desc.toLowerCase().includes(query))) {
+                matches.push({ type: 'item', data: it, sectionId: key });
+            }
+        });
+    });
+
+    if (matches.length === 0) {
+        searchResults.innerHTML = "<div style='padding:12px;color: var(--muted); grid-column: 1/-1;'>No se encontraron resultados</div>";
+        return;
+    }
+
+    matches.forEach(match => {
+        let c;
+        if (match.type === 'section') {
+            const sec = match.data;
+            c = document.createElement('div');
+            c.className = 'card';
+            let imgSrc = "./port/extras.png";
+            if (sec.id === "craftsman") imgSrc = "./port/craftsman.png";
+            else if (sec.id === "neocraft") imgSrc = "neocraft/NEOCRAFT.png";
+            else if (sec.id === "complementos") imgSrc = "./port/texturaa.jpg";
+            else if (sec.id === "otras-apps") imgSrc = "./port/extras.png";
+            else if (sec.id === "cumplimientos") imgSrc = "./port/extras.png";
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.alt = `Ícono de ${sec.title}`;
+            const info = document.createElement('div');
+            info.className = 'info';
+            info.innerHTML = `<div class="title">${sec.title}</div><div class="desc">${sec.desc || ''}</div>`;
+            c.appendChild(img);
+            c.appendChild(info);
+            c.onclick = () => {
+                showScreen('home');
+                searchInput.value = '';
+                openSection(sec.id);
+            };
+            searchResults.appendChild(c);
+        } else if (match.type === 'subsection') {
+            const v = match.data;
+            const sec = DATA.sections.find(s => s.id === match.sectionId);
+            c = document.createElement('div');
+            c.className = 'card';
+            let imgSrc = "./port/texturaa.jpg";
+            if (sec.id === "craftsman") {
+                if (v.id.includes("zero")) imgSrc = "./port/zero.png";
+                else imgSrc = "./port/craftsman.png";
+            } else if (sec.id === "otras-apps") {
+                if (v.id === "minecraft") imgSrc = "port/Minecraft_Bedrock.png";
+                else if (v.id === "ultra-raft") imgSrc = "port/ultra.png";
+                else if (v.id === "balioncraft") imgSrc = "./port/balion.png";
+                else if (v.id === "hipercraft") imgSrc = "./port/hiper.png";
+                else if (v.id === "volumecraft") imgSrc = "./port/volume.png";
+                else if (v.id === "gamestore") imgSrc = "./port/texturaa.jpg";
+            }
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.alt = `Ícono de ${v.title}`;
+            const info = document.createElement('div');
+            info.className = 'info';
+            info.innerHTML = `<div class="title">${v.title}</div><div class="desc">En ${sec.title}</div>`;
+            c.appendChild(img);
+            c.appendChild(info);
+            c.onclick = () => {
+                showScreen('home');
+                searchInput.value = '';
+                openSection(sec.id, v.id);
+            };
+            searchResults.appendChild(c);
+        } else if (match.type === 'item') {
+            c = createItemCard(match.data, match.sectionId);
+            searchResults.appendChild(c);
+        }
+    });
+}
+
+function goBackSearch() {
+    searchInput.value = '';
+    searchResults.innerHTML = '';
+    showScreen('home');
+}
+
+/* ===== Carousel ===== */
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+let carouselInterval;
+
+function showSlide(i) {
+    currentSlide = i;
+    if (currentSlide >= slides.length) currentSlide = 0;
+    if (currentSlide < 0) currentSlide = slides.length - 1;
+    slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentSlide);
+    });
+    document.querySelector('.slides').style.transform = `translateX(-${currentSlide * 100}%)`;
+}
+
+function startCarousel() {
+    carouselInterval = setInterval(() => showSlide(currentSlide + 1), 6000);
+}
+
+function pauseCarousel() {
+    clearInterval(carouselInterval);
+}
+
+window.moveSlide = function(n) {
+    pauseCarousel();
+    showSlide(currentSlide + n);
+    startCarousel();
+}
+
+const carousel = document.querySelector('.carousel');
+carousel.addEventListener('mouseenter', pauseCarousel);
+carousel.addEventListener('touchstart', pauseCarousel, { passive: true });
+carousel.addEventListener('mouseleave', startCarousel);
+carousel.addEventListener('touchend', startCarousel, { passive: true });
+
+startCarousel();
+showSlide(0);
+
+/* ===== Videos ===== */
+function renderVideos() {
+    const videosContainer = document.getElementById('videosContainer');
+    videosContainer.innerHTML = '';
+    DATA.videos.forEach(video => {
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+            <img src="${video.thumbnail}" alt="${video.title}">
+            <div class="play-overlay"></div>
+            <iframe src="${video.url}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="video-title">${video.title}</div>
+        `;
+        card.onclick = () => {
+            const iframe = card.querySelector('iframe');
+            const img = card.querySelector('img');
+            const overlay = card.querySelector('.play-overlay');
+            if (!card.classList.contains('active')) {
+                card.classList.add('active');
+                iframe.src += "&autoplay=1"; // Autoplay when clicked
+            } else {
+                card.classList.remove('active');
+                iframe.src = video.url; // Reset iframe src to stop video
+            }
+        };
+        videosContainer.appendChild(card);
+    });
+}
+
+/* ===== Navigation and Screen Switching ===== */
+const homeScreen = document.getElementById('homeScreen');
+const searchScreen = document.getElementById('searchScreen');
+const apkScreen = document.getElementById('apkScreen');
+const videosScreen = document.getElementById('videosScreen');
+const navHome = document.getElementById('navHome');
+const navApk = document.getElementById('navApk');
+const navVideos = document.getElementById('navVideos');
+const navSearch = document.getElementById('navSearch');
+
+function showScreen(screenId) {
+    homeScreen.style.display = screenId === 'home' ? 'block' : 'none';
+    searchScreen.style.display = screenId === 'search' ? 'flex' : 'none';
+    apkScreen.style.display = screenId === 'apk' ? 'flex' : 'none';
+    videosScreen.style.display = screenId === 'videos' ? 'block' : 'none';
+    [navHome, navApk, navVideos, navSearch].forEach(btn => btn.style.color = '');
+    if (screenId === 'home') navHome.style.color = 'var(--accent2)';
+    else if (screenId === 'apk') navApk.style.color = 'var(--accent2)';
+    else if (screenId === 'videos') navVideos.style.color = 'var(--accent2)';
+    else if (screenId === 'search') navSearch.style.color = 'var(--accent2)';
+    if (screenId === 'home' && !state.section) renderMainMenu();
+    if (screenId === 'videos') renderVideos();
+    if (screenId === 'search') searchInput.focus();
+    window.location.hash = '';
+}
+
+navHome.onclick = () => {
+    showScreen('home');
+    goBack();
+};
+navApk.onclick = () => showScreen('apk');
+navVideos.onclick = () => showScreen('videos');
+navSearch.onclick = () => showScreen('search');
+
+/* ===== Sidebar Toggle ===== */
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+
+sidebarToggle.onclick = () => {
+    sidebar.classList.toggle('open');
+};
+
+/* ===== Theme Toggle ===== */
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.onclick = () => {
+    document.body.classList.toggle('light');
+    themeToggle.textContent = document.body.classList.contains('light') ? '🌙 Modo Oscuro' : '☀️ Modo Claro';
+    localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+};
+
+if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light');
+    themeToggle.textContent = '🌙 Modo Oscuro';
+}
+
+/* ===== PWA Install Prompt ===== */
+let deferredPrompt;
+const installButton = document.getElementById('installButton');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installButton.style.display = 'block';
+    installButton.addEventListener('click', () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('Usuario aceptó instalar la PWA');
+            }
+            deferredPrompt = null;
+            installButton.style.display = 'none';
+        });
+    });
+});
+
+window.addEventListener('appinstalled', () => {
+    console.log('PWA instalada');
+    installButton.style.display = 'none';
+});
+
+/* ===== Initialize ===== */
+renderMainMenu();
+handleDeepLink();
+window.addEventListener('hashchange', handleDeepLink);
+    </script>
+</body>
+</html>

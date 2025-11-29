@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir APK - GameStore</title>
+    <!-- Favicon -->
+    <link rel="icon" href="NEOCRAFTss.png" type="image/png">
+    <link rel="icon" type="image/png" sizes="32x32" href="NEOCRAFTss.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="NEOCRAFTss.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="NEOCRAFTss.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="NEOCRAFTss.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="NEOCRAFTss.png">
+    <meta name="msapplication-TileImage" content="NEOCRAFTss.png">
+    <meta name="msapplication-TileColor" content="#0a0b1a">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <!-- CSS Externo -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+    --bg: #0a0b1a;
+    --panel: rgba(20, 22, 36, 0.85);
+    --glass: rgba(255, 255, 255, 0.1);
+    --accent1: #3b82f6;
+    --accent2: #1d4ed8;
+    --accent3: #06b6d4;
+    --text: #e6f1ff;
+    --muted: #94a3b8;
+    --radius: 12px;
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+    --gradient: linear-gradient(135deg, var(--accent1), var(--accent2));
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+}
+
+body.light {
+    --bg: #f0f4f8;
+    --panel: rgba(248, 250, 252, 0.9);
+    --glass: rgba(0, 0, 0, 0.05);
+    --accent1: #3b82f6;
+    --accent2: #1d4ed8;
+    --accent3: #06b6d4;
+    --text: #1e293b;
+    --muted: #64748b;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --gradient: linear-gradient(135deg, var(--accent1), var(--accent2));
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    min-height: 100vh;
+    letter-spacing: 0.01em;
+}
+
+/* ===== Particles Background ===== */
+canvas#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    opacity: 0.95;
+}
+
+/* ===== Sidebar ===== */
+#sidebar {
+    position: fixed;
+    top: 80px;
+    left: -250px;
+    width: 250px;
+    height: calc(100vh - 80px);
+    background: var(--panel);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
+    padding: 1rem;
+    z-index: 9;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+}
+
+#sidebar.open {
+    left: 0;
+}
+
+.sidebar-section {
+    margin-bottom: 2rem;
+}
+
+.sidebar-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--accent1);
+}
+
+.social-link {
+    display: block;
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    background: var(--glass);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.3s;
+}
+
+.social-link:hover {
+    background: var(--gradient);
+    color: #ffffff;
+    transform: translateX(4px);
+}
+
+.social-link img {
+    width: 24px;
+    height: 24px;
+}
+
+#themeToggle {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--glass);
+    border: none;
+    border-radius: var(--radius);
+    color: var(--text);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#themeToggle:hover {
+    background: var(--gradient);
+    color: #ffffff;
+}
+
+.sidebar-upload-btn {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.35);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+.sidebar-upload-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent3);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+/* ===== Header ===== */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 10;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#sidebarToggle {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+#sidebarToggle:hover {
+    background: var(--glass);
+}
+
+.logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: var(--gradient);
+    box-shadow: 0 0 20px var(--accent3);
+    animation: glow 3s infinite;
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 0 20px var(--accent3); }
+    50% { box-shadow: 0 0 30px var(--accent1); }
+    100% { box-shadow: 0 0 20px var(--accent3); }
+}
+
+header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===== Main Container ===== */
+.main {
+    padding: 80px 2rem 100px 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* ===== APK Contact Section ===== */
+.apk-contact {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--panel);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(20px);
+    text-align: left;
+    color: var(--text);
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.apk-contact::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--gradient);
+    opacity: 0.9;
+}
+
+.apk-contact b {
+    font-size: 1.4rem;
+    font-weight: 700;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.apk-contact p {
+    color: var(--muted);
+    margin-bottom: 1rem;
+}
+
+.apk-contact ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.apk-contact li {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.apk-contact img.guide-img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    margin-top: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.apk-contact .telegram-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--gradient);
+    color: #ffffff;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: 0 0 12px var(--accent1);
+    margin: 1rem auto;
+    max-width: 250px;
+    text-align: center;
+}
+
+.apk-contact .telegram-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent3);
+    background: linear-gradient(135deg, var(--accent3), var(--accent1));
+}
+
+.apk-contact .telegram-btn img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(100%) contrast(100%);
+}
+
+#ttsButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--gradient);
+    color: #ffffff;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: 0 0 12px var(--accent1);
+    margin: 1rem auto;
+    max-width: 250px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#ttsButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent3);
+    background: linear-gradient(135deg, var(--accent3), var(--accent1));
+}
+
+/* ===== Toast ===== */
+#toast {
+    position: fixed;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gradient);
+    color: #ffffff;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 20;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+#toast.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+    header {
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+    }
+
+    .logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .main {
+        padding: 80px 1rem 100px 1rem;
+    }
+
+    .apk-contact {
+        padding: 1.5rem;
+    }
+
+    .apk-contact b {
+        font-size: 1.3rem;
+    }
+
+    .apk-contact .telegram-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    #sidebar {
+        width: 200px;
+        left: -200px;
+    }
+
+    .apk-contact {
+        padding: 1rem;
+    }
+
+    .apk-contact b {
+        font-size: 1.2rem;
+    }
+
+    .apk-contact ol {
+        padding-left: 1rem;
+    }
+
+    .apk-contact li {
+        font-size: 0.95rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <div class="sidebar-section">
+            <h3>Enlaces Sociales</h3>
+            <a href="https://youtube.com/@jlmc2?si=qHmc0eB24stW3Kcv" class="social-link">
+                <img src="./port/yt.png" alt="YouTube"> YouTube
+            </a>
+            <a href="https://www.tiktok.com/@neomc1?_t=ZS-8zkfUb8Lnjm&_r=1" class="social-link">
+                <img src="./port/tiktok.png" alt="TikTok"> TikTok
+            </a>
+            <a href="https://www.instagram.com/neomc12?igsh=MXNqYmcwNHZmOGx3Yg==" class="social-link">
+                <img src="./port/inta.jpg" alt="Instagram"> Instagram
+            </a>
+            <a href="https://learningkodes.github.io/GameStore/" class="social-link">
+                📄 Content
+            </a>
+        </div>
+        <div class="sidebar-section">
+            <h3>Administración</h3>
+            <a href="index.html" class="sidebar-upload-btn">VOLVER AL INICIO</a>
+        </div>
+        <div class="sidebar-section">
+            <button id="themeToggle">☀️ Cambiar a Modo Claro</button>
+        </div>
+    </div>
+
+    <header>
+        <button id="sidebarToggle">☰</button>
+        <img class="logo" src="NEOCRAFT.png" alt="Logo">
+        <h1>Subir APK - GameStore</h1>
+    </header>
+
+    <div class="main">
+        <div class="apk-contact">
+            <b>¿Quieres subir tu APK, textura, shader, mundo o addon?</b>
+            <p>Sigue estos pasos sencillos para enviar tu contenido a través de Telegram. Nos aseguraremos de revisarlo y publicarlo en GameStore si cumple con los requisitos.</p>
+            <button id="ttsButton">Oír</button>
+            <ol>
+                <li><strong>Selecciona el botón de Telegram:</strong> Haz clic en el botón "Contactar por Telegram" a continuación para ser redirigido directamente a mi chat en Telegram.<img src="./port/111 (2).png" alt="Paso 1: Selecciona el botón de Telegram" class="guide-img"></li>
+                <li><strong>Inicia la conversación:</strong> Envía cualquier mensaje inicial (por ejemplo, "Hola, quiero subir un APK") para comenzar el chat.<img src="./port/111 (1).png" alt="Paso 2: Inicia la conversación" class="guide-img"></li>
+                <li><strong>Envía los detalles de tu contenido:</strong> Proporciona la información necesaria, incluyendo:
+                    <ul>
+                        <li>El enlace de descarga de tu APK, textura, shader, mundo, addon, etc.</li>
+                        <li>La imagen o portada asociada (por ejemplo, ícono o screenshot).</li>
+                        <li>La versión del contenido (por ejemplo, v1.2.3).</li>
+                        <li>La versión del juego compatible (por ejemplo, Minecraft 1.21+, Craftsman 1.18, NeoCraft, Craftsman Zero, etc.).</li>
+                        <li>Una descripción breve del contenido y cualquier nota adicional.</li>
+                    </ul>
+                    <img src="./port/step3.png" alt="Paso 3: Envía los detalles" class="guide-img">
+                </li>
+                <li><strong>Espera confirmación:</strong> Revisaré tu envío y te confirmaré si se publica en GameStore. ¡Gracias por contribuir!<img src="step4.png" alt="Paso 4: Espera confirmación" class="guide-img"></li>
+            </ol>
+            <a href="https://t.me/+573046128902" class="telegram-btn">
+                <img src="./port/telegram.png" alt="Telegram">
+                Contactar por Telegram
+            </a>
+            <p style="text-align: center; font-size: 0.9rem; margin-top: 1rem;">¡Envíanos tu contenido y ayúdanos a crecer la comunidad de GameStore!</p>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast"></div>
+
+    <script>
+        // Particle Background (Enhanced Aesthetic - Blue Nebula Effect)
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.6 + 0.4;
+                const blueShades = ['#3b82f6', '#1d4ed8', '#06b6d4'];
+                this.color = blueShades[Math.floor(Math.random() * blueShades.length)];
+                this.glow = Math.random() * 6 + 3;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                this.opacity = Math.max(0.3, this.opacity + (Math.random() - 0.5) * 0.01);
+            }
+
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = this.glow;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 120) {
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${0.6 - distance / 120})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(window.innerWidth / 4, 150);
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            connectParticles();
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // Toast Function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Sidebar Toggle
+        document.getElementById('sidebarToggle').onclick = () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        };
+
+        // Theme Toggle
+        document.getElementById('themeToggle').onclick = () => {
+            document.body.classList.toggle('light');
+            document.getElementById('themeToggle').textContent = document.body.classList.contains('light') ? '🌙 Cambiar a Modo Oscuro' : '☀️ Cambiar a Modo Claro';
+            localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+        };
+
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light');
+            document.getElementById('themeToggle').textContent = '🌙 Cambiar a Modo Oscuro';
+        }
+
+        // Text-to-Speech Button
+        document.getElementById('ttsButton').onclick = () => {
+            const content = document.querySelector('.apk-contact').innerText;
+            const utterance = new SpeechSynthesisUtterance(content);
+            utterance.lang = 'es-ES'; // Spanish language
+            speechSynthesis.speak(utterance);
+            showToast('Reproduciendo texto...');
+        };
+    </script>
+</body>
+</html>
