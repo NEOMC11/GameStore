@@ -1398,7 +1398,7 @@ function createItemCard(it, sectionKey) {
     const section = DATA.sections.find(s => s.versions ? s.versions.some(v => v.id === sectionKey) : s.id === sectionKey);
     const sectionId = section ? section.id : sectionKey;
     const versionId = section && section.versions ? sectionKey : '';
-    const link = `https://learningkodes.github.io/GStore/#${sectionId}${versionId ? '/' + versionId : ''}/${it.id}`;
+    const link = `https://game-store-self.vercel.app/#${sectionId}${versionId ? '/' + versionId : ''}/${it.id}`;
 
     // Long press on image to copy share link
     let longPressTimeout;
@@ -1735,4 +1735,5 @@ handleDeepLink();
 window.addEventListener('hashchange', handleDeepLink);
     </script>
 </body>
+
 </html>
