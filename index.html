@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameStore</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/NEOCRAFTss.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <button class="menu-btn" id="menuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="header-logo">
+            <img src="assets/NEOCRAFT.png" alt="GameStore Logo" class="logo-img">
+            <h1>GameStore</h1>
+        </div>
+        <button class="theme-toggle-btn" id="themeToggleMobile">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Menú</h2>
+            <button class="close-sidebar" id="closeSidebar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-content">
+            <div class="social-section">
+                <h3>Síguenos</h3>
+                <a href="https://youtube.com/@neomc13" target="_blank" class="social-link youtube">
+                    <i class="fab fa-youtube"></i>
+                    <span>YouTube</span>
+                </a>
+                <a href="https://www.instagram.com/jlmc_24_n?igsh=MXNqYmcwNHZmOGx3Yg==" target="_blank" class="social-link instagram">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+                <a href="https://www.tiktok.com/@neomc1?_r=1&_t=ZS-91FCqdmam9Q" target="_blank" class="social-link tiktok">
+                    <i class="fab fa-tiktok"></i>
+                    <span>TikTok</span>
+                </a>
+                <a href="https://whatsapp.com/channel/0029Vb5HMl2GJP8EjrRAXq2i" target="_blank" class="social-link tiktok">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Whatsapp</span>
+                </a>
+                <a href="https:/LEARNINGKODES.github.io/GameStore/" target="_blank" class="social-link tiktok">
+                    <i class="fab fa-document"></i>
+                    <span>Content</span>
+                </a>
+            </div>
+
+            <!-- Theme Toggle -->
+            <div class="theme-section">
+                <h3>Apariencia</h3>
+                <div class="theme-switch">
+                    <span>Modo Claro</span>
+                    <label class="switch">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Admin Button -->
+            <button class="admin-btn" id="adminBtn">
+                <i class="fas fa-user-shield"></i>
+                Admin Panel
+            </button>
+        </div>
+    </div>
+
+    <!-- Overlay para el sidebar -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Sección de Inicio -->
+        <section id="home" class="section active">
+            <!-- Filtros -->
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="app">Apps</button>
+                <button class="filter-btn" data-filter="textura">Texturas</button>
+                <button class="filter-btn" data-filter="shader">Shaders</button>
+                <button class="filter-btn" data-filter="addon">Addons</button>
+                <button class="filter-btn" data-filter="mundo">Mundos</button>
+            </div>
+
+            <!-- Grid de Cards -->
+            <div class="cards-grid" id="cardsGrid">
+                <!-- Las cards se generarán dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Sección de Videos -->
+        <section id="videos" class="section">
+            <h2 class="section-title">Videos</h2>
+            <div class="videos-grid" id="videosGrid">
+                <!-- Los videos se generarán dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Sección de Búsqueda -->
+        <section id="search" class="section">
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar apps, texturas, shaders...">
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <!-- Los resultados se mostrarán aquí -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-section="home">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </button>
+        <button class="nav-btn" data-section="videos">
+            <i class="fas fa-play-circle"></i>
+            <span>Videos</span>
+        </button>
+        <button class="nav-btn" data-section="search">
+            <i class="fas fa-search"></i>
+            <span>Buscar</span>
+        </button>
+    </nav>
+
+    <!-- Modal de Login Admin -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Panel</h2>
+                <button class="close-modal" id="closeLoginModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="password" id="adminPassword" placeholder="Contraseña">
+                <button class="btn-primary" id="loginBtn">Iniciar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Admin Panel -->
+    <div class="modal" id="adminPanel">
+        <div class="modal-content admin-panel-content">
+            <div class="modal-header">
+                <h2>Panel de Administración</h2>
+                <button class="close-modal" id="closeAdminPanel">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="admin-tabs">
+                    <button class="admin-tab-btn active" data-tab="content">Subir Contenido</button>
+                    <button class="admin-tab-btn" data-tab="video">Subir Video</button>
+                </div>
+
+                <!-- Tab de Contenido -->
+                <div class="admin-tab-content active" id="contentTab">
+                    <form id="contentForm">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" id="contentName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción</label>
+                            <textarea id="contentDescription" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Versión</label>
+                            <input type="text" id="contentVersion" placeholder="v1.0.0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Enlace de Descarga</label>
+                            <input type="url" id="contentDownload" required>
+                        </div>
+                        <div class="form-group">
+                            <label>URL de Imagen de Portada</label>
+                            <input type="url" id="contentImage" required>
+                        </div>
+                        <div class="form-group">
+                            <label>URLs de Imágenes de Evidencia (separadas por coma)</label>
+                            <input type="text" id="contentScreenshots" placeholder="url1, url2, url3">
+                        </div>
+                        <div class="form-group">
+                            <label>Enlaces de Videos de YouTube (separados por coma)</label>
+                            <input type="text" id="contentVideos" placeholder="https://youtube.com/watch?v=...">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo</label>
+                            <select id="contentType" required>
+                                <option value="app">App</option>
+                                <option value="textura">Textura</option>
+                                <option value="shader">Shader</option>
+                                <option value="addon">Addon</option>
+                                <option value="mundo">Mundo</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary">Publicar</button>
+                    </form>
+                </div>
+
+                <!-- Tab de Video -->
+                <div class="admin-tab-content" id="videoTab">
+                    <form id="videoForm">
+                        <div class="form-group">
+                            <label>Título del Video</label>
+                            <input type="text" id="videoTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Enlace del Video (YouTube/Facebook/Instagram)</label>
+                            <input type="url" id="videoUrl" required>
+                        </div>
+                        <div class="form-group">
+                            <label>URL de Miniatura</label>
+                            <input type="url" id="videoThumbnail" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Publicar Video</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalle -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content detail-modal-content">
+            <button class="close-modal" id="closeDetailModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-body" id="detailContent">
+                <!-- El contenido del detalle se generará dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Video -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content video-modal-content">
+            <button class="close-modal" id="closeVideoModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-body" id="videoContent">
+                <!-- El video se cargará dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
