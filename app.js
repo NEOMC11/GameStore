@@ -504,3 +504,42 @@ function checkHash() {
         }
     }
 }
+// PWA Install Prompt
+let deferredPrompt;
+const installPrompt = document.getElementById('installPrompt');
+const installBtn = document.getElementById('installBtn');
+const closeBtn = document.getElementById('closeBtn');
+
+// Capturar el evento de instalación
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Mostrar el botón de instalación
+  installPrompt.classList.remove('hidden');
+});
+
+// Cuando el usuario hace clic en instalar
+installBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  
+  if (outcome === 'accepted') {
+    console.log('Usuario aceptó la instalación');
+  }
+  
+  deferredPrompt = null;
+  installPrompt.classList.add('hidden');
+});
+
+// Cerrar el prompt
+closeBtn.addEventListener('click', () => {
+  installPrompt.classList.add('hidden');
+});
+
+// Ocultar si ya está instalada
+window.addEventListener('appinstalled', () => {
+  installPrompt.classList.add('hidden');
+  console.log('PWA instalada exitosamente');
+});
