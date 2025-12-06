@@ -1248,3 +1248,121 @@ input:checked + .slider:before {
         radial-gradient(circle at 80% 70%, rgba(0, 150, 255, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 40% 80%, rgba(0, 200, 255, 0.1) 0%, transparent 50%);
 }
+.install-prompt {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  animation: slideUp 0.5s ease-out;
+}
+
+.install-prompt.hidden {
+  display: none;
+}
+
+.install-content {
+  background: rgba(3, 13, 34, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(87, 26, 34, 0.3);
+  border-radius: 20px;
+  padding: 20px 25px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  max-width: 400px;
+  position: relative;
+}
+
+.install-icon {
+  font-size: 40px;
+  flex-shrink: 0;
+}
+
+.install-text {
+  flex-grow: 1;
+}
+
+.install-text h3 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.install-text p {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.install-btn {
+  background: linear-gradient(135deg, #0066ff, #00ccff);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 102, 255, 0.4);
+  flex-shrink: 0;
+}
+
+.install-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 102, 255, 0.6);
+}
+
+.install-btn:active {
+  transform: translateY(0);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .install-prompt {
+    left: 10px;
+    right: 10px;
+    transform: none;
+  }
+  
+  .install-content {
+    max-width: 100%;
+  }
+}
