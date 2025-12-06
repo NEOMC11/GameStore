@@ -1,6 +1,6 @@
 {
   "name": "GStore",
-  "short_name": "App",
+  "short_name": "Gstore",
   "description": "GamesStore, tu tienda de confianza para Minecraft piratas XD, y también todas las copias de Craftsman, cómo Craftsman Zero, Craftsman ONE, Craftsman, y también neutras",
   "start_url": "https://game-store-self.vercel.app/#",
   "display": "standalone",
