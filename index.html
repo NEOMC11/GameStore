@@ -16,6 +16,12 @@
     
     <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="/manifest.json">
+
+<!-- Meta tags para PWA -->
+<meta name="theme-color" content="#000000">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" href="assets/NEOCRAFT.png">
 </head>
 <body>
     <!-- Header -->
@@ -278,5 +284,12 @@
     <!-- Scripts -->
     <script src="data.js"></script>
     <script src="app.js"></script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('Service Worker registrado', reg))
+      .catch(err => console.log('Error al registrar Service Worker', err));
+  }
+    </script>
 </body>
 </html>
