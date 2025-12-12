@@ -18,7 +18,10 @@ import {
     ref,
     uploadBytes,
     getDownloadURL,
-    increment
+    deleteObject,
+    increment,
+    where,
+    Timestamp
 } from './firebase-config.js';
 
 // ===== VARIABLES GLOBALES =====
@@ -29,6 +32,8 @@ let allContent = [];
 let allVideos = [];
 let editingItemId = null;
 let currentItemComments = [];
+let uploadedImageFile = null;
+let uploadedScreenshots = [];
 
 // ===== INICIALIZACIÓN =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -133,10 +138,10 @@ async function loadContent() {
         const querySnapshot = await getDocs(q);
         
         allContent = [];
-        querySnapshot.forEach((doc) => {
+        querySnapshot.forEach((docSnap) => {
             allContent.push({
-                id: doc.id,
-                ...doc.data()
+                id: docSnap.id,
+                ...docSnap.data()
             });
         });
         
@@ -154,10 +159,10 @@ async function loadVideos() {
         const querySnapshot = await getDocs(q);
         
         allVideos = [];
-        querySnapshot.forEach((doc) => {
+        querySnapshot.forEach((docSnap) => {
             allVideos.push({
-                id: doc.id,
-                ...doc.data()
+                id: docSnap.id,
+                ...docSnap.data()
             });
         });
         
@@ -206,7 +211,7 @@ function displayVideos() {
     });
 }
 
-// ===== ESTADÍSTICAS DE DESCARGAS =====
+// ===== ESTADÍSTICAS DE DESCARGAS (CORREGIDO) =====
 async function trackDownload(itemId) {
     try {
         const itemRef = doc(db, 'content', itemId);
@@ -225,7 +230,7 @@ async function trackDownload(itemId) {
     }
 }
 
-// ===== SISTEMA DE COMENTARIOS =====
+// ===== SISTEMA DE COMENTARIOS (CORREGIDO) =====
 async function loadComments(contentId) {
     try {
         const commentsCollection = collection(db, 'content', contentId, 'comments');
@@ -233,10 +238,10 @@ async function loadComments(contentId) {
         const querySnapshot = await getDocs(q);
         
         currentItemComments = [];
-        querySnapshot.forEach((doc) => {
+        querySnapshot.forEach((docSnap) => {
             currentItemComments.push({
-                id: doc.id,
-                ...doc.data()
+                id: docSnap.id,
+                ...docSnap.data()
             });
         });
         
@@ -276,6 +281,52 @@ async function deleteComment(contentId, commentId) {
         console.error('Error al eliminar comentario:', error);
         showToast('Error al eliminar comentario', true);
         return false;
+    }
+}
+
+// ===== FORMATEAR FECHA (CORREGIDO) =====
+function formatDate(timestamp) {
+    if (!timestamp) return 'Ahora';
+    
+    try {
+        let date;
+        
+        // Si es un Timestamp de Firestore
+        if (timestamp && typeof timestamp.toDate === 'function') {
+            date = timestamp.toDate();
+        } 
+        // Si es un objeto con seconds
+        else if (timestamp && timestamp.seconds) {
+            date = new Date(timestamp.seconds * 1000);
+        }
+        // Si es un timestamp numérico
+        else if (typeof timestamp === 'number') {
+            date = new Date(timestamp);
+        }
+        // Si ya es una fecha
+        else if (timestamp instanceof Date) {
+            date = timestamp;
+        }
+        else {
+            return 'Ahora';
+        }
+        
+        const now = new Date();
+        const diff = now - date;
+        
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+        
+        if (minutes < 1) return 'Ahora';
+        if (minutes < 60) return `Hace ${minutes}m`;
+        if (hours < 24) return `Hace ${hours}h`;
+        if (days < 7) return `Hace ${days}d`;
+        
+        return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+    } catch (error) {
+        console.error('Error al formatear fecha:', error);
+        return 'Hace un momento';
     }
 }
 
@@ -358,6 +409,10 @@ function setupEventListeners() {
     
     const contentImage = document.getElementById('contentImage');
     if (contentImage) contentImage.addEventListener('change', handleImageUpload);
+    
+    // NUEVO: Screenshots múltiples
+    const screenshotsInput = document.getElementById('contentScreenshotsFiles');
+    if (screenshotsInput) screenshotsInput.addEventListener('change', handleScreenshotsUpload);
     
     document.querySelectorAll('.modal').forEach(modal => {
         modal.addEventListener('click', (e) => {
@@ -456,14 +511,16 @@ function createVideoCard(video) {
                 <i class="fas fa-play"></i>
             </div>
         </div>
-        <div class="video-title">${video.title}</div>
-        ${isAdminLoggedIn ? `
-            <div class="card-admin-actions">
-                <button class="btn-delete" onclick="deleteItem('${video.id}', 'videos')">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        ` : ''}
+        <div class="video-info">
+            <div class="video-title">${video.title}</div>
+            ${isAdminLoggedIn ? `
+                <div class="card-admin-actions">
+                    <button class="btn-delete" onclick="deleteVideo('${video.id}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            ` : ''}
+        </div>
     `;
     
     card.addEventListener('click', (e) => {
@@ -475,7 +532,7 @@ function createVideoCard(video) {
     return card;
 }
 
-// ===== DETALLES CON COMENTARIOS =====
+// ===== DETALLES CON COMENTARIOS (CORREGIDO) =====
 async function showDetail(item) {
     window.location.hash = item.id;
     
@@ -594,16 +651,32 @@ async function showDetail(item) {
     modal.classList.add('active');
 }
 
+// ===== MOSTRAR VIDEO (CORREGIDO) =====
 function showVideo(video) {
     const modal = document.getElementById('videoModal');
     const content = document.getElementById('videoContent');
     
     if (!modal || !content) return;
     
+    // Convertir URL de YouTube al formato embed si es necesario
+    let embedUrl = video.url;
+    
+    if (video.url.includes('youtube.com/watch')) {
+        const videoId = video.url.split('v=')[1]?.split('&')[0];
+        if (videoId) {
+            embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        }
+    } else if (video.url.includes('youtu.be/')) {
+        const videoId = video.url.split('youtu.be/')[1]?.split('?')[0];
+        if (videoId) {
+            embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        }
+    }
+    
     content.innerHTML = `
         <h3 style="margin-bottom: 15px; color: var(--primary-color);">${video.title}</h3>
         <div class="video-embed">
-            <iframe src="${video.url}" allowfullscreen></iframe>
+            <iframe src="${embedUrl}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
         </div>
     `;
     
@@ -649,29 +722,6 @@ window.removeComment = async function(contentId, commentId) {
         if (item) {
             await showDetail(item);
         }
-    }
-}
-
-function formatDate(timestamp) {
-    if (!timestamp) return 'Ahora';
-    
-    try {
-        const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-        const now = new Date();
-        const diff = now - date;
-        
-        const minutes = Math.floor(diff / 60000);
-        const hours = Math.floor(diff / 3600000);
-        const days = Math.floor(diff / 86400000);
-        
-        if (minutes < 1) return 'Ahora';
-        if (minutes < 60) return `Hace ${minutes}m`;
-        if (hours < 24) return `Hace ${hours}h`;
-        if (days < 7) return `Hace ${days}d`;
-        
-        return date.toLocaleDateString();
-    } catch (error) {
-        return 'Fecha desconocida';
     }
 }
 
@@ -731,9 +781,7 @@ function switchAdminTab(tab) {
     }
 }
 
-// ===== SUBIR IMAGEN =====
-let uploadedImageFile = null;
-
+// ===== SUBIR ARCHIVOS (CORREGIDO Y MEJORADO) =====
 function handleImageUpload(e) {
     const file = e.target.files[0];
     if (file) {
@@ -745,6 +793,23 @@ function handleImageUpload(e) {
         uploadedImageFile = file;
         showToast('Imagen seleccionada: ' + file.name);
     }
+}
+
+function handleScreenshotsUpload(e) {
+    const files = Array.from(e.target.files);
+    
+    if (files.length === 0) return;
+    
+    // Validar tamaño
+    const invalidFiles = files.filter(f => f.size > 5 * 1024 * 1024);
+    if (invalidFiles.length > 0) {
+        showToast(`${invalidFiles.length} imagen(es) superan los 5MB`, true);
+        e.target.value = '';
+        return;
+    }
+    
+    uploadedScreenshots = files;
+    showToast(`${files.length} imagen(es) seleccionada(s)`);
 }
 
 async function uploadImage(file, path) {
@@ -759,7 +824,16 @@ async function uploadImage(file, path) {
     }
 }
 
-// ===== CREAR/EDITAR CONTENIDO =====
+async function uploadMultipleImages(files, basePath) {
+    const uploadPromises = files.map(async (file, index) => {
+        const path = `${basePath}/${Date.now()}_${index}_${file.name}`;
+        return await uploadImage(file, path);
+    });
+    
+    return await Promise.all(uploadPromises);
+}
+
+// ===== CREAR/EDITAR CONTENIDO (CORREGIDO) =====
 async function submitContent(e) {
     e.preventDefault();
     
@@ -773,7 +847,6 @@ async function submitContent(e) {
     const version = document.getElementById('contentVersion').value.trim();
     const downloadUrl = document.getElementById('contentDownload').value.trim();
     const type = document.getElementById('contentType').value;
-    const screenshotsInput = document.getElementById('contentScreenshots').value.trim();
     const videosInput = document.getElementById('contentVideos').value.trim();
     
     if (!name || !description || !version || !downloadUrl) {
@@ -786,14 +859,26 @@ async function submitContent(e) {
         
         let imageUrl = document.getElementById('contentImageUrl')?.value.trim() || '';
         
+        // Subir imagen principal
         if (uploadedImageFile) {
             const imagePath = `content/${Date.now()}_${uploadedImageFile.name}`;
             imageUrl = await uploadImage(uploadedImageFile, imagePath);
+            showToast('Subiendo imagen principal...');
         }
         
-        const screenshots = screenshotsInput 
-            ? screenshotsInput.split(',').map(s => s.trim()).filter(s => s)
-            : [];
+        // Subir screenshots
+        let screenshots = [];
+        if (uploadedScreenshots && uploadedScreenshots.length > 0) {
+            showToast(`Subiendo ${uploadedScreenshots.length} capturas...`);
+            screenshots = await uploadMultipleImages(uploadedScreenshots, 'screenshots');
+        }
+        
+        // Agregar URLs de screenshots si hay
+        const screenshotsInput = document.getElementById('contentScreenshots').value.trim();
+        if (screenshotsInput) {
+            const urlScreenshots = screenshotsInput.split(',').map(s => s.trim()).filter(s => s);
+            screenshots = [...screenshots, ...urlScreenshots];
+        }
         
         const videos = videosInput 
             ? videosInput.split(',').map(v => v.trim()).filter(v => v)
@@ -814,6 +899,11 @@ async function submitContent(e) {
         
         if (editingItemId) {
             const docRef = doc(db, 'content', editingItemId);
+            // Mantener las descargas existentes al editar
+            const existingItem = allContent.find(i => i.id === editingItemId);
+            if (existingItem && existingItem.downloads) {
+                contentData.downloads = existingItem.downloads;
+            }
             await updateDoc(docRef, contentData);
             showToast('¡Contenido actualizado!');
             editingItemId = null;
@@ -832,6 +922,7 @@ async function submitContent(e) {
     }
 }
 
+// ===== CREAR VIDEO (CORREGIDO) =====
 async function submitVideo(e) {
     e.preventDefault();
     
@@ -841,7 +932,7 @@ async function submitVideo(e) {
     }
     
     const title = document.getElementById('videoTitle').value.trim();
-    const url = document.getElementById('videoUrl').value.trim();
+    let url = document.getElementById('videoUrl').value.trim();
     const thumbnail = document.getElementById('videoThumbnail').value.trim();
     
     if (!title || !url || !thumbnail) {
@@ -851,6 +942,19 @@ async function submitVideo(e) {
     
     try {
         showToast('Guardando...');
+        
+        // Convertir automáticamente URLs de YouTube al formato embed
+        if (url.includes('youtube.com/watch')) {
+            const videoId = url.split('v=')[1]?.split('&')[0];
+            if (videoId) {
+                url = `https://www.youtube.com/embed/${videoId}`;
+            }
+        } else if (url.includes('youtu.be/')) {
+            const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+            if (videoId) {
+                url = `https://www.youtube.com/embed/${videoId}`;
+            }
+        }
         
         const videoData = {
             title,
@@ -873,6 +977,22 @@ async function submitVideo(e) {
     }
 }
 
+// ===== ELIMINAR VIDEO =====
+window.deleteVideo = async function(videoId) {
+    if (!confirm('¿Estás seguro de que quieres eliminar este video?')) {
+        return;
+    }
+    
+    try {
+        await deleteDoc(doc(db, 'videos', videoId));
+        showToast('¡Video eliminado!');
+        await loadVideos();
+    } catch (error) {
+        console.error('Error al eliminar video:', error);
+        showToast('Error al eliminar el video', true);
+    }
+}
+
 // ===== EDITAR ITEM =====
 window.editItem = async function(itemId) {
     const item = allContent.find(i => i.id === itemId);
@@ -886,7 +1006,15 @@ window.editItem = async function(itemId) {
     document.getElementById('contentDownload').value = item.downloadUrl;
     document.getElementById('contentImageUrl').value = item.imageUrl;
     document.getElementById('contentType').value = item.type;
-    document.getElementById('contentScreenshots').value = item.screenshots?.join(', ') || '';
+    
+    // Limpiar screenshots de archivos
+    const screenshotsFilesInput = document.getElementById('contentScreenshotsFiles');
+    if (screenshotsFilesInput) screenshotsFilesInput.value = '';
+    
+    // Poner screenshots existentes como URLs
+    const urlScreenshots = item.screenshots?.filter(s => s.startsWith('http')) || [];
+    document.getElementById('contentScreenshots').value = urlScreenshots.join(', ');
+    
     document.getElementById('contentVideos').value = item.videos?.join(', ') || '';
     
     const adminPanel = document.getElementById('adminPanel');
@@ -922,7 +1050,14 @@ function clearContentForm() {
     const form = document.getElementById('contentForm');
     if (form) form.reset();
     uploadedImageFile = null;
+    uploadedScreenshots = [];
     editingItemId = null;
+    
+    // Limpiar inputs de archivos
+    const imageInput = document.getElementById('contentImage');
+    const screenshotsInput = document.getElementById('contentScreenshotsFiles');
+    if (imageInput) imageInput.value = '';
+    if (screenshotsInput) screenshotsInput.value = '';
 }
 
 // ===== UTILIDADES =====
@@ -930,8 +1065,11 @@ window.downloadItem = async function(url, itemId) {
     window.open(url, '_blank');
     showToast('Iniciando descarga...');
     
+    // Registrar descarga
     if (itemId) {
         await trackDownload(itemId);
+        // Recargar contenido para actualizar el contador
+        await loadContent();
     }
 }
 
@@ -984,27 +1122,3 @@ function checkHash() {
         }
     }
 }
-/* ===== PWA Install Prompt ===== */
-let deferredPrompt;
-const installButton = document.getElementById('installButton');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installButton.style.display = 'block';
-    installButton.addEventListener('click', () => {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('Usuario aceptó instalar la PWA');
-            }
-            deferredPrompt = null;
-            installButton.style.display = 'none';
-        });
-    });
-});
-
-window.addEventListener('appinstalled', () => {
-    console.log('PWA instalada');
-    installButton.style.display = 'none';
-});

@@ -12,7 +12,8 @@ import {
     orderBy,
     serverTimestamp,
     increment,
-    where
+    where,
+    Timestamp
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { 
     getAuth, 
@@ -24,7 +25,8 @@ import {
     getStorage, 
     ref, 
     uploadBytes, 
-    getDownloadURL 
+    getDownloadURL,
+    deleteObject
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 // Tu configuración de Firebase
@@ -59,10 +61,12 @@ export {
     serverTimestamp,
     increment,
     where,
+    Timestamp,
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
     ref,
     uploadBytes,
-    getDownloadURL
+    getDownloadURL,
+    deleteObject
 };
