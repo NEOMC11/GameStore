@@ -3,398 +3,474 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameStore - Firebase Edition</title>
-    
-    <link rel="icon" type="image/png" href="assets/NEOCRAFTss.png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="styles-extra.css">
-    
-    <style>
-        /* Estilos adicionales para admin */
-        .card-admin-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .btn-edit, .btn-delete {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-        
-        .btn-edit {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-        }
-        
-        .btn-delete {
-            background: linear-gradient(135deg, #f44336, #da190b);
-            color: white;
-        }
-        
-        .btn-edit:hover, .btn-delete:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 100, 255, 0.4);
-        }
-        
-        .form-group-file {
-            margin-bottom: 25px;
-        }
-        
-        .file-upload-wrapper {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-        }
-        
-        .file-upload-input {
-            width: 100%;
-            padding: 15px;
-            background: rgba(0, 30, 60, 0.4);
-            border: 2px dashed var(--border-color);
-            border-radius: 15px;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .file-upload-input:hover {
-            border-color: var(--neon-blue);
-            background: rgba(0, 60, 120, 0.6);
-        }
-        
-        .admin-info {
-            background: rgba(0, 100, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-        }
-        
-        .admin-info p {
-            margin: 0;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-    </style>
+    <title>GameStore</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="EdwardMC">
+  <link rel="apple-touch-icon" href="/img/NEOCRAFT.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/NEOCRAFT.png">
+  <link rel="stylesheet" href="./css/pwa-install.css">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <button class="menu-btn" id="menuBtn">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="header-logo">
-            <img src="assets/NEOCRAFT.png" alt="GameStore Logo" class="logo-img">
-            <h1>GameStore</h1>
-        </div>
-        <button class="theme-toggle-btn" id="themeToggleMobile">
-            <i class="fas fa-moon"></i>
-        </button>
-    </header>
-
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h2>Menú</h2>
-            <button class="close-sidebar" id="closeSidebar">
-                <i class="fas fa-times"></i>
-            </button>
+    <!-- Botón de instalación PWA -->
+  <div class="install-container" id="installContainer">
+    <button class="install-button pulse" id="installButton">
+      <svg class="install-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      <span class="install-text">Instalar App</span>
+    </button>
+    <button class="close-install" id="closeInstall">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+    <!-- Barra de navegación -->
+    <nav class="navbar">
+        <div class="logo-container">
+            <h1 class="site-title">GameStore</h1>
         </div>
         
-        <div class="sidebar-content">
-            <div class="social-section">
-                <h3>Síguenos</h3>
-                <a href="https://youtube.com/@neomc13" target="_blank" class="social-link youtube">
-                    <i class="fab fa-youtube"></i>
-                    <span>YouTube</span>
-                </a>
-                <a href="https://www.instagram.com/jlmc_24_n?igsh=MXNqYmcwNHZmOGx3Yg==" target="_blank" class="social-link instagram">
-                    <i class="fab fa-instagram"></i>
-                    <span>Instagram</span>
-                </a>
-                <a href="https://www.tiktok.com/@neomc1?_r=1&_t=ZS-91FCqdmam9Q" target="_blank" class="social-link tiktok">
-                    <i class="fab fa-tiktok"></i>
-                    <span>TikTok</span>
-                </a>
-                <a href="https://whatsapp.com/channel/0029Vb5HMl2GJP8EjrRAXq2i" target="_blank" class="social-link tiktok">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>Whatsapp</span>
-                </a>
-                <a href="https://minecraft-pack-generator.vercel.app/" target="_blank" class="social-link tiktok">
-                    <i class="fas fa-file-alt o fas fa-file-lines"></i>
-                    <span>ConTent</span>
-                </a>
+        <!-- Menú desplegable -->
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+    
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: #0a0a0a;
+                color: white;
+            }
+    
+            .menu-toggle {
+                position: fixed;
+                top: 0.2rem;
+                right: 1rem;
+                padding: 0.5rem;
+                background: rgba(96, 165, 250, 0.2);
+                border: 1px solid rgba(96, 165, 250, 0.3);
+                border-radius: 8px;
+                color: #60a5fa;
+                cursor: pointer;
+                z-index: 1001;
+            }
+    
+            .menu-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(5px);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 1998;
+            }
+    
+            .menu-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+    
+            .dropdown-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                max-width: 350px;
+                height: 100vh;
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+                z-index: 1999;
+                transition: right 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+            }
+    
+            .dropdown-menu.active {
+                right: 0;
+            }
+    
+            /* Header del menú */
+            .menu-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.5rem;
+                background: rgba(255, 255, 255, 0.05);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+    
+            .menu-header h3 {
+                font-size: 1.5rem;
+                font-weight: 700;
+                background: linear-gradient(135deg, #60a5fa, #a78bfa);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+    
+            .close-menu {
+                background: rgba(239, 68, 68, 0.1);
+                border: 1px solid rgba(239, 68, 68, 0.3);
+                border-radius: 8px;
+                padding: 0.5rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+            }
+    
+            .close-menu:hover {
+                background: rgba(239, 68, 68, 0.2);
+                transform: rotate(90deg);
+            }
+    
+            .close-menu svg {
+                color: #ef4444;
+            }
+    
+            /* Contenido del menú */
+            .menu-content {
+                flex: 1;
+                padding: 1rem;
+                overflow-y: auto;
+            }
+    
+            /* Item de inicio */
+            .menu-item {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                padding: 1rem;
+                margin-bottom: 0.5rem;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+                color: white;
+                text-decoration: none;
+                font-size: 1rem;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                border: 1px solid transparent;
+            }
+    
+            .menu-item:hover {
+                background: rgba(96, 165, 250, 0.15);
+                border-color: rgba(96, 165, 250, 0.3);
+                transform: translateX(5px);
+            }
+    
+            .menu-icon {
+                color: #60a5fa;
+                flex-shrink: 0;
+            }
+    
+            /* Sección de redes sociales */
+            .social-section {
+                margin-top: 1.5rem;
+                padding-top: 1.5rem;
+                border-top: 2px solid rgba(255, 255, 255, 0.1);
+            }
+    
+            .social-section h3 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+                color: rgba(255, 255, 255, 0.9);
+                padding: 0 0.5rem;
+            }
+    
+            .social-link {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                padding: 0.9rem 1rem;
+                margin-bottom: 0.6rem;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+                color: white;
+                text-decoration: none;
+                font-size: 0.95rem;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                border-left: 3px solid transparent;
+            }
+    
+            .social-link:hover {
+                background: rgba(255, 255, 255, 0.1);
+                transform: translateX(5px);
+            }
+    
+            .social-link i {
+                font-size: 1.3rem;
+                width: 25px;
+                flex-shrink: 0;
+            }
+    
+            /* Colores específicos para cada red social */
+            .youtube {
+                border-left-color: #FF0000;
+            }
+    
+            .youtube:hover {
+                background: rgba(255, 0, 0, 0.1);
+            }
+    
+            .instagram {
+                border-left-color: #E1306C;
+            }
+    
+            .instagram:hover {
+                background: rgba(225, 48, 108, 0.1);
+            }
+    
+            .tiktok {
+                border-left-color: #00f2ea;
+            }
+    
+            .tiktok:hover {
+                background: rgba(0, 242, 234, 0.1);
+            }
+    
+            .whatsapp {
+                border-left-color: #25D366;
+            }
+    
+            .whatsapp:hover {
+                background: rgba(37, 211, 102, 0.1);
+            }
+    
+            .content {
+                border-left-color: #FFC107;
+            }
+    
+            .content:hover {
+                background: rgba(255, 193, 7, 0.1);
+            }
+    
+            /* Footer del menú */
+            .menu-footer {
+                padding: 1.5rem;
+                background: rgba(0, 0, 0, 0.3);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                margin-top: auto;
+            }
+    
+            .copyright {
+                font-size: 0.85rem;
+                color: rgba(255, 255, 255, 0.7);
+                text-align: center;
+                line-height: 1.6;
+            }
+    
+            .studio-link {
+                color: #60a5fa;
+                text-decoration: none;
+                font-weight: 600;
+                transition: color 0.3s ease;
+            }
+    
+            .studio-link:hover {
+                color: #93c5fd;
+                text-decoration: underline;
+            }
+    
+            /* Scrollbar personalizada */
+            .dropdown-menu::-webkit-scrollbar {
+                width: 6px;
+            }
+    
+            .dropdown-menu::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+            }
+    
+            .dropdown-menu::-webkit-scrollbar-thumb {
+                background: rgba(96, 165, 250, 0.3);
+                border-radius: 3px;
+            }
+    
+            .dropdown-menu::-webkit-scrollbar-thumb:hover {
+                background: rgba(96, 165, 250, 0.5);
+            }
+    
+            /* Responsive */
+            @media (max-width: 480px) {
+                .dropdown-menu {
+                    max-width: 100%;
+                }
+    
+                .menu-header h3 {
+                    font-size: 1.3rem;
+                }
+    
+                .social-section h3 {
+                    font-size: 1.1rem;
+                }
+    
+                .menu-item,
+                .social-link {
+                    padding: 0.8rem;
+                    font-size: 0.9rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Botón para abrir el menú (ejemplo) -->
+        <button class="menu-toggle" id="menuToggle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    
+        <!-- Overlay oscuro -->
+        <div class="menu-overlay" id="menuOverlay"></div>
+    
+        <!-- Menú desplegable -->
+        <div class="dropdown-menu" id="dropdownMenu">
+            <div class="menu-header">
+                <h3>Menú</h3>
+                <button class="close-menu" id="closeMenu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
             </div>
-
-            <div class="theme-section">
-                <h3>Apariencia</h3>
-                <div class="theme-switch">
-                    <span>Modo Claro</span>
-                    <label class="switch">
-                        <input type="checkbox" id="themeToggle">
-                        <span class="slider"></span>
-                    </label>
+            
+            <div class="menu-content">
+                <a href="index.html" class="menu-item">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Inicio
+                </a>
+    
+                <div class="social-section">
+                    <h3>Síguenos</h3>
+                    <a href="https://youtube.com/@neomc13" target="_blank" class="social-link youtube">
+                        <i class="fab fa-youtube"></i>
+                        <span>YouTube</span>
+                    </a>
+                    <a href="https://www.instagram.com/jlmc_24_n?igsh=MXNqYmcwNHZmOGx3Yg==" target="_blank" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://www.tiktok.com/@neomc1?_r=1&_t=ZS-91FCqdmam9Q" target="_blank" class="social-link tiktok">
+                        <i class="fab fa-tiktok"></i>
+                        <span>TikTok</span>
+                    </a>
+                    <a href="https://whatsapp.com/channel/0029Vb5HMl2GJP8EjrRAXq2i" target="_blank" class="social-link whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp</span>
+                    </a>
+                    <a href="https://minecraft-pack-generator.vercel.app/" target="_blank" class="social-link content">
+                        <i class="fas fa-file-lines"></i>
+                        <span>ConTent</span>
+                    </a>
                 </div>
             </div>
-
-            <button class="admin-btn" id="adminBtn">
-                <i class="fas fa-lock"></i>
-                Iniciar Sesión
-            </button>
+    
+            <div class="menu-footer">
+                <p class="copyright">
+                    <span>© Hecho por </span>
+                    <a href="https://youtube.com/@neomc12?si=fZPC_t_JKCrOyVUB/" target="_blank" class="studio-link">NEOMC11</a>
+                    <span>, Todos los derechos reservados</span>
+                </p>
+            </div>
         </div>
-    </div>
-
-    <div class="overlay" id="overlay"></div>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Sección de Inicio -->
-        <section id="home" class="section active">
-            <div class="filters">
-                <button class="filter-btn active" data-filter="all">Todos</button>
-                <button class="filter-btn" data-filter="app">Apps</button>
-                <button class="filter-btn" data-filter="textura">Texturas</button>
-                <button class="filter-btn" data-filter="shader">Shaders</button>
-                <button class="filter-btn" data-filter="addon">Addons</button>
-                <button class="filter-btn" data-filter="mundo">Mundos</button>
-            </div>
-
-            <div class="cards-grid" id="cardsGrid">
-                <!-- Las cards se generarán dinámicamente -->
-            </div>
-        </section>
-
-        <!-- Sección de Videos -->
-        <section id="videos" class="section">
-            <h2 class="section-title">Videos</h2>
-            <div class="videos-grid" id="videosGrid">
-                <!-- Los videos se generarán dinámicamente -->
-            </div>
-        </section>
-
-        <!-- Sección de Búsqueda -->
-        <section id="search" class="section">
-            <div class="search-container">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Buscar apps, texturas, shaders...">
-                </div>
-            </div>
-            <div class="search-results" id="searchResults">
-                <p style="text-align: center; color: var(--text-secondary);">Escribe para buscar...</p>
-            </div>
-        </section>
-    </main>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <button class="nav-btn active" data-section="home">
-            <i class="fas fa-home"></i>
-            <span>Inicio</span>
-        </button>
-        <button class="nav-btn" data-section="videos">
-            <i class="fas fa-play-circle"></i>
-            <span>Videos</span>
-        </button>
-        <button class="nav-btn" data-section="search">
-            <i class="fas fa-search"></i>
-            <span>Buscar</span>
-        </button>
+    
+        <script>
+            // Elementos
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const menuOverlay = document.getElementById('menuOverlay');
+    
+            // Función para abrir el menú
+            function openMenu() {
+                dropdownMenu.classList.add('active');
+                menuOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+            }
+    
+            // Función para cerrar el menú
+            function closeMenuFunc() {
+                dropdownMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = ''; // Restaurar scroll
+            }
+    
+            // Event listeners
+            menuToggle.addEventListener('click', openMenu);
+            closeMenu.addEventListener('click', closeMenuFunc);
+            menuOverlay.addEventListener('click', closeMenuFunc);
+    
+            // Cerrar con tecla Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdownMenu.classList.contains('active')) {
+                    closeMenuFunc();
+                }
+            });
+    
+            // Cerrar menú al hacer clic en un enlace
+            const menuLinks = document.querySelectorAll('.menu-item, .social-link');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    // Pequeño delay para que se vea la animación antes de cambiar de página
+                    setTimeout(closeMenuFunc, 150);
+                });
+            });
+        </script>
+        
+        <!-- Overlay para cerrar menú -->
+        <div class="menu-overlay" id="menuOverlay"></div>
     </nav>
 
-    <!-- Modal de Login Admin -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Iniciar Sesión</h2>
-                <button class="close-modal" id="closeLoginModal">
-                    <i class="fas fa-times"></i>
+    <!-- Sección del buscador -->
+    <section class="search-section">
+        <div class="search-container">
+            <form id="searchForm" method="GET" action="" class="search-form">
+                <input type="text" class="search-input" id="searchInput" placeholder="Buscar juegos y apps...">
+                <button type="submit" class="search-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
                 </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="adminEmail" placeholder="admin@gamestore.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Contraseña</label>
-                    <input type="password" id="adminPassword" placeholder="Tu contraseña" required>
-                </div>
-                <button class="btn-primary" id="loginBtn">Iniciar Sesión</button>
-            </div>
+            </form>
+        </div>
+        <!-- Los filtros se insertarán automáticamente aquí -->
+    </section>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        <h1 class="page-title">Últimas Descargas</h1>
+        <div id="addonsContainer" class="addons-grid">
+            <!-- Los juegos y apps se cargarán aquí dinámicamente -->
         </div>
     </div>
-
-    <!-- Modal Admin Panel -->
-    <div class="modal" id="adminPanel">
-        <div class="modal-content admin-panel-content">
-            <div class="modal-header">
-                <h2>Panel de Administración</h2>
-                <button class="close-modal" id="closeAdminPanel">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="admin-info">
-                    <p><i class="fas fa-info-circle"></i> Sesión activa como administrador</p>
-                </div>
-
-                <button class="btn-primary" id="logoutBtn" style="margin-bottom: 20px;">
-                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                </button>
-
-                <div class="admin-tabs">
-                    <button class="admin-tab-btn active" data-tab="content">Gestionar Contenido</button>
-                    <button class="admin-tab-btn" data-tab="video">Agregar Video</button>
-                </div>
-
-                <!-- Tab de Contenido -->
-                <div class="admin-tab-content active" id="contentTab">
-                    <form id="contentForm">
-                        <div class="form-group">
-                            <label>Nombre *</label>
-                            <input type="text" id="contentName" placeholder="Ej: Craftsman ONE" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Descripción *</label>
-                            <textarea id="contentDescription" rows="4" placeholder="Descripción detallada del contenido" required></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Versión *</label>
-                            <input type="text" id="contentVersion" placeholder="v1.0.0" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Enlace de Descarga *</label>
-                            <input type="url" id="contentDownload" placeholder="https://www.mediafire.com/..." required>
-                        </div>
-                        
-                        <div class="form-group-file">
-                            <label>Subir Imagen (Opcional - Máx 5MB)</label>
-                            <input type="file" id="contentImage" accept="image/*" class="file-upload-input">
-                            <small style="color: var(--text-secondary); display: block; margin-top: 5px;">
-                                O usa una URL externa abajo
-                            </small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>URL de Imagen (Si no subes archivo)</label>
-                            <input type="url" id="contentImageUrl" placeholder="https://...">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Tipo *</label>
-                            <select id="contentType" required>
-                                <option value="app">App</option>
-                                <option value="textura">Textura</option>
-                                <option value="shader">Shader</option>
-                                <option value="addon">Addon</option>
-                                <option value="mundo">Mundo</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group-file">
-                            <label>Capturas de Pantalla - Subir Archivos (Opcional - Máx 5MB c/u)</label>
-                            <input type="file" id="contentScreenshotsFiles" accept="image/*" multiple class="file-upload-input">
-                            <small style="color: var(--text-secondary); display: block; margin-top: 5px;">
-                                Puedes seleccionar múltiples imágenes
-                            </small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>URLs de Capturas (Si prefieres URLs externas)</label>
-                            <input type="text" id="contentScreenshots" placeholder="url1, url2, url3">
-                            <small style="color: var(--text-secondary); display: block; margin-top: 5px;">
-                                Puedes combinar archivos subidos con URLs
-                            </small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Enlaces de Videos de YouTube (separados por comas)</label>
-                            <input type="text" id="contentVideos" placeholder="https://youtube.com/watch?v=...">
-                        </div>
-                        
-                        <button type="submit" class="btn-primary">
-                            <i class="fas fa-upload"></i> Publicar Contenido
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Tab de Video -->
-                <div class="admin-tab-content" id="videoTab">
-                    <form id="videoForm">
-                        <div class="form-group">
-                            <label>Título del Video *</label>
-                            <input type="text" id="videoTitle" placeholder="Ej: Tutorial Craftsman" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>URL del Video (YouTube embed) *</label>
-                            <input type="url" id="videoUrl" placeholder="https://www.youtube.com/embed/..." required>
-                            <small style="color: var(--text-secondary); display: block; margin-top: 5px;">
-                                Usa el formato: https://www.youtube.com/embed/VIDEO_ID
-                            </small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>URL de Miniatura *</label>
-                            <input type="url" id="videoThumbnail" placeholder="https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg" required>
-                        </div>
-                        
-                        <button type="submit" class="btn-primary">
-                            <i class="fas fa-video"></i> Publicar Video
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Detalle -->
-    <div class="modal" id="detailModal">
-        <div class="modal-content detail-modal-content">
-            <button class="close-modal" id="closeDetailModal">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="modal-body" id="detailContent"></div>
-        </div>
-    </div>
-
-    <!-- Modal de Video -->
-    <div class="modal" id="videoModal">
-        <div class="modal-content video-modal-content">
-            <button class="close-modal" id="closeVideoModal">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="modal-body" id="videoContent"></div>
-        </div>
-    </div>
-
-    <!-- Notification Toast -->
-    <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage"></span>
-    </div>
-
-    <!-- Scripts -->
-    <script type="module" src="./firebase-config.js"></script>
-    <script type="module" src="./app.js"></script>
+    <script src="./js/pwa-install.js"></script>
+    <script src="./js/complement.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/functions.js"></script>
 </body>
 </html>

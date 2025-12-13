@@ -1,0 +1,142 @@
+.install-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
+  }
+  
+  .install-container.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+  
+  .install-button {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .install-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  
+  .install-button:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .install-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+  }
+  
+  .install-button:active {
+    transform: translateY(-2px);
+  }
+  
+  .install-icon {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .install-text {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .close-install {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 28px;
+    height: 28px;
+    background: #ef4444;
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+  }
+  
+  .close-install:hover {
+    background: #dc2626;
+    transform: rotate(90deg);
+  }
+  
+  .close-install svg {
+    width: 14px;
+    height: 14px;
+    color: white;
+  }
+  
+  /* Animación de pulso */
+  @keyframes pulse {
+    0%, 100% {
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+    50% {
+      box-shadow: 0 10px 40px rgba(102, 126, 234, 0.8);
+    }
+  }
+  
+  .install-button.pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .install-container {
+      bottom: 1rem;
+      right: 1rem;
+      left: 1rem;
+    }
+    
+    .install-button {
+      width: 100%;
+      justify-content: center;
+      padding: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .install-button {
+      font-size: 0.9rem;
+      padding: 0.9rem;
+    }
+    
+    .install-icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
