@@ -11,7 +11,7 @@ const videosData = {
         { 
             id: "v-2", 
             title: "NEW UPDATE OF CRAFTING", 
-            url: "https://youtu.be/RdriwySSGcA?si=Lqu8u-PL2X31f12X", 
+            url: "https://youtu.be/b35C_J-j5fk?si=oovlIEAhjBVs1nv8", 
             thumbnail: "./img/miniatura.jpg",
             description: "Última actualización de Crafting and Building con todas las novedades"
         },
