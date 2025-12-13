@@ -10,7 +10,8 @@ const stickersConfig = {
     "chestnut": "./img/stikers/chestnut.png",
     "think": "./img/stikers/think.gif",
     "sad": "./img/stikers/sad.gif",
-    "eyeroll": "./img/stikers/eyeroll.gif"
+    "eyeroll": "./img/stikers/eyeroll.gif",
+    "cinema": "./img/stikers/cinema.jpg"
 };
 
 let activeStickerPicker = null;
