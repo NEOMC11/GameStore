@@ -112,6 +112,17 @@ const addonsData = [
         file_size: "45 MB"
     },
     {
+    id: "java-ui",
+    title: "Java UI - Interfaz Elegante para Minecraft",
+    description: "✨ ¡REVOLUCIONA TU EXPERIENCIA DE JUEGO! La interfaz de usuario más bella, moderna y funcional para Minecraft Java 1.21.120 en adelante. Inspirada en la edición Bedrock pero con la potencia de Java, ofrece una navegación fluida, iconos rediseñados, animaciones suaves y una organización inteligente de menús. Perfecta para jugadores que buscan elegancia, claridad y máximo rendimiento. ¡Transforma tu juego con este pack de interfaz premium, ligero y totalmente gratuito! 🚀🎨",
+    cover_image: "./img/java-ui.jpg",
+    version: "3.2.8 (Para 1.21.120+)",
+    download_link: "https://www.mediafire.com/file/hwhzuevm8i5mwok/VDX-DesktopUI-v3.2.8%2528Main%2529.mcpack/file",
+    tags: ["Textura", "Minecraft", "Interfaz", "UI", "Java Edition", "Moderno"],
+    last_updated: "2025-12-13",
+    file_size: "4 MB"
+    },
+    {
         id: 7,
         title: "Craftsman Zero 1.1.5",
         description: "Versión estable y completa de Craftsman Zero con todas las funciones básicas y mejoras de rendimiento.",
