@@ -43,7 +43,18 @@ const addonsData = [
     download_link: "https://www.mediafire.com/file/oqa6g3mk826k1xh/Craftsman-AB-v2-By-NEOMC11.apk/file",
     tags: ["App", "Craftsman", "Minecraft 1.20", "Android"],
     last_updated: "2024-12-13",
-    file_size: "150 MB"
+    file_size: "250 MB"
+    },
+    {
+        id: 20,
+        title: "Craftsman AB0.15.1.19.50",
+        description: "Craftsman AB - Una de las versiones más estables y populares de la comunidad.",
+        cover_image: "./img/craftsman.png",
+        version: "1.19.50 (1.19.50)",
+        download_link: "https://www.mediafire.com/file/ah73nfy17woyh7j/Craftsman_AB.apk/file",
+        tags: ["App", "Craftsman", "Estable"],
+        last_updated: "2024-10-22",
+        file_size: "150 MB"
     },
     {
         id: 1,
@@ -109,18 +120,18 @@ const addonsData = [
         download_link: "https://www.mediafire.com/file/gbqt15tt1htjijv/NEOCRAFT_LTE.apk/file",
         tags: ["App", "NEOCRAFT", "Ligero"],
         last_updated: "2024-12-05",
-        file_size: "45 MB"
+        file_size: "400 MB"
     },
     {
-    id: "java-ui",
-    title: "Java UI - Interfaz Elegante para Minecraft",
-    description: "✨ ¡REVOLUCIONA TU EXPERIENCIA DE JUEGO! La interfaz de usuario más bella, moderna y funcional para Minecraft Java 1.21.120 en adelante. Inspirada en la edición Bedrock pero con la potencia de Java, ofrece una navegación fluida, iconos rediseñados, animaciones suaves y una organización inteligente de menús. Perfecta para jugadores que buscan elegancia, claridad y máximo rendimiento. ¡Transforma tu juego con este pack de interfaz premium, ligero y totalmente gratuito! 🚀🎨",
-    cover_image: "./img/java-ui.jpg",
-    version: "3.2.8 (Para 1.21.120+)",
-    download_link: "https://www.mediafire.com/file/hwhzuevm8i5mwok/VDX-DesktopUI-v3.2.8%2528Main%2529.mcpack/file",
-    tags: ["Textura", "Minecraft", "Interfaz", "UI", "Java Edition", "Moderno"],
-    last_updated: "2025-12-13",
-    file_size: "4 MB"
+        id: "java-ui",
+        title: "Java UI",
+        description: "✨ ¡REVOLUCIONA TU EXPERIENCIA DE JUEGO! La interfaz de usuario más bella, moderna y funcional para Minecraft Java 1.21.120 en adelante. Inspirada en la edición Bedrock pero con la potencia de Java, ofrece una navegación fluida, iconos rediseñados, animaciones suaves y una organización inteligente de menús. Perfecta para jugadores que buscan elegancia, claridad y máximo rendimiento. ¡Transforma tu juego con este pack de interfaz premium, ligero y totalmente gratuito! 🚀🎨",
+        cover_image: "./img/java-ui.jpg",
+        version: "3.2.8 (Para 1.21.120+)",
+        download_link: "https://www.mediafire.com/file/hwhzuevm8i5mwok/VDX-DesktopUI-v3.2.8%2528Main%2529.mcpack/file",
+        tags: ["Textura", "Minecraft", "Interfaz", "UI", "Java Edition", "Moderno"],
+        last_updated: "2025-12-13",
+        file_size: "4 MB"
     },
     {
         id: 7,
@@ -142,7 +153,7 @@ const addonsData = [
         download_link: "https://www.mediafire.com/file/tk98dpuu1vfdfl4/Newb_X_Dragon_ComECCE_Complementary_Reimagined_-_Android.mcpack/file",
         tags: ["Shaders", "Realista", "RTX"],
         last_updated: "2024-12-08",
-        file_size: "8 MB"
+        file_size: "2 MB"
     },
     {
         id: 9,
@@ -153,7 +164,7 @@ const addonsData = [
         download_link: "https://www.mediafire.com/file/p2vj2wjczn2qf3j/Craftsman_Trial_1.0.0.16.apk/file",
         tags: ["App", "Craftsman", "Demo"],
         last_updated: "2024-11-15",
-        file_size: "55 MB"
+        file_size: "100 MB"
     },
     {
         id: 10,
@@ -164,7 +175,7 @@ const addonsData = [
         download_link: "https://www.mediafire.com/file/mookw5z8qrbintj/NEOCRAFT_Trailer_Edition_mod.apk/file",
         tags: ["App", "NEOCRAFT", "Especial"],
         last_updated: "2024-11-22",
-        file_size: "98 MB"
+        file_size: "300 MB"
     },
     {
         id: 11,
@@ -174,8 +185,8 @@ const addonsData = [
         version: "1.1.5 Navidad",
         download_link: "https://www.mediafire.com/file/guv0t148wko9h0i/Craftsman+Zero+Navidad.apk/file",
         tags: ["App", "Craftsman", "Navidad"],
-        last_updated: "2024-12-10",
-        file_size: "88 MB"
+        last_updated: "2025-12-10",
+        file_size: "98 MB"
     },
     {
         id: 12,
@@ -185,7 +196,7 @@ const addonsData = [
         version: "1.21.124+",
         download_link: "https://app.mediafire.com/folder/6vzirxgmdn4r2/1.21.94+Oficial+Grissby.com",
         tags: ["App", "Minecraft", "Oficial"],
-        last_updated: "2024-12-12",
+        last_updated: "2025-12-12",
         file_size: "Carpeta"
     },
     {
@@ -196,8 +207,8 @@ const addonsData = [
         version: "1.1.5 Optimizado",
         download_link: "https://www.mediafire.com/file/2jkfza0klfxe0c9/OPTICRAFT_ONE_%25F0%259F%25A5%2594%25E2%259B%2584.apk/file",
         tags: ["App", "Craftsman", "Optimizado"],
-        last_updated: "2024-12-03",
-        file_size: "65 MB"
+        last_updated: "2025-12-03",
+        file_size: "148 MB"
     },
     {
         id: 14,
@@ -207,8 +218,8 @@ const addonsData = [
         version: "Demo 2",
         download_link: "https://www.mediafire.com/file/7ds74aevus10761/Craftsman+Zero+Demo+2+Sin+Bugs.apk/file",
         tags: ["App", "Craftsman", "Demo"],
-        last_updated: "2024-11-12",
-        file_size: "74 MB"
+        last_updated: "2025-11-12",
+        file_size: "94 MB"
     },
     {
         id: 15,
@@ -219,7 +230,7 @@ const addonsData = [
         download_link: "https://www.mediafire.com/file/23a74qf7fbv9s7n/Neocraft_AS_V1.apk/file",
         tags: ["App", "NEOCRAFT", "Advanced"],
         last_updated: "2024-11-26",
-        file_size: "96 MB"
+        file_size: "400 MB"
     },
     {
         id: 16,
@@ -229,8 +240,8 @@ const addonsData = [
         version: "1.18",
         download_link: "https://www.mediafire.com/file/1l0wno4u23when8/Craftsman_emotes.apk/file",
         tags: ["App", "Craftsman", "Emotes"],
-        last_updated: "2024-11-08",
-        file_size: "72 MB"
+        last_updated: "2025-11-08",
+        file_size: "145 MB"
     },
     {
         id: 17,
@@ -240,19 +251,19 @@ const addonsData = [
         version: "1.3",
         download_link: "https://www.mediafire.com/file/2wsc0bpel7frifo/Texturas_Vanillas_1.18.0_By_NEOFACEMC.mcpack/file",
         tags: ["Texturas", "Vanilla", "HD"],
-        last_updated: "2024-11-05",
-        file_size: "15 MB"
+        last_updated: "2025-11-05",
+        file_size: "38 MB"
     },
     {
         id: 18,
-        title: "Craftsman VI + NeoFace",
+        title: "Craftsman VI",
         description: "Craftsman VI con el famoso paquete NeoFace que mejora caras y animaciones de personajes.",
         cover_image: "./img/craftsman.png",
         version: "1.16.20",
         download_link: "https://www.mediafire.com/file/hgi53l00ce4okrc/Craftsman+VI+1.16+NEOFACE.apk/file",
         tags: ["App", "Craftsman", "Animaciones"],
-        last_updated: "2024-10-28",
-        file_size: "89 MB"
+        last_updated: "2025-10-28",
+        file_size: "110 MB"
     },
     {
         id: 19,
@@ -262,19 +273,8 @@ const addonsData = [
         version: "1.1.5+",
         download_link: "https://www.mediafire.com/folder/h98zm2afn6tju/Updates",
         tags: ["App", "Ultracraft", "Carpeta"],
-        last_updated: "2024-12-07",
+        last_updated: "2025-12-07",
         file_size: "Carpeta"
-    },
-    {
-        id: 20,
-        title: "Craftsman AB",
-        description: "Craftsman AB - Una de las versiones más estables y populares de la comunidad.",
-        cover_image: "./img/craftsman.png",
-        version: "1.19.50",
-        download_link: "https://www.mediafire.com/file/ah73nfy17woyh7j/Craftsman_AB.apk/file",
-        tags: ["App", "Craftsman", "Estable"],
-        last_updated: "2024-10-22",
-        file_size: "94 MB"
     },
     {
         id: 21,
@@ -285,7 +285,7 @@ const addonsData = [
         download_link: "https://www.mediafire.com/file/9jc389tiz5qkcy4/NeoCraft+Old+Edition_optimized.apk/file",
         tags: ["App", "NEOCRAFT", "Clásico"],
         last_updated: "2024-10-15",
-        file_size: "76 MB"
+        file_size: "260 MB"
     },
     {
         id: 22,
