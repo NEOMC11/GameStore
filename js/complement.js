@@ -123,7 +123,7 @@ const addonsData = [
         file_size: "400 MB"
     },
     {
-        id: "java-ui",
+        id: "47",
         title: "Java UI",
         description: "✨ ¡REVOLUCIONA TU EXPERIENCIA DE JUEGO! La interfaz de usuario más bella, moderna y funcional para Minecraft Java 1.21.120 en adelante. Inspirada en la edición Bedrock pero con la potencia de Java, ofrece una navegación fluida, iconos rediseñados, animaciones suaves y una organización inteligente de menús. Perfecta para jugadores que buscan elegancia, claridad y máximo rendimiento. ¡Transforma tu juego con este pack de interfaz premium, ligero y totalmente gratuito! 🚀🎨",
         cover_image: "./img/java-ui.jpg",
