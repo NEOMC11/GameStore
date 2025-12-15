@@ -1,4 +1,5 @@
-async function renderAddons(addons) {
+// Renderizar addons de forma INMEDIATA sin esperar reseñas
+function renderAddons(addons) {
     const container = document.getElementById('addonsContainer');
     
     if (addons.length === 0) {
@@ -10,27 +11,16 @@ async function renderAddons(addons) {
         return;
     }
     
-    const addonsWithRatings = await Promise.all(
-        addons.map(async (addon) => {
-            const reviews = await getReviewsForAddon(addon.id);
-            const averageRating = calculateAverageRating(reviews);
-            return {
-                ...addon,
-                averageRating,
-                reviewsCount: reviews.length
-            };
-        })
-    );
-    
-    container.innerHTML = addonsWithRatings.map(addon => `
+    // Renderizar INMEDIATAMENTE con rating 0 por defecto
+    container.innerHTML = addons.map(addon => `
         <div class="addon-card" onclick="viewAddon(${addon.id})">
             <img src="${addon.cover_image}" alt="Portada" class="addon-cover">
             <div class="addon-info">
                 <h3 class="addon-title sticker-content">${processTextWithStickersInTitles(addon.title)}</h3>
-                <div class="addon-rating">
-                    ${renderStars(addon.averageRating, false, 'small')}
-                    <span class="rating-value">${addon.averageRating}</span>
-                    <span class="reviews-count">(${addon.reviewsCount})</span>
+                <div class="addon-rating" data-addon-id="${addon.id}">
+                    ${renderStars(0, false, 'small')}
+                    <span class="rating-value">0.0</span>
+                    <span class="reviews-count">(0)</span>
                 </div>
                 <p class="addon-description sticker-content">${processTextWithStickers(addon.description)}</p>
                 
@@ -41,9 +31,37 @@ async function renderAddons(addons) {
             </div>
         </div>
     `).join('');
+    
+    // Cargar ratings en segundo plano SIN bloquear la UI
+    loadRatingsInBackground(addons);
 }
 
-// Función para renderizar videos
+// Cargar ratings en segundo plano después de renderizar
+async function loadRatingsInBackground(addons) {
+    try {
+        const reviews = await reviewsCache.getReviews();
+        
+        addons.forEach(addon => {
+            const addonReviews = reviews[addon.id] || [];
+            const averageRating = calculateAverageRating(addonReviews);
+            const reviewsCount = addonReviews.length;
+            
+            // Actualizar el rating en el DOM sin re-renderizar todo
+            const ratingElement = document.querySelector(`[data-addon-id="${addon.id}"]`);
+            if (ratingElement) {
+                ratingElement.innerHTML = `
+                    ${renderStars(averageRating, false, 'small')}
+                    <span class="rating-value">${averageRating}</span>
+                    <span class="reviews-count">(${reviewsCount})</span>
+                `;
+            }
+        });
+    } catch (error) {
+        console.log('Error cargando ratings, continuando sin ellos');
+    }
+}
+
+// Función para renderizar videos (sin cambios, ya es rápida)
 function renderVideos(videos) {
     const container = document.getElementById('addonsContainer');
     
@@ -78,7 +96,6 @@ function renderVideos(videos) {
     `).join('');
 }
 
-// Función para abrir video en modal
 function openVideo(videoId) {
     const video = getVideoById(videoId);
     if (!video) return;
@@ -111,7 +128,6 @@ function openVideo(videoId) {
     document.body.appendChild(modal);
     document.body.style.overflow = 'hidden';
     
-    // Cerrar al hacer clic fuera del contenido
     modal.addEventListener('click', function(e) {
         if (e.target === modal) {
             closeVideoModal();
@@ -119,7 +135,6 @@ function openVideo(videoId) {
     });
 }
 
-// Función para cerrar modal de video
 function closeVideoModal() {
     const modal = document.querySelector('.video-modal');
     if (modal) {
@@ -128,12 +143,10 @@ function closeVideoModal() {
     }
 }
 
-// Función para navegar a la página de detalles del addon
 function viewAddon(id) {
     window.location.href = `view.html?id=${id}`;
 }
 
-// Funcionalidad del menú hamburguesa
 function setupHamburgerMenu() {
     const hamburgerMenu = document.getElementById('hamburgerMenu');
     const dropdownMenu = document.getElementById('dropdownMenu');
@@ -197,7 +210,6 @@ function setupHamburgerMenu() {
     });
 }
 
-// Función para renderizar los filtros
 function renderFilters() {
     const searchSection = document.querySelector('.search-section');
     const filtersContainer = document.createElement('div');
@@ -241,22 +253,23 @@ function renderFilters() {
             this.classList.add('active');
             
             const category = this.getAttribute('data-category');
-            
             const pageTitle = document.querySelector('.page-title');
             
             if (category === 'Videos') {
                 const videos = getAllVideos();
                 renderVideos(videos);
                 pageTitle.textContent = 'Videos Tutoriales';
-            } else {
-                let filteredAddons;
-                if (category === 'Mejor Valorados') {
-                    filteredAddons = await getBestRatedAddons();
-                } else {
-                    filteredAddons = filterAddonsByCategory(category);
-                }
+            } else if (category === 'Mejor Valorados') {
+                // Para "Mejor Valorados" sí necesitamos esperar
+                pageTitle.textContent = 'Mejor Valorados';
+                const container = document.getElementById('addonsContainer');
+                container.innerHTML = '<div class="loading-spinner">Cargando mejores valorados...</div>';
                 
-                await renderAddons(filteredAddons);
+                const filteredAddons = await getBestRatedAddons();
+                renderAddons(filteredAddons);
+            } else {
+                const filteredAddons = filterAddonsByCategory(category);
+                renderAddons(filteredAddons);
                 
                 if (category === 'Todos') {
                     pageTitle.textContent = 'Últimas Descargas';
@@ -273,9 +286,11 @@ function renderFilters() {
     });
 }
 
-// Inicializar la página
+// Inicializar la página - CARGA INSTANTÁNEA
 document.addEventListener('DOMContentLoaded', function() {
     renderFilters();
+    
+    // Renderizar INMEDIATAMENTE sin esperar nada
     renderAddons(getAllAddons());
     
     const searchForm = document.getElementById('searchForm');
@@ -285,7 +300,6 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         const query = searchInput.value.trim();
         
-        // Buscar en addons y videos
         const addonResults = searchAddons(query);
         const videoResults = searchVideos(query);
         
@@ -315,7 +329,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     pageTitle.textContent = 'Últimas Descargas';
                     clearBtn.remove();
                     
-                    // Resetear filtro activo
                     document.querySelectorAll('.filter-btn').forEach(btn => {
                         btn.classList.remove('active');
                         if (btn.getAttribute('data-category') === 'Todos') {
