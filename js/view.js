@@ -1,4 +1,4 @@
-// Función para renderizar los detalles del addon
+// Renderizar detalles del addon INMEDIATAMENTE
 async function renderAddonDetails(addon) {
     const container = document.getElementById('addonDetails');
     const pageTitle = document.getElementById('pageTitle');
@@ -15,13 +15,10 @@ async function renderAddonDetails(addon) {
         return;
     }
     
-    const reviews = await getReviewsForAddon(addon.id);
-    const averageRating = calculateAverageRating(reviews);
-    const userReview = await getUserReviewForAddon(addon.id);
-    
-    // Actualizar título de la página con stickers
+    // Actualizar título de la página
     pageTitle.innerHTML = `${processTextWithStickersInTitles(addon.title)} - GameStore`;
     
+    // Renderizar INMEDIATAMENTE con valores por defecto
     container.innerHTML = `
         <div class="addon-header">
             <img src="${addon.cover_image}" alt="Portada del addon" class="addon-cover">
@@ -78,40 +75,81 @@ async function renderAddonDetails(addon) {
             </div>
         </div>
         
-        <div class="reviews-section">
+        <div class="reviews-section" id="reviewsSection">
             <div class="reviews-header">
                 <h2 class="reviews-title">Reseñas</h2>
                 <div class="overall-rating">
                     <div class="rating-display">
                         <div class="rating-stars">
-                            ${renderStars(averageRating)}
+                            ${renderStars(0)}
                         </div>
-                        <div class="rating-score">${averageRating}</div>
-                        <div class="rating-count">${reviews.length} reseña${reviews.length !== 1 ? 's' : ''}</div>
+                        <div class="rating-score">0.0</div>
+                        <div class="rating-count">0 reseñas</div>
                     </div>
                 </div>
             </div>
             
-            ${renderReviewForm(addon.id, userReview)}
-            ${renderReviewsList(reviews, userReview)}
+            <div class="loading-reviews">Cargando reseñas...</div>
         </div>
     `;
     
-    setupReviewForm(addon.id);
+    // Cargar reseñas en segundo plano
+    loadReviewsInBackground(addon.id);
 }
 
-// Función para copiar link del addon
+// Cargar reseñas en segundo plano SIN bloquear
+async function loadReviewsInBackground(addonId) {
+    try {
+        const reviews = await getReviewsForAddon(addonId);
+        const averageRating = calculateAverageRating(reviews);
+        const userReview = await getUserReviewForAddon(addonId);
+        
+        // Actualizar la sección de reseñas
+        const reviewsSection = document.getElementById('reviewsSection');
+        if (reviewsSection) {
+            reviewsSection.innerHTML = `
+                <div class="reviews-header">
+                    <h2 class="reviews-title">Reseñas</h2>
+                    <div class="overall-rating">
+                        <div class="rating-display">
+                            <div class="rating-stars">
+                                ${renderStars(averageRating)}
+                            </div>
+                            <div class="rating-score">${averageRating}</div>
+                            <div class="rating-count">${reviews.length} reseña${reviews.length !== 1 ? 's' : ''}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                ${renderReviewForm(addonId, userReview)}
+                ${renderReviewsList(reviews, userReview)}
+            `;
+            
+            setupReviewForm(addonId);
+        }
+    } catch (error) {
+        console.log('Error cargando reseñas:', error);
+        const reviewsSection = document.getElementById('reviewsSection');
+        if (reviewsSection) {
+            reviewsSection.innerHTML = `
+                <div class="reviews-header">
+                    <h2 class="reviews-title">Reseñas</h2>
+                    <p>No se pudieron cargar las reseñas</p>
+                </div>
+            `;
+        }
+    }
+}
+
 function copyAddonLink(addonId) {
     const addon = getAddonById(addonId);
     if (!addon) return;
     
     const addonUrl = `https://game-store-self.vercel.app/view.html?id=${addonId}`;
     
-    // Copiar al portapapeles
     navigator.clipboard.writeText(addonUrl).then(() => {
         showNotification('¡Link copiado!', 'El enlace se copió al portapapeles', 'success');
     }).catch(() => {
-        // Fallback para navegadores antiguos
         const textArea = document.createElement('textarea');
         textArea.value = addonUrl;
         textArea.style.position = 'fixed';
@@ -128,14 +166,12 @@ function copyAddonLink(addonId) {
     });
 }
 
-// Función para abrir modal de compartir
 function openShareModal(addonId) {
     const addon = getAddonById(addonId);
     if (!addon) return;
     
     const addonUrl = encodeURIComponent(`https://game-store-self.vercel.app/view.html?id=${addonId}`);
     const addonTitle = encodeURIComponent(addon.title);
-    const addonDescription = encodeURIComponent(`Descarga ${addon.title} - ${addon.description.substring(0, 100)}...`);
     
     const modal = document.createElement('div');
     modal.className = 'share-modal';
@@ -192,7 +228,6 @@ function openShareModal(addonId) {
     document.body.appendChild(modal);
     document.body.style.overflow = 'hidden';
     
-    // Cerrar al hacer clic fuera
     modal.addEventListener('click', function(e) {
         if (e.target === modal) {
             closeShareModal();
@@ -200,7 +235,6 @@ function openShareModal(addonId) {
     });
 }
 
-// Función para cerrar modal de compartir
 function closeShareModal() {
     const modal = document.querySelector('.share-modal');
     if (modal) {
@@ -209,7 +243,6 @@ function closeShareModal() {
     }
 }
 
-// Funciones para compartir en redes sociales
 function shareToWhatsApp(url, title) {
     const text = `¡Mira esto! ${decodeURIComponent(title)}`;
     window.open(`https://wa.me/?text=${text}%20${url}`, '_blank');
@@ -231,7 +264,6 @@ function shareToTelegram(url, title) {
     closeShareModal();
 }
 
-// Sistema de notificaciones
 function showNotification(title, message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
@@ -250,19 +282,13 @@ function showNotification(title, message, type = 'success') {
     
     document.body.appendChild(notification);
     
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 10);
-    
+    setTimeout(() => notification.classList.add('show'), 10);
     setTimeout(() => {
         notification.classList.remove('show');
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
+        setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
 
-// Función para renderizar el formulario de reseña
 function renderReviewForm(addonId, userReview) {
     if (userReview) {
         return `
@@ -315,7 +341,6 @@ function renderReviewForm(addonId, userReview) {
     }
 }
 
-// Función para renderizar la lista de reseñas
 function renderReviewsList(reviews, userReview) {
     const otherReviews = reviews.filter(review => 
         !userReview || review.userId !== userReview.userId
@@ -356,7 +381,6 @@ function renderReviewsList(reviews, userReview) {
     `;
 }
 
-// Configurar el formulario de reseña
 function setupReviewForm(addonId) {
     const reviewForm = document.getElementById('reviewForm');
     const stars = document.querySelectorAll('.stars.interactive .star');
@@ -403,7 +427,6 @@ function setupReviewForm(addonId) {
     }
 }
 
-// Eliminar reseña del usuario
 async function deleteUserReview(addonId) {
     if (confirm('¿Estás seguro de que quieres eliminar tu reseña?')) {
         try {
@@ -416,7 +439,6 @@ async function deleteUserReview(addonId) {
     }
 }
 
-// Función para descargar el addon
 function downloadAddon(addonId) {
     const addon = getAddonById(addonId);
     if (addon && addon.download_link) {
@@ -427,249 +449,27 @@ function downloadAddon(addonId) {
     }
 }
 
-// Función para mostrar/ocultar el selector de stickers
 function toggleStickerPicker(textareaId) {
     if (typeof window.StickerSystem !== 'undefined') {
         window.StickerSystem.toggleStickerPicker(textareaId);
     }
 }
 
-// Inicializar la página de detalles
+// Inicializar la página - CARGA INSTANTÁNEA
 document.addEventListener('DOMContentLoaded', function() {
-    showLoading();
-    
     const urlParams = new URLSearchParams(window.location.search);
     const addonId = urlParams.get('id');
     
     if (addonId) {
         const addon = getAddonById(addonId);
-        renderAddonDetails(addon).then(() => {
-            hideLoading();
-        });
+        renderAddonDetails(addon); // Renderizar INMEDIATAMENTE
     } else {
         renderAddonDetails(null);
-        hideLoading();
     }
     
-    // Cerrar modales con ESC
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeShareModal();
         }
     });
 });
-
-// Sistema de carga
-function showLoading() {
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    if (loadingOverlay) {
-        loadingOverlay.classList.remove('hidden');
-    }
-}
-
-function hideLoading() {
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    if (loadingOverlay) {
-        setTimeout(() => {
-            loadingOverlay.classList.add('hidden');
-        }, 1000);
-    }
-}
-
-// Función para obtener un addon por ID
-function getAddonById(id) {
-    return addonsData.find(addon => addon.id === parseInt(id));
-}
-
-// Función para obtener todos los addons
-function getAllAddons() {
-    return addonsData;
-}
-
-// Función para buscar addons
-function searchAddons(query) {
-    if (!query) {
-        return addonsData;
-    }
-    
-    const lowerQuery = query.toLowerCase();
-    return addonsData.filter(addon => 
-        addon.title.toLowerCase().includes(lowerQuery) ||
-        addon.description.toLowerCase().includes(lowerQuery) ||
-        addon.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
-    );
-}
-
-// Función para formatear fechas
-function formatDate(dateString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('es-ES', options);
-}
-
-// Sistema de reseñas
-async function fetchReviews() {
-    try {
-        const response = await fetch(`${JSONBIN_BASE_URL}/${BIN_ID}/latest`, {
-            headers: {
-                'X-Master-Key': MASTER_KEY,
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error('Error al cargar las reseñas');
-        }
-        
-        const data = await response.json();
-        return data.record || {};
-    } catch (error) {
-        console.error('Error al obtener reseñas:', error);
-        return {};
-    }
-}
-
-async function saveReviews(reviews) {
-    try {
-        const response = await fetch(`${JSONBIN_BASE_URL}/${BIN_ID}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': MASTER_KEY
-            },
-            body: JSON.stringify(reviews)
-        });
-        
-        if (!response.ok) {
-            throw new Error('Error al guardar las reseñas');
-        }
-        
-        return await response.json();
-    } catch (error) {
-        console.error('Error al guardar reseñas:', error);
-        throw error;
-    }
-}
-
-// Obtener reseñas de un addon específico
-async function getReviewsForAddon(addonId) {
-    const reviews = await fetchReviews();
-    return reviews[addonId] || [];
-}
-
-// Obtener reseña del usuario actual para un addon
-async function getUserReviewForAddon(addonId) {
-    const reviews = await getReviewsForAddon(addonId);
-    const userId = getUserId();
-    return reviews.find(review => review.userId === userId);
-}
-
-// Añadir o actualizar reseña
-async function addOrUpdateReview(addonId, rating, comment) {
-    const reviews = await fetchReviews();
-    const userId = getUserId();
-    
-    if (!reviews[addonId]) {
-        reviews[addonId] = [];
-    }
-    
-    const existingReviewIndex = reviews[addonId].findIndex(review => review.userId === userId);
-    
-    if (existingReviewIndex !== -1) {
-        reviews[addonId][existingReviewIndex] = {
-            userId,
-            rating,
-            comment,
-            timestamp: new Date().toISOString()
-        };
-    } else {
-        reviews[addonId].push({
-            userId,
-            rating,
-            comment,
-            timestamp: new Date().toISOString()
-        });
-    }
-    
-    await saveReviews(reviews);
-    return reviews[addonId];
-}
-
-// Eliminar reseña
-async function deleteReview(addonId) {
-    const reviews = await fetchReviews();
-    const userId = getUserId();
-    
-    if (reviews[addonId]) {
-        reviews[addonId] = reviews[addonId].filter(review => review.userId !== userId);
-        await saveReviews(reviews);
-    }
-    
-    return reviews[addonId] || [];
-}
-
-// Calcular promedio de calificaciones
-function calculateAverageRating(reviews) {
-    if (!reviews || reviews.length === 0) return 0;
-    
-    const sum = reviews.reduce((total, review) => total + review.rating, 0);
-    return (sum / reviews.length).toFixed(1);
-}
-
-// Generar ID único para usuario
-function getUserId() {
-    let userId = localStorage.getItem('gamestore_userId');
-    if (!userId) {
-        userId = 'user_' + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem('gamestore_userId', userId);
-    }
-    return userId;
-}
-
-// Renderizar estrellas
-function renderStars(rating, interactive = false, size = 'medium') {
-    const starSize = size === 'small' ? '1rem' : '1.5rem';
-    let starsHtml = '';
-    
-    for (let i = 1; i <= 5; i++) {
-        if (interactive) {
-            starsHtml += `
-                <span class="star ${i <= rating ? 'active' : ''}" data-rating="${i}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="${starSize}" height="${starSize}" viewBox="0 0 24 24" fill="${i <= rating ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                </span>
-            `;
-        } else {
-            starsHtml += `
-                <span class="star ${i <= rating ? 'active' : ''}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="${starSize}" height="${starSize}" viewBox="0 0 24 24" fill="${i <= rating ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                </span>
-            `;
-        }
-    }
-    
-    return `<div class="stars ${interactive ? 'interactive' : ''} ${size}">${starsHtml}</div>`;
-}
-
-// Función para obtener foto de perfil del usuario
-function getUserProfilePicture() {
-    return "./img/profile/NEOMC11.png";
-}
-
-// Función para procesar texto con stickers
-function processTextWithStickers(text) {
-    if (typeof window.StickerSystem !== 'undefined') {
-        return window.StickerSystem.processStickers(text);
-    }
-    return text;
-}
-
-// Función para procesar texto con stickers en títulos
-function processTextWithStickersInTitles(text) {
-    if (typeof window.StickerSystem !== 'undefined') {
-        return window.StickerSystem.processStickersInTitles(text);
-    }
-    return text;
-}
