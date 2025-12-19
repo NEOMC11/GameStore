@@ -1,6 +1,13 @@
 // Datos de videos para GameStore
 const videosData = {
     videos: [
+         { 
+    id: "v-3", 
+    title: "YA TODOS SE OLVIDARON DE CRAFTSMAN?", 
+    url: "https://www.youtube.com/embed/maSlJ943Fc0?si=P3JVvHqQ14I0p_4O", 
+    thumbnail: "./img/mini-3.jpg",
+    description: "qué fue exactamente lo que sucedió con Craftsman?"
+},
         { 
             id: "v-1", 
             title: "I SEE YOU NOW", 
