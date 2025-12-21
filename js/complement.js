@@ -52,6 +52,16 @@ const addonsData = [
     last_updated: "2024-12-13",
     file_size: "250 MB"
     },
+{
+    id: 49,
+    title: "Jenny Addon",
+    description: "😏 Dale un toque atrevido y diferente a tu mundo de Minecraft. Jenny Addon añade un personaje especial que hará tus partidas más intensas, curiosas y divertidas. Ideal para jugadores que buscan algo fuera de lo común y quieren subir la temperatura del juego… bajo su propio riesgo 😉🔥",
+    cover_image: "./img/jenny-addon.jpg",
+    download_link: "https://www.mediafire.com/file/x88ciegi3os5m1z/jennyaddon.mcaddon/file",
+    tags: ["Addon", "Minecraft"],
+    last_updated: "2024-12-13",
+    file_size: "16 MB"
+},
     {
         id: 20,
         title: "Craftsman AB0.15.1.19.50",
