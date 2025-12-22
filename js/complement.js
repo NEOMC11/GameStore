@@ -79,7 +79,8 @@ const addonsData = [
   description: "🔥✨ Dale vida a tu mundo con Newb X Dragon Complementary para Android. Este shader combina iluminación suave, colores intensos y sombras elegantes que hacen que cada bloque se vea simplemente delicioso. Atardeceres cinematográficos, agua cristalina y un rendimiento ligero para que tu Minecraft se vea brutal sin sacrificar FPS. Puro flow visual para los que quieren jugar con estilo. 🐉💎",
   cover_image: "./img/newb-x-dragon-complementary.jpg",
   download_link: "https://www.mediafire.com/file/jtwqk9a0elf1phq/Newb_X_Dragon_Complementary_-_Android.mcpack/file",
-  tags: ["Shader", "Minecraft"],
+  tags: ["Shaders", "Minecraft"],
+last_update: "21-12-2025"
   file_size: "2 MB"
 },
     {
