@@ -80,7 +80,7 @@ const addonsData = [
   cover_image: "./img/newb-x-dragon-complementary.jpg",
   download_link: "https://www.mediafire.com/file/jtwqk9a0elf1phq/Newb_X_Dragon_Complementary_-_Android.mcpack/file",
   tags: ["Shaders", "Minecraft"],
-last_update: "21-12-2025"
+last_update: "21-12-2025",
   file_size: "2 MB"
 },
     {
