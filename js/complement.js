@@ -53,6 +53,16 @@ const addonsData = [
     file_size: "250 MB"
     },
 {
+    id: 51,
+    title: "Action and Stuff",
+    description: "Action and Stuff es un paquete de texturas pensado para quienes disfrutan el crafting and building con más detalle y personalidad. Mejora la experiencia visual de los objetos, herramientas y bloques, dándole un estilo más vivo y funcional a tu mundo. Ideal para complementar construcciones, cocinar en tu estufa y hacer que cada acción dentro del juego se sienta más trabajada y atractiva sin perder la esencia de Minecraft.",
+    cover_image: "./img/action-and-stuff.jpg",
+    download_link: "https://www.mediafire.com/file/wdct8msxwhk1iya/Actions_Stuff_1.9_BY_NEOMC11.mcpack/file",
+    tags: ["Textura", "Minecraft", "Crafting and Building"],
+    last_updated: "2026-01-03",
+    file_size: "18 MB"
+},
+{
     id: 49,
     title: "Jenny Addon",
     description: "😏 Dale un toque atrevido y diferente a tu mundo de Minecraft. Jenny Addon añade un personaje especial que hará tus partidas más intensas, curiosas y divertidas. Ideal para jugadores que buscan algo fuera de lo común y quieren subir la temperatura del juego… bajo su propio riesgo 😉🔥",
