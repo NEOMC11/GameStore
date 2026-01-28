@@ -41,6 +41,17 @@ const videosData = {
 
 // Datos de juegos y aplicaciones para GameStore
 const addonsData = [
+     {
+    id: 53,
+    title: "Crafting and building X",
+    description: "Crafting and building X para grabar videos y hacer tutorial es jaja (no sé que poner de descripción xd)",
+    cover_image: "https://i.ibb.co/wFKL2gfW/copilot-image-1769574367520.png",
+    version: "1.21.30",
+    download_link: "https://www.mediafire.com/file/u5hw6oaq430zj23/crafting_and_building_by_NEOMC11.apk/file",
+    tags: ["App", "Crafting", "Crafting and building", "Android"],
+    last_updated: "28-01-2026",
+    file_size: "397 MB"
+    },
     {
     id: 46,
     title: "Craftsman AB v0.15.1.20",
