@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GitHub a ZIP — GameStore</title>
+    <link rel="icon" type="image/png" href="./img/NEOCRAFT.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 24px;
+            background: var(--card);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-card);
+        }
+        .header { text-align: center; margin-bottom: 32px; }
+        .header h1 { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+        .header p { color: var(--text3); font-size: 14px; }
+        
+        .input-group { margin-bottom: 24px; }
+        .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 8px; }
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .input-box input {
+            width: 100%;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            color: var(--text);
+            font-size: 15px;
+            outline: none;
+        }
+        .btn-action {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-action:hover { background: var(--accent2); }
+        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        #status {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            text-align: center;
+            display: none;
+        }
+        .status-info { background: rgba(108,99,255,0.1); color: var(--accent2); }
+        
+        .back-nav {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .back-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            text-decoration: none;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+    <script src="./js/auth.js"></script>
+
+    <nav class="back-nav">
+        <a href="profile.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+        </a>
+        <span style="font-weight: 700; font-size: 18px;">GitHub a ZIP</span>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Descargar Repo</h1>
+            <p>Convierte cualquier repositorio público en un archivo ZIP</p>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Enlace del Repositorio</label>
+            <div class="input-box">
+                <input type="text" id="repoUrl" placeholder="https://github.com/usuario/repositorio">
+                <button class="btn-action" id="downloadBtn" onclick="downloadRepo()">Descargar ZIP</button>
+            </div>
+        </div>
+
+        <div id="status" class="status-info"></div>
+    </div>
+
+    <script>
+        async function downloadRepo() {
+            const url = document.getElementById('repoUrl').value;
+            const status = document.getElementById('status');
+            const btn = document.getElementById('downloadBtn');
+
+            if (!url.includes('github.com')) {
+                alert('Por favor, ingresa una URL válida de GitHub');
+                return;
+            }
+
+            try {
+                btn.disabled = true;
+                status.style.display = 'block';
+                status.innerText = 'Analizando repositorio...';
+
+                const parts = url.replace('https://github.com/', '').split('/');
+                const owner = parts[0];
+                const repo = parts[1];
+
+                const repoInfo = await fetch(`https://api.github.com/repos/${owner}/${repo}`).then(res => res.json());
+                const branch = repoInfo.default_branch;
+
+                status.innerText = 'Obteniendo lista de archivos...';
+                const tree = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`).then(res => res.json());
+
+                const zip = new JSZip();
+                const files = tree.tree.filter(item => item.type === 'blob');
+                
+                status.innerText = `Descargando ${files.length} archivos...`;
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const content = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${file.path}`).then(res => res.blob());
+                    zip.file(file.path, content);
+                    status.innerText = `Descargando: ${Math.round((i+1)/files.length*100)}%`;
+                }
+
+                status.innerText = 'Generando archivo ZIP...';
+                const content = await zip.generateAsync({type: "blob"});
+                saveAs(content, `${repo}.zip`);
+
+                status.innerText = '¡Descarga completada!';
+                setTimeout(() => { status.style.display = 'none'; btn.disabled = false; }, 3000);
+
+            } catch (error) {
+                alert('Error al descargar el repositorio. Asegúrate de que sea público.');
+                status.style.display = 'none';
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

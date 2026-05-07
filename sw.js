@@ -1,63 +1,64 @@
-const CACHE_NAME = 'GAMESTORE-3';
-  const urlsToCache = [
-    '/',
-    '/index.html',
-    '/css/main.css',
-    '/css/lisc.css',
-    '/css/view.css',
-    '/css/pwa-install.css',
-    '/js/main.js',
-    '/js/functions.js',
-    '/js/complements.js',
-    '/js/view.js',
-    '/js/pwa-install.js',
-    '/img/NEOCRAFT.png',
-    '/img/NEOCRAFTss.png'
-  ];
-  
-  self.addEventListener('install', event => {
-    event.waitUntil(
-      caches.open(CACHE_NAME)
-        .then(cache => {
-          console.log('Cache abierto');
-          return cache.addAll(urlsToCache);
-        })
-    );
-    self.skipWaiting();
-  });
-  self.addEventListener('activate', event => {
-    event.waitUntil(
-      caches.keys().then(cacheNames => {
-        return Promise.all(
-          cacheNames.map(cacheName => {
-            if (cacheName !== CACHE_NAME) {
-              console.log('Eliminando cache antiguo:', cacheName);
-              return caches.delete(cacheName);
-            }
-          })
-        );
-      })
-    );
-    self.clients.claim();
-  });
-  
-  // Estrategia: Network First, fallback to Cache
-  self.addEventListener('fetch', event => {
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          // Si la respuesta es válida, la guardamos en cache
-          if (response && response.status === 200) {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then(cache => {
-              cache.put(event.request, responseClone);
-            });
-          }
-          return response;
-        })
-        .catch(() => {
-          // Si falla la red, intentamos obtener del cache
-          return caches.match(event.request);
-        })
-    );
-  });
+// =============================================
+// GAMESTORE V2 — Service Worker
+// Estrategia: Cache First para assets, Network First para datos
+// =============================================
+
+const CACHE_NAME = 'gamestore-v2-1';
+const STATIC_ASSETS = [
+  '/',
+  '/index.html',
+  '/view.html',
+  '/profile.html',
+  '/css/main.css',
+  '/js/data.js',
+  '/js/app.js',
+  '/js/view.js',
+  '/img/NEOCRAFT.png',
+  '/img/profile/NEOMC11.png',
+];
+
+// Install: cachear assets estáticos
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(STATIC_ASSETS.map(url => new Request(url, { cache: 'reload' })));
+    }).catch(() => {})
+  );
+  self.skipWaiting();
+});
+
+// Activate: limpiar caches viejos
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
+});
+
+// Fetch: estrategia stale-while-revalidate para HTML, cache-first para assets
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // Solo manejar mismo origen
+  if (url.origin !== location.origin) return;
+
+  // Ignorar chrome-extension y otros
+  if (!request.url.startsWith('http')) return;
+
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      const networkFetch = fetch(request).then((response) => {
+        if (response && response.status === 200 && response.type === 'basic') {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+        }
+        return response;
+      }).catch(() => cached);
+
+      return cached || networkFetch;
+    })
+  );
+});

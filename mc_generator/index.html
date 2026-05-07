@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MC Generators — GameStore</title>
+    <link rel="icon" type="image/png" href="../img/NEOCRAFT.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        body { background: var(--bg); padding-bottom: 20px; }
+        .container { max-width: 800px; margin: 40px auto; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .card { 
+            background: var(--card); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; 
+            padding: 24px; 
+            transition: var(--transition); 
+            cursor: pointer; 
+            text-decoration: none; 
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--shadow-glow); }
+        .card h3 { color: var(--text); font-size: 18px; font-weight: 700; }
+        .card p { color: var(--text3); font-size: 14px; line-height: 1.5; }
+        .back-nav { padding: 16px; display: flex; align-items: center; gap: 12px; }
+        .back-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--card); display: flex; align-items: center; justify-content: center; color: var(--text); text-decoration: none; border: 1px solid var(--border); }
+        .header-section { text-align: center; margin-bottom: 40px; }
+        .header-section h1 { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+        .header-section p { color: var(--text3); font-size: 15px; }
+    </style>
+</head>
+<body>
+    <script src="../js/auth.js"></script>
+    <nav class="back-nav">
+        <a href="../profile.html" class="back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+        </a>
+        <span style="font-weight: 700; font-size: 18px; color: var(--text);">Generadores</span>
+    </nav>
+
+    <div class="container">
+        <div class="header-section">
+            <h1>MC Bedrock Tools</h1>
+            <p>Herramientas avanzadas para creadores de contenido</p>
+        </div>
+
+        <div class="grid">
+            <a href="content.html" class="card">
+                <h3>Content Generator</h3>
+                <p>Genera archivos contents.json automáticamente analizando tus carpetas de packs.</p>
+            </a>
+            <a href="splashes.html" class="card">
+                <h3>Splashes Generator</h3>
+                <p>Crea textos amarillos (splashes) personalizados para el menú principal de Minecraft.</p>
+            </a>
+            <a href="loading.html" class="card">
+                <h3>Loading Messages</h3>
+                <p>Personaliza los mensajes que aparecen durante las pantallas de carga del juego.</p>
+            </a>
+            <a href="unifier.html" class="card">
+                <h3>JSON Unifier</h3>
+                <p>Herramienta para fusionar múltiples archivos JSON en una sola estructura limpia.</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
