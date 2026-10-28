@@ -3,13 +3,14 @@
 // Estrategia: Cache First para assets, Network First para datos
 // =============================================
 
-const CACHE_NAME = 'gamestore-v2-1';
+const CACHE_NAME = 'gamestore-v3-glass';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/view.html',
   '/profile.html',
   '/css/main.css',
+  '/css/perfil.css',
   '/js/data.js',
   '/js/app.js',
   '/js/view.js',

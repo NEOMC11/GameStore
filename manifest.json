@@ -4,8 +4,8 @@
   "description": "Descarga las mejores apps, juegos, texturas y shaders para Minecraft y Craftsman.",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#0d0d0f",
-  "theme_color": "#0d0d0f",
+  "background_color": "#04060b",
+  "theme_color": "#04060b",
   "orientation": "portrait",
   "categories": ["games", "entertainment"],
   "icons": [

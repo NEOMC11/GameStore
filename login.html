@@ -143,7 +143,10 @@
                 // Redirigir a la página previa o al perfil
                 const params = new URLSearchParams(window.location.search);
                 const redirect = params.get('ref') || 'profile.html';
-                window.location.href = redirect;
+                // Solo se aceptan rutas internas del propio sitio
+                window.location.href = /^[\w./-]+$/.test(redirect) && !redirect.startsWith('//') && !redirect.includes('..')
+                    ? redirect
+                    : 'profile.html';
             } else {
                 document.getElementById('errorMsg').style.display = 'block';
             }
