@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LibPatch — Optimizar</title>
+  <meta name="theme-color" content="#04060b">
+  <link rel="icon" type="image/png" href="../img/NEOCRAFT.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    body { padding-bottom: 48px; }
+
+    .lp-shell { max-width: 780px; margin: 0 auto; padding: 0 16px; }
+
+    .lp-tabs {
+      display: flex;
+      gap: 6px;
+      margin: 20px 0;
+      padding: 5px;
+      background: var(--glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--line);
+      border-radius: 50px;
+      box-shadow: var(--edge);
+    }
+
+    .lp-tab {
+      flex: 1;
+      padding: 10px 14px;
+      border: none;
+      background: none;
+      border-radius: 50px;
+      color: var(--text2);
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .lp-tab:hover { color: var(--text); }
+    .lp-tab.active {
+      background: linear-gradient(180deg, var(--blue) 0%, var(--blue-deep) 100%);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: var(--shadow-blue);
+    }
+
+    .lp-panel { display: none; }
+    .lp-panel.active { display: block; }
+
+    .lp-drop {
+      border: 1.5px dashed var(--line-hi);
+      border-radius: var(--r-lg);
+      background: var(--glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      box-shadow: var(--edge);
+      padding: 38px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 16px;
+    }
+    .lp-drop:hover, .lp-drop.over { border-color: var(--blue-hi); background: var(--glass-hi); }
+    .lp-drop.over { transform: scale(1.01); }
+
+    .lp-drop-icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 14px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(47, 107, 255, 0.12);
+      border: 1px solid var(--line);
+      color: var(--blue-ice);
+    }
+    .lp-drop-icon svg { width: 24px; height: 24px; }
+
+    .lp-drop h3 { font-size: 16px; font-weight: 600; margin-bottom: 5px; }
+    .lp-drop p { font-size: 13px; color: var(--text3); }
+
+    .lp-settings {
+      background: var(--glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 6px 18px;
+      margin-bottom: 16px;
+      box-shadow: var(--edge);
+    }
+
+    .lp-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .lp-row:last-child { border-bottom: none; }
+
+    .lp-row-label { flex: 0 0 118px; font-size: 13.5px; font-weight: 500; }
+    .lp-row-label small {
+      display: block;
+      font-size: 11.5px;
+      color: var(--text3);
+      font-weight: 400;
+      margin-top: 1px;
+    }
+
+    .lp-row-control { flex: 1; display: flex; align-items: center; gap: 10px; }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      flex: 1;
+      height: 4px;
+      border-radius: 4px;
+      background: rgba(120, 165, 255, 0.18);
+      outline: none;
+      min-width: 0;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background: var(--blue-hi);
+      border: 2px solid #fff;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(47, 107, 255, 0.7);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--blue-hi);
+      border: 2px solid #fff;
+      cursor: pointer;
+    }
+
+    .lp-val {
+      flex: 0 0 46px;
+      min-width: 46px;
+      text-align: right;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue-ice);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .lp-seg { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .lp-seg button {
+      background: rgba(4, 6, 11, 0.5);
+      border: 1px solid var(--line);
+      color: var(--text2);
+      padding: 7px 15px;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .lp-seg button:hover { border-color: var(--line-hi); color: var(--text); }
+    .lp-seg button.active {
+      background: rgba(47, 107, 255, 0.18);
+      border-color: var(--blue);
+      color: var(--blue-ice);
+      font-weight: 600;
+    }
+
+    .lp-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+
+    .lp-btn {
+      flex: 1;
+      min-width: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 18px;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid rgba(160, 195, 255, 0.32);
+      background: linear-gradient(180deg, var(--blue) 0%, var(--blue-deep) 100%);
+      color: #fff;
+      box-shadow: var(--shadow-blue);
+    }
+    .lp-btn:hover:not(:disabled) { filter: brightness(1.14); transform: translateY(-2px); }
+    .lp-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; filter: none; transform: none; }
+    .lp-btn svg { width: 16px; height: 16px; }
+
+    .lp-btn.ghost {
+      background: var(--glass);
+      backdrop-filter: var(--blur-soft);
+      -webkit-backdrop-filter: var(--blur-soft);
+      border: 1px solid var(--line);
+      color: var(--text);
+      box-shadow: var(--edge);
+    }
+    .lp-btn.ghost:hover:not(:disabled) { border-color: var(--line-hi); color: var(--blue-ice); filter: none; }
+
+    .lp-btn.danger {
+      background: var(--red-soft);
+      border-color: rgba(255, 59, 78, 0.3);
+      color: var(--red);
+      box-shadow: none;
+    }
+    .lp-btn.danger:hover:not(:disabled) { background: rgba(255, 59, 78, 0.22); filter: none; }
+
+    .lp-summary {
+      display: none;
+      align-items: center;
+      background: var(--glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      margin-bottom: 16px;
+      box-shadow: var(--edge);
+      overflow: hidden;
+    }
+    .lp-summary.show { display: flex; }
+
+    .lp-summary-cell { flex: 1; text-align: center; padding: 15px 6px; border-right: 1px solid var(--line); }
+    .lp-summary-cell:last-child { border-right: none; }
+
+    .lp-summary-num {
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: block;
+      font-variant-numeric: tabular-nums;
+    }
+    .lp-summary-lbl { font-size: 11px; color: var(--text3); margin-top: 3px; }
+    .lp-good { color: var(--green); }
+    .lp-bad  { color: var(--red); }
+
+    .lp-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .lp-item {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      background: var(--glass);
+      backdrop-filter: var(--blur-soft);
+      -webkit-backdrop-filter: var(--blur-soft);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 12px 14px;
+      box-shadow: var(--edge);
+      animation: lpIn 0.3s ease both;
+    }
+
+    @keyframes lpIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .lp-thumb {
+      width: 46px;
+      height: 46px;
+      border-radius: 11px;
+      object-fit: cover;
+      background: rgba(4, 6, 11, 0.6);
+      border: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+
+    .lp-item-body { flex: 1; min-width: 0; }
+
+    .lp-item-name {
+      font-size: 13.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px;
+    }
+
+    .lp-item-meta {
+      font-size: 11.5px;
+      color: var(--text3);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .lp-pill {
+      padding: 1px 8px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 11px;
+      border: 1px solid transparent;
+    }
+    .lp-pill.good { background: var(--green-soft); color: var(--green); border-color: rgba(23, 201, 100, 0.26); }
+    .lp-pill.bad  { background: var(--red-soft);   color: var(--red);   border-color: rgba(255, 59, 78, 0.26); }
+    .lp-pill.info { background: rgba(47, 107, 255, 0.13); color: var(--blue-ice); border-color: var(--line); }
+
+    .lp-dl {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(47, 107, 255, 0.14);
+      border: 1px solid var(--line);
+      color: var(--blue-ice);
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .lp-dl:hover { border-color: var(--blue); background: rgba(47, 107, 255, 0.26); }
+    .lp-dl svg { width: 16px; height: 16px; }
+
+    .lp-report {
+      background: var(--glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      box-shadow: var(--edge);
+      animation: lpIn 0.3s ease both;
+    }
+
+    .lp-report h3 { font-size: 15px; font-weight: 600; margin-bottom: 3px; word-break: break-all; }
+    .lp-report .sub { font-size: 12px; color: var(--text3); margin-bottom: 14px; }
+
+    .lp-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+
+    .lp-fact {
+      background: rgba(4, 6, 11, 0.42);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+    }
+    .lp-fact-lbl { font-size: 11px; color: var(--text3); margin-bottom: 2px; }
+    .lp-fact-val { font-size: 13.5px; font-weight: 600; word-break: break-word; }
+
+    .lp-sections { margin-top: 4px; }
+
+    .lp-sec-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 12.5px;
+    }
+    .lp-sec-row:last-child { border-bottom: none; }
+
+    .lp-sec-name {
+      flex: 1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--text2);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .lp-sec-size { flex-shrink: 0; color: var(--text3); font-variant-numeric: tabular-nums; }
+
+    .lp-cmd {
+      background: rgba(4, 6, 11, 0.62);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 12px 14px;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .lp-cmd code {
+      flex: 1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      color: var(--blue-ice);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .lp-cmd button {
+      flex-shrink: 0;
+      background: rgba(47, 107, 255, 0.14);
+      border: 1px solid var(--line);
+      color: var(--blue-ice);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-family: inherit;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .lp-cmd button:hover { border-color: var(--blue); }
+
+    .lp-empty { text-align: center; padding: 34px 20px; color: var(--text3); font-size: 13.5px; }
+
+    .lp-hint {
+      font-size: 12.5px;
+      color: var(--text3);
+      line-height: 1.6;
+      margin-bottom: 18px;
+      padding-left: 12px;
+      border-left: 2px solid var(--line-hi);
+    }
+
+    @media (min-width: 620px) {
+      .lp-facts { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <script src="../js/auth.js"></script>
+
+  <nav class="detail-nav">
+    <a href="index.html" class="back-btn" aria-label="Volver">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+    </a>
+    <span class="detail-nav-title">LibPatch</span>
+  </nav>
+
+  <div class="lp-shell">
+
+    <div class="lp-tabs" role="tablist">
+      <button class="lp-tab active" id="tabImg" onclick="switchTab('img')" role="tab">Imágenes PNG</button>
+      <button class="lp-tab" id="tabSo" onclick="switchTab('so')" role="tab">Librerías .so</button>
+    </div>
+
+    <!-- ============ PANEL IMÁGENES ============ -->
+    <section class="lp-panel active" id="panelImg">
+
+      <div class="lp-drop" id="dropImg" onclick="document.getElementById('fileImg').click()">
+        <div class="lp-drop-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <h3>Suelta tus imágenes aquí</h3>
+        <p>PNG, JPG o WebP. Puedes elegir varias a la vez.</p>
+      </div>
+      <input type="file" id="fileImg" accept="image/*" multiple hidden>
+
+      <div class="lp-settings">
+        <div class="lp-row">
+          <span class="lp-row-label">Calidad<small>Solo WebP y JPG</small></span>
+          <div class="lp-row-control">
+            <input type="range" id="quality" min="30" max="100" value="82">
+            <span class="lp-val" id="qualityVal">82%</span>
+          </div>
+        </div>
+        <div class="lp-row">
+          <span class="lp-row-label">Ancho máximo<small>Mantiene la proporción</small></span>
+          <div class="lp-row-control">
+            <input type="range" id="maxW" min="128" max="4096" step="64" value="2048">
+            <span class="lp-val" id="maxWVal">2048</span>
+          </div>
+        </div>
+        <div class="lp-row">
+          <span class="lp-row-label">Formato</span>
+          <div class="lp-row-control">
+            <div class="lp-seg" id="fmtSeg">
+              <button class="active" data-fmt="image/webp">WebP</button>
+              <button data-fmt="image/png">PNG</button>
+              <button data-fmt="image/jpeg">JPG</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lp-actions">
+        <button class="lp-btn" id="btnRun" onclick="runImages()" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h8l-1 8 10-12h-8z"/></svg>
+          Optimizar
+        </button>
+        <button class="lp-btn ghost" id="btnAll" onclick="downloadAll()" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+          Descargar todo
+        </button>
+        <button class="lp-btn danger" onclick="clearImages()">Vaciar</button>
+      </div>
+
+      <div class="lp-summary" id="sumImg">
+        <div class="lp-summary-cell"><span class="lp-summary-num" id="sumCount">0</span><div class="lp-summary-lbl">Archivos</div></div>
+        <div class="lp-summary-cell"><span class="lp-summary-num" id="sumBefore">0 KB</span><div class="lp-summary-lbl">Antes</div></div>
+        <div class="lp-summary-cell"><span class="lp-summary-num" id="sumAfter">0 KB</span><div class="lp-summary-lbl">Después</div></div>
+        <div class="lp-summary-cell"><span class="lp-summary-num lp-good" id="sumSaved">0%</span><div class="lp-summary-lbl">Ahorro</div></div>
+      </div>
+
+      <div class="lp-list" id="listImg">
+        <div class="lp-empty">Todavía no has cargado ninguna imagen.</div>
+      </div>
+    </section>
+
+    <!-- ============ PANEL .SO ============ -->
+    <section class="lp-panel" id="panelSo">
+
+      <p class="lp-hint">LibPatch lee la librería y te dice qué contiene y cuánto puedes recortar. La limpieza final la haces con el comando que aparece abajo, para no arriesgarte a corromper el archivo.</p>
+
+      <div class="lp-drop" id="dropSo" onclick="document.getElementById('fileSo').click()">
+        <div class="lp-drop-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Suelta tus librerías aquí</h3>
+        <p>Archivos .so de tus carpetas lib/arm64-v8a o armeabi-v7a.</p>
+      </div>
+      <input type="file" id="fileSo" accept=".so" multiple hidden>
+
+      <div class="lp-actions">
+        <button class="lp-btn danger" onclick="clearSo()">Vaciar</button>
+      </div>
+
+      <div class="lp-list" id="listSo">
+        <div class="lp-empty">Todavía no has cargado ninguna librería.</div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+/* ==========================================================
+   LibPatch — todo se procesa en el navegador.
+   Ningún archivo se envía a internet.
+   ========================================================== */
+
+function fmtBytes(n) {
+  if (!n && n !== 0) return '-';
+  if (n < 1024) return n + ' B';
+  if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+  return (n / 1048576).toFixed(2) + ' MB';
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function switchTab(which) {
+  const isImg = which === 'img';
+  document.getElementById('tabImg').classList.toggle('active', isImg);
+  document.getElementById('tabSo').classList.toggle('active', !isImg);
+  document.getElementById('panelImg').classList.toggle('active', isImg);
+  document.getElementById('panelSo').classList.toggle('active', !isImg);
+}
+
+function wireDrop(zoneId, inputId, handler) {
+  const zone = document.getElementById(zoneId);
+  const input = document.getElementById(inputId);
+
+  ['dragenter', 'dragover'].forEach(ev =>
+    zone.addEventListener(ev, e => { e.preventDefault(); zone.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev =>
+    zone.addEventListener(ev, e => { e.preventDefault(); zone.classList.remove('over'); }));
+
+  zone.addEventListener('drop', e => handler([...e.dataTransfer.files]));
+  input.addEventListener('change', e => { handler([...e.target.files]); input.value = ''; });
+}
+
+/* ==========================================================
+   1. IMÁGENES
+   ========================================================== */
+let imgQueue = [];
+let format = 'image/webp';
+
+const qSlider = document.getElementById('quality');
+const wSlider = document.getElementById('maxW');
+qSlider.addEventListener('input', () => document.getElementById('qualityVal').textContent = qSlider.value + '%');
+wSlider.addEventListener('input', () => document.getElementById('maxWVal').textContent = wSlider.value);
+
+document.getElementById('fmtSeg').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  [...e.currentTarget.children].forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  format = btn.dataset.fmt;
+});
+
+wireDrop('dropImg', 'fileImg', files => {
+  const imgs = files.filter(f => f.type.startsWith('image/'));
+  if (!imgs.length) { toast('Esos archivos no son imágenes'); return; }
+  imgs.forEach(f => imgQueue.push({
+    file: f, name: f.name, before: f.size, after: null, url: null,
+    preview: URL.createObjectURL(f)
+  }));
+  renderImages();
+  document.getElementById('btnRun').disabled = false;
+  toast(imgs.length + (imgs.length === 1 ? ' imagen cargada' : ' imágenes cargadas'));
+});
+
+function renderImages() {
+  const list = document.getElementById('listImg');
+
+  if (!imgQueue.length) {
+    list.innerHTML = '<div class="lp-empty">Todavía no has cargado ninguna imagen.</div>';
+    document.getElementById('sumImg').classList.remove('show');
+    return;
+  }
+
+  list.innerHTML = imgQueue.map(it => {
+    const done = it.after !== null;
+    const diff = done ? Math.round((1 - it.after / it.before) * 100) : 0;
+    const pill = done
+      ? `<span class="lp-pill ${diff > 0 ? 'good' : 'bad'}">${diff > 0 ? '-' + diff + '%' : '+' + Math.abs(diff) + '%'}</span>`
+      : '<span class="lp-pill info">En espera</span>';
+
+    return `
+      <div class="lp-item">
+        <img class="lp-thumb" src="${it.url || it.preview}" alt="">
+        <div class="lp-item-body">
+          <div class="lp-item-name">${esc(it.outName || it.name)}</div>
+          <div class="lp-item-meta">
+            <span>${fmtBytes(it.before)}</span>
+            ${done ? '<span>&rarr;</span><span>' + fmtBytes(it.after) + '</span>' : ''}
+            ${pill}
+          </div>
+        </div>
+        ${done ? `<a class="lp-dl" href="${it.url}" download="${esc(it.outName)}" aria-label="Descargar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+          </a>` : ''}
+      </div>`;
+  }).join('');
+
+  const done = imgQueue.filter(i => i.after !== null);
+  if (done.length) {
+    const before = done.reduce((a, b) => a + b.before, 0);
+    const after = done.reduce((a, b) => a + b.after, 0);
+    const saved = Math.round((1 - after / before) * 100);
+    document.getElementById('sumCount').textContent = done.length;
+    document.getElementById('sumBefore').textContent = fmtBytes(before);
+    document.getElementById('sumAfter').textContent = fmtBytes(after);
+    const el = document.getElementById('sumSaved');
+    el.textContent = (saved > 0 ? '-' : '+') + Math.abs(saved) + '%';
+    el.className = 'lp-summary-num ' + (saved > 0 ? 'lp-good' : 'lp-bad');
+    document.getElementById('sumImg').classList.add('show');
+    document.getElementById('btnAll').disabled = false;
+  }
+}
+
+function processOne(item) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const maxW = parseInt(wSlider.value, 10);
+      const scale = img.width > maxW ? maxW / img.width : 1;
+      const w = Math.max(1, Math.round(img.width * scale));
+      const h = Math.max(1, Math.round(img.height * scale));
+
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      // JPG no tiene transparencia: fondo negro para evitar bordes blancos
+      if (format === 'image/jpeg') {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, w, h);
+      }
+      ctx.drawImage(img, 0, 0, w, h);
+
+      canvas.toBlob(blob => {
+        if (!blob) { resolve(false); return; }
+        if (item.url) URL.revokeObjectURL(item.url);
+        item.after = blob.size;
+        item.url = URL.createObjectURL(blob);
+        const ext = blob.type === 'image/webp' ? 'webp' : blob.type === 'image/jpeg' ? 'jpg' : 'png';
+        item.outName = item.name.replace(/\.[^.]+$/, '') + '.' + ext;
+        resolve(true);
+      }, format, parseInt(qSlider.value, 10) / 100);
+    };
+    img.onerror = () => resolve(false);
+    img.src = item.preview;
+  });
+}
+
+async function runImages() {
+  const btn = document.getElementById('btnRun');
+  btn.disabled = true;
+  btn.textContent = 'Optimizando...';
+
+  let fails = 0;
+  for (const item of imgQueue) {
+    const ok = await processOne(item);
+    if (!ok) fails++;
+    renderImages();
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h8l-1 8 10-12h-8z"/></svg> Optimizar';
+  toast(fails ? fails + ' archivo(s) no se pudieron leer' : 'Listo');
+}
+
+function downloadAll() {
+  const done = imgQueue.filter(i => i.url);
+  if (!done.length) return;
+  done.forEach((it, i) => {
+    setTimeout(() => {
+      const a = document.createElement('a');
+      a.href = it.url;
+      a.download = it.outName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }, i * 320);
+  });
+  toast('Descargando ' + done.length + ' archivo(s)');
+}
+
+function clearImages() {
+  imgQueue.forEach(i => {
+    if (i.url) URL.revokeObjectURL(i.url);
+    if (i.preview) URL.revokeObjectURL(i.preview);
+  });
+  imgQueue = [];
+  document.getElementById('btnRun').disabled = true;
+  document.getElementById('btnAll').disabled = true;
+  renderImages();
+}
+
+/* ==========================================================
+   2. LIBRERÍAS .SO — lectura de la cabecera ELF
+   ========================================================== */
+const ARCHS = {
+  0x02: 'SPARC', 0x03: 'x86', 0x08: 'MIPS', 0x14: 'PowerPC',
+  0x28: 'ARM (armeabi-v7a)', 0x2B: 'SPARC v9', 0x32: 'IA-64',
+  0x3E: 'x86_64', 0xB7: 'ARM64 (arm64-v8a)', 0xF3: 'RISC-V'
+};
+
+// Nombres típicos de secciones que solo sirven para depurar
+const STRIP_NAMES = /^(\.debug|\.zdebug|\.symtab|\.strtab|\.comment|\.gnu_debuglink|\.stab)/;
+
+// Solo se puede quitar si NO se carga en memoria (sin SHF_ALLOC)
+// y es de las que solo aportan información de depuración.
+function isStrippable(sec) {
+  return !sec.alloc && STRIP_NAMES.test(sec.name);
+}
+
+function parseELF(buffer, name, size) {
+  if (buffer.byteLength < 64) return { name, error: 'El archivo es demasiado pequeño para ser una librería.' };
+  const dv = new DataView(buffer);
+
+  if (dv.getUint32(0, false) !== 0x7F454C46) return { name, error: 'No es un archivo ELF válido.' };
+
+  const is64 = dv.getUint8(4) === 2;
+  const little = dv.getUint8(5) === 1;
+  const type = dv.getUint16(16, little);
+  const machine = dv.getUint16(18, little);
+
+  const readAddr = (off) => is64
+    ? Number(dv.getBigUint64(off, little))
+    : dv.getUint32(off, little);
+
+  const shoff     = readAddr(is64 ? 0x28 : 0x20);
+  const shentsize = dv.getUint16(is64 ? 0x3A : 0x2E, little);
+  const shnum     = dv.getUint16(is64 ? 0x3C : 0x30, little);
+  const shstrndx  = dv.getUint16(is64 ? 0x3E : 0x32, little);
+
+  const sections = [];
+
+  try {
+    if (shoff && shnum && shstrndx < shnum && shoff + shnum * shentsize <= buffer.byteLength) {
+      const strHdr = shoff + shstrndx * shentsize;
+      const strTabOff = readAddr(strHdr + (is64 ? 0x18 : 0x10));
+
+      for (let i = 0; i < shnum; i++) {
+        const base = shoff + i * shentsize;
+        const nameOff = dv.getUint32(base, little);
+        const flags   = readAddr(base + 0x08);
+        const secSize = readAddr(base + (is64 ? 0x20 : 0x14));
+
+        let secName = '';
+        let p = strTabOff + nameOff;
+        while (p < buffer.byteLength) {
+          const c = dv.getUint8(p++);
+          if (c === 0) break;
+          secName += String.fromCharCode(c);
+        }
+        // SHF_ALLOC (0x2): la sección se carga en memoria
+        if (secName) sections.push({ name: secName, size: secSize, alloc: (flags & 0x2) !== 0 });
+      }
+    }
+  } catch (e) {
+    /* tabla de secciones dañada: se muestra lo que se haya podido leer */
+  }
+
+  const strippable = sections.filter(isStrippable);
+  const savings = strippable.reduce((a, s) => a + s.size, 0);
+
+  return {
+    name, size,
+    bits: is64 ? '64 bits' : '32 bits',
+    kind: type === 3 ? 'Librería compartida' : type === 2 ? 'Ejecutable' : 'Objeto ELF',
+    arch: ARCHS[machine] || ('Desconocida (0x' + machine.toString(16) + ')'),
+    sections, strippable, savings
+  };
+}
+
+let soResults = [];
+
+wireDrop('dropSo', 'fileSo', files => {
+  const libs = files.filter(f => /\.so(\.|$)/i.test(f.name));
+  if (!libs.length) { toast('Solo se aceptan archivos .so'); return; }
+
+  libs.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      soResults.push(parseELF(e.target.result, file.name, file.size));
+      renderSo();
+    };
+    reader.onerror = () => toast('No se pudo leer ' + file.name);
+    reader.readAsArrayBuffer(file);
+  });
+});
+
+function renderSo() {
+  const list = document.getElementById('listSo');
+
+  if (!soResults.length) {
+    list.innerHTML = '<div class="lp-empty">Todavía no has cargado ninguna librería.</div>';
+    return;
+  }
+
+  list.innerHTML = soResults.map((r, idx) => {
+    if (r.error) {
+      return `<div class="lp-report">
+        <h3>${esc(r.name || 'Archivo')}</h3>
+        <p class="sub"><span class="lp-pill bad">${esc(r.error)}</span></p>
+      </div>`;
+    }
+
+    const pct = r.size ? Math.round((r.savings / r.size) * 100) : 0;
+
+    const secRows = r.sections
+      .slice()
+      .sort((a, b) => b.size - a.size)
+      .slice(0, 8)
+      .map(s => `
+        <div class="lp-sec-row">
+          <span class="lp-sec-name">${esc(s.name)}</span>
+          ${isStrippable(s) ? '<span class="lp-pill good">se puede quitar</span>' : ''}
+          <span class="lp-sec-size">${fmtBytes(s.size)}</span>
+        </div>`).join('');
+
+    return `
+      <div class="lp-report">
+        <h3>${esc(r.name)}</h3>
+        <p class="sub">${fmtBytes(r.size)} &middot; ${r.kind}</p>
+
+        <div class="lp-facts">
+          <div class="lp-fact"><div class="lp-fact-lbl">Arquitectura</div><div class="lp-fact-val">${r.arch}</div></div>
+          <div class="lp-fact"><div class="lp-fact-lbl">Formato</div><div class="lp-fact-val">${r.bits}</div></div>
+          <div class="lp-fact"><div class="lp-fact-lbl">Secciones</div><div class="lp-fact-val">${r.sections.length}</div></div>
+          <div class="lp-fact"><div class="lp-fact-lbl">Puedes recortar</div><div class="lp-fact-val ${r.savings ? 'lp-good' : ''}">${r.savings ? fmtBytes(r.savings) + ' (' + pct + '%)' : 'Ya está limpia'}</div></div>
+        </div>
+
+        <div class="lp-sections">${secRows || '<div class="lp-empty">No se pudieron leer las secciones.</div>'}</div>
+
+        ${r.savings ? `
+        <div class="lp-cmd">
+          <code id="cmd${idx}">llvm-strip --strip-unneeded "${esc(r.name)}"</code>
+          <button onclick="copyCmd(${idx})">Copiar</button>
+        </div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function copyCmd(i) {
+  const text = document.getElementById('cmd' + i).textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => toast('Comando copiado'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    toast('Comando copiado');
+  }
+}
+
+function clearSo() {
+  soResults = [];
+  renderSo();
+}
+</script>
+</body>
+</html>
