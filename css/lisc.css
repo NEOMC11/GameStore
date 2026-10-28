@@ -5,7 +5,7 @@
 }
 
 .license-subtitle {
-    color: #94a3b8;
+    color: #9aa6bd;
     font-size: 1.1rem;
     margin-top: 0.5rem;
 }
@@ -35,7 +35,7 @@
 }
 
 .license-text {
-    color: #94a3b8;
+    color: #9aa6bd;
     line-height: 1.6;
 }
 
@@ -86,7 +86,7 @@
 }
 
 .license-agreement p {
-    color: #94a3b8;
+    color: #9aa6bd;
     font-size: 0.9rem;
     line-height: 1.5;
 }
@@ -100,19 +100,19 @@
     color: var(--dark-text);
     text-decoration: none;
     border: none;
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(47, 107, 255, 0.1);
     border-radius: var(--rounded);
     transition: var(--transition);
     font-weight: 500;
     font-family: inherit;
     font-size: 1rem;
     cursor: pointer;
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    border: 1px solid rgba(47, 107, 255, 0.3);
 }
 
 .back-button-nav:hover {
-    background-color: rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
+    background-color: rgba(47, 107, 255, 0.2);
+    color: #2f6bff;
     transform: translateY(-2px);
     box-shadow: var(--shadow);
 }
@@ -120,7 +120,7 @@
 .back-icon {
     width: 1.25rem;
     height: 1.25rem;
-    color: #3b82f6;
+    color: #2f6bff;
 }
 
 /* Responsive para licencia */

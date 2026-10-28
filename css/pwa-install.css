@@ -20,14 +20,14 @@
     align-items: center;
     gap: 0.8rem;
     padding: 1rem 1.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2f6bff 0%, #1743b8 100%);
     border: none;
     border-radius: 50px;
     color: white;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 30px rgba(47, 107, 255, 0.4);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -53,7 +53,7 @@
   
   .install-button:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 15px 40px rgba(47, 107, 255, 0.6);
   }
   
   .install-button:active {
@@ -103,10 +103,10 @@
   /* Animación de pulso */
   @keyframes pulse {
     0%, 100% {
-      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+      box-shadow: 0 10px 30px rgba(47, 107, 255, 0.4);
     }
     50% {
-      box-shadow: 0 10px 40px rgba(102, 126, 234, 0.8);
+      box-shadow: 0 10px 40px rgba(47, 107, 255, 0.8);
     }
   }
   
