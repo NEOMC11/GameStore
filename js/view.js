@@ -1,3 +1,6 @@
+const STAR_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.45 6.19 20.5 7.3 14.03 2.6 9.45l6.5-.95z"/></svg>';
+const starRow = (n) => [1,2,3,4,5].map(i => `<span class="${i <= n ? 'on' : 'off'}">${STAR_ICON}</span>`).join('');
+
 // =============================================
 // GAMESTORE V2 — Vista de Detalle
 // =============================================
@@ -64,7 +67,7 @@ function toggleDesc() {
 
 function renderStars(rating) {
   return Array.from({length: 5}, (_, i) =>
-    `<span style="color:${i < Math.round(rating) ? '#f59e0b' : '#444'}">★</span>`
+    `<span class="${i < Math.round(rating) ? 'on' : 'off'}">${STAR_ICON}</span>`
   ).join('');
 }
 
@@ -90,11 +93,6 @@ function renderAddon(addon) {
   const isShader = addon.tags.includes('Shaders');
   const isMap = addon.tags.includes('Maps');
 
-  let typeIcon = '📦';
-  if (isApp) typeIcon = '📱';
-  else if (isTexture) typeIcon = '🎨';
-  else if (isShader) typeIcon = '✨';
-  else if (isMap) typeIcon = '🗺️';
 
   const fakeReviews = [
     { user: 'Gamer_Pro', rating: 5, text: 'Increíble, funciona perfecto en mi dispositivo. Lo recomiendo 100%.', date: 'hace 2 días' },
@@ -108,7 +106,7 @@ function renderAddon(addon) {
       <img src="${addon.cover_image}" alt="${addon.title}" class="detail-icon" onerror="this.src='./img/NEOCRAFT.png'">
       <div class="detail-info">
         <h1 class="detail-title">${addon.title}</h1>
-        <p class="detail-author">por NEOMC11 ${typeIcon}</p>
+        <p class="detail-author">por NEOMC11</p>
         <div class="detail-tags">
           ${addon.tags.slice(0, 3).map(t => `<span class="detail-tag">${t}</span>`).join('')}
         </div>
@@ -119,7 +117,7 @@ function renderAddon(addon) {
     <div class="detail-stats animate-in" style="animation-delay:0.05s;">
       <div class="stat-item">
         <span class="stat-value">4.8</span>
-        <span class="stat-label">★ Valoración</span>
+        <span class="stat-label">${STAR_ICON} Valoración</span>
       </div>
       <div class="stat-item">
         <span class="stat-value">${addon.file_size || 'N/A'}</span>
@@ -197,7 +195,7 @@ function renderAddon(addon) {
       <div style="display:flex;align-items:center;gap:16px;padding:12px;background:var(--card);border-radius:var(--radius-sm);border:1px solid var(--border);margin-bottom:12px;">
         <div style="text-align:center;">
           <span style="font-size:36px;font-weight:800;line-height:1;">4.8</span>
-          <div style="color:#f59e0b;font-size:14px;margin-top:2px;">★★★★★</div>
+          <div class="review-stars" style="margin-top:4px;justify-content:center;">${starRow(5)}</div>
           <span style="font-size:11px;color:var(--text3);">de 5</span>
         </div>
         <div style="flex:1;">
@@ -205,7 +203,7 @@ function renderAddon(addon) {
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
               <span style="font-size:11px;color:var(--text3);width:8px;">${s}</span>
               <div style="flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;">
-                <div style="height:100%;background:#f59e0b;width:${s===5?'75%':s===4?'18%':s===3?'5%':'1%'};border-radius:2px;"></div>
+                <div style="height:100%;background:linear-gradient(90deg,var(--blue-hi),var(--blue));width:${s===5?'75%':s===4?'18%':s===3?'5%':'1%'};border-radius:2px;"></div>
               </div>
             </div>
           `).join('')}
@@ -218,7 +216,7 @@ function renderAddon(addon) {
             <div class="review-header">
               <div class="review-avatar">${r.user[0]}</div>
               <span class="review-user">${r.user}</span>
-              <span class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+              <span class="review-stars">${starRow(r.rating)}</span>
             </div>
             <p class="review-text">${r.text}</p>
             <p class="review-date">${r.date}</p>
@@ -230,7 +228,7 @@ function renderAddon(addon) {
       <div class="review-form" style="margin-top:14px;">
         <p style="font-size:13px;font-weight:600;margin-bottom:8px;">Deja tu reseña</p>
         <div class="star-picker" id="starPicker">
-          ${[1,2,3,4,5].map(s => `<button class="star-btn" data-star="${s}" onclick="selectStar(${s})">☆</button>`).join('')}
+          ${[1,2,3,4,5].map(s => `<button class="star-btn" data-star="${s}" onclick="selectStar(${s})" aria-label="${s} estrellas">${STAR_ICON}</button>`).join('')}
         </div>
         <textarea class="review-textarea" id="reviewText" placeholder="Escribe tu opinión..." rows="3"></textarea>
         <button class="review-submit-btn" onclick="submitReview()">Publicar reseña</button>
@@ -247,7 +245,7 @@ function renderAddon(addon) {
               <img src="${a.cover_image}" alt="${a.title}" class="app-icon" loading="lazy" onerror="this.src='./img/NEOCRAFT.png'">
             </div>
             <span class="app-name">${a.title}</span>
-            <div class="app-meta"><span class="star">★</span><span>${a.file_size || ''}</span></div>
+            <div class="app-meta"><span class="star">${STAR_ICON}</span><span>${a.file_size || ''}</span></div>
           </div>
         `).join('')}
       </div>
@@ -260,7 +258,7 @@ let selectedStars = 0;
 function selectStar(n) {
   selectedStars = n;
   document.querySelectorAll('.star-btn').forEach((btn, i) => {
-    btn.textContent = i < n ? '★' : '☆';
+    btn.innerHTML = STAR_ICON;
     btn.classList.toggle('active', i < n);
   });
 }
@@ -278,7 +276,7 @@ function submitReview() {
       <div class="review-header">
         <div class="review-avatar" style="background:var(--accent);">T</div>
         <span class="review-user">Tú</span>
-        <span class="review-stars">${'★'.repeat(selectedStars)}${'☆'.repeat(5-selectedStars)}</span>
+        <span class="review-stars">${starRow(selectedStars)}</span>
       </div>
       <p class="review-text">${text}</p>
       <p class="review-date">ahora mismo</p>
@@ -288,7 +286,7 @@ function submitReview() {
 
   if ($('reviewText')) $('reviewText').value = '';
   selectedStars = 0;
-  document.querySelectorAll('.star-btn').forEach(b => { b.textContent = '☆'; b.classList.remove('active'); });
+  document.querySelectorAll('.star-btn').forEach(b => { b.innerHTML = STAR_ICON; b.classList.remove('active'); });
   showToast('¡Reseña publicada!');
 }
 
@@ -304,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     $('addonDetails').innerHTML = `
       <div style="padding:60px 20px;text-align:center;color:var(--text3);">
-        <p style="font-size:48px;margin-bottom:12px;">😕</p>
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.3;margin-bottom:12px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <p style="font-size:16px;margin-bottom:20px;">Contenido no encontrado</p>
         <a href="index.html" style="background:var(--accent);color:#fff;padding:10px 20px;border-radius:50px;text-decoration:none;font-weight:600;">Volver al inicio</a>
       </div>

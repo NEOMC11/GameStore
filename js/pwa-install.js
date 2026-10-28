@@ -6,10 +6,10 @@ let deferredPrompt;
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js')
         .then(registration => {
-          console.log('✅ Service Worker registrado:', registration.scope);
+          console.log('Service Worker registrado:', registration.scope);
         })
         .catch(error => {
-          console.log('❌ Error al registrar Service Worker:', error);
+          console.log('Error al registrar Service Worker:', error);
         });
     });
   }
@@ -55,7 +55,7 @@ let deferredPrompt;
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    console.log('💡 Evento beforeinstallprompt capturado');
+    console.log('Evento beforeinstallprompt capturado');
     
     if (!checkIfInstalled()) {
       toggleInstallButton(true);
@@ -64,14 +64,14 @@ let deferredPrompt;
   
   // Detectar cuando la app fue instalada
   window.addEventListener('appinstalled', () => {
-    console.log('✅ PWA instalada exitosamente');
+    console.log('PWA instalada exitosamente');
     isAppInstalled = true;
     localStorage.setItem('pwa-installed', 'true');
     toggleInstallButton(false);
     deferredPrompt = null;
     
     // Mostrar mensaje de éxito
-    showNotification('¡App instalada correctamente! 🎉', 'success');
+    showNotification('App instalada correctamente', 'success');
   });
   
   // Manejar clic en el botón de instalación
@@ -82,7 +82,7 @@ let deferredPrompt;
     if (installButton) {
       installButton.addEventListener('click', async () => {
         if (!deferredPrompt) {
-          console.log('❌ No hay prompt de instalación disponible');
+          console.log('No hay prompt de instalación disponible');
           
           // Instrucciones para iOS
           if (isIOSDevice()) {
@@ -101,10 +101,10 @@ let deferredPrompt;
         console.log(`Usuario respondió: ${outcome}`);
         
         if (outcome === 'accepted') {
-          console.log('✅ Usuario aceptó la instalación');
+          console.log('Usuario aceptó la instalación');
           localStorage.setItem('pwa-installed', 'true');
         } else {
-          console.log('❌ Usuario rechazó la instalación');
+          console.log('Usuario rechazó la instalación');
         }
         
         deferredPrompt = null;
@@ -160,7 +160,7 @@ let deferredPrompt;
     `;
     
     modal.innerHTML = `
-      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem; border-radius: 20px; max-width: 400px; color: white; text-align: center;">
+      <div style="background: linear-gradient(135deg, #2f6bff 0%, #1743b8 100%); padding: 2rem; border-radius: 20px; max-width: 400px; color: white; text-align: center;">
         <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">Instalar en iOS</h3>
         <p style="margin: 0 0 1rem 0; line-height: 1.6;">
           Para instalar esta app en iOS:
@@ -170,7 +170,7 @@ let deferredPrompt;
           <li>Desplázate y selecciona <strong>"Agregar a pantalla de inicio"</strong></li>
           <li>Toca <strong>"Agregar"</strong></li>
         </ol>
-        <button onclick="this.parentElement.parentElement.remove()" style="background: white; color: #667eea; border: none; padding: 0.8rem 2rem; border-radius: 50px; font-weight: 600; cursor: pointer; font-size: 1rem;">
+        <button onclick="this.parentElement.parentElement.remove()" style="background: white; color: #2f6bff; border: none; padding: 0.8rem 2rem; border-radius: 50px; font-weight: 600; cursor: pointer; font-size: 1rem;">
           Entendido
         </button>
       </div>
@@ -241,4 +241,4 @@ let deferredPrompt;
   `;
   document.head.appendChild(style);
   
-  console.log('🚀 PWA Install System cargado correctamente');
+  console.log('PWA Install System cargado correctamente');

@@ -170,7 +170,7 @@ function initStickersForElement(elementId) {
             const toggleBtn = document.createElement('button');
             toggleBtn.type = 'button';
             toggleBtn.className = 'sticker-picker-toggle';
-            toggleBtn.innerHTML = '😊 Añadir Sticker';
+            toggleBtn.innerHTML = 'Añadir sticker';
             toggleBtn.title = 'Añadir sticker';
             
             toggleBtn.addEventListener('click', (e) => {

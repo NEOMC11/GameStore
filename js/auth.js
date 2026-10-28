@@ -29,13 +29,13 @@
     function redirectToLogin() {
         // Determinar la ruta al login dependiendo de dónde estemos
         const path = window.location.pathname;
-        let loginUrl = 'login.html';
-        
-        if (path.includes('/libpatch/') || path.includes('/mc_generator/')) {
-            loginUrl = '../login.html';
-        }
-        
-        window.location.href = loginUrl;
+        const inSubfolder = path.includes('/libpatch/') || path.includes('/mc_generator/');
+        const loginUrl = inSubfolder ? '../login.html' : 'login.html';
+
+        // Guardar a donde queria entrar para devolverlo ahi tras iniciar sesion
+        const ref = inSubfolder ? path.split('/').slice(-2).join('/') : path.split('/').pop();
+
+        window.location.href = loginUrl + '?ref=' + encodeURIComponent(ref || '');
     }
 
     // Ejecutar check si no estamos en la página de login

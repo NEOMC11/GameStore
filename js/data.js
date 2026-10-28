@@ -2,7 +2,7 @@
 const videosData = [
     {
       id:"v-9",
-      title:"NUEVA ACTUALIZACIÓN DE CRAFTING AND BUILDING 🔥 1.21.131 || EL REGRESO A LA PLAY STORE DE CRAFTING 👀",
+ title:"NUEVA ACTUALIZACIÓN DE CRAFTING AND BUILDING 1.21.131 || EL REGRESO A LA PLAY STORE DE CRAFTING",
       url:"https://youtu.be/i_tj3gVcnu4?si=p_Jwg-5StRTNNn6p",
       thumbnail:"https://i.ytimg.com/vi/i_tj3gVcnu4/maxresdefault.jpg",
       description:"Hola amiguitos de mi corazón, en este vídeo les traigo la nueva actualización oficial de Crafting and Building. ¡Ya está disponible en la Play Store y viene con muchas novedades increíbles!"
@@ -10,7 +10,7 @@ const videosData = [
   
     {
       id:"v-8",
-      title:"⚠️ ¡CUIDADO! EL REGRESO DE CRAFTING AND BUILDING A LA PLAY STORE ES UNA ESTAFA 😱",
+ title:"¡CUIDADO! EL REGRESO DE CRAFTING AND BUILDING A LA PLAY STORE ES UNA ESTAFA",
       url:"https://youtu.be/ZVNu6nX5Kmw?si=I43_kJvBHBqHM6uU",
       thumbnail:"https://i.ytimg.com/vi/ZVNu6nX5Kmw/maxresdefault.jpg",
       description:"Investigamos el supuesto regreso de Crafting and Building a la Play Store y descubrimos que podría tratarse de una copia falsa. Analizamos los errores, diferencias y posibles riesgos de esta versión."
@@ -18,7 +18,7 @@ const videosData = [
   
     {
       id:"v-7",
-      title:"CRAFTING AND BUILDING HA REGRESADO A LA PLAY STORE!! 🔥",
+ title:"CRAFTING AND BUILDING HA REGRESADO A LA PLAY STORE!!",
       url:"https://youtu.be/fIFnx1hAHX8?si=Abxtknlhayes7in6",
       thumbnail:"https://i.ytimg.com/vi/fIFnx1hAHX8/maxresdefault.jpg",
       description:"El famoso juego Crafting and Building vuelve a aparecer en la Play Store. Revisamos todas las novedades, cambios y si realmente vale la pena descargarlo otra vez."
@@ -37,15 +37,15 @@ const videosData = [
       title:"La nueva actualización de Craftsman Zero ES INCREÍBLE || Actualización de Navidad",
       url:"https://youtu.be/4REGNUPfmm0?si=phJmfy6ZWgTCS6mk",
       thumbnail:"https://i.ytimg.com/vi/4REGNUPfmm0/maxresdefault.jpg",
-      description:"🎄 Descubre todas las novedades de la actualización navideña de Craftsman Zero: nuevas texturas, skins, armadura de Santa Claus, luz dinámica y mucho más."
+ description:"Descubre todas las novedades de la actualización navideña de Craftsman Zero: nuevas texturas, skins, armadura de Santa Claus, luz dinámica y mucho más."
     },
   
     {
       id:"v-4",
-      title:"CRAFTSMAN FUE ELIMINADO DE LA PLAY STORE 😨",
+ title:"CRAFTSMAN FUE ELIMINADO DE LA PLAY STORE",
       url:"https://www.youtube.com/embed/maSlJ943Fc0",
       thumbnail:"https://i.ytimg.com/vi/maSlJ943Fc0/maxresdefault.jpg",
-      description:"😨 Analizamos qué pasó con Craftsman, su desaparición de la Play Store y la caída de uno de los juegos más populares tipo Minecraft."
+ description:"Analizamos qué pasó con Craftsman, su desaparición de la Play Store y la caída de uno de los juegos más populares tipo Minecraft."
     },
   
     {
@@ -84,18 +84,18 @@ const videosData = [
   const addonsData = [
     { id:38, title:"I SEE YOU NOW!", description:"La famosa textura que permite ver skins de amigos en Crafting and Building + texturas vanilla mejoradas.", cover_image:"./img/isee.png", version:"1.16+", download_link:"https://www.mediafire.com/file/ykl2qy2d62fdnaw/I_SEE_YOU%2521_by_NEOMC11.mcpack/file", tags:["Texturas","Skins","Multiplayer"], last_updated:"2024-10-30", file_size:"7 MB" },
     { id:53, title:"Crafting and Building X", description:"Crafting and building X para grabar videos y hacer tutoriales. La versión definitiva para creadores de contenido.", cover_image:"https://i.ibb.co/wFKL2gfW/copilot-image-1769574367520.png", version:"1.21.30", download_link:"https://www.mediafire.com/file/u5hw6oaq430zj23/crafting_and_building_by_NEOMC11.apk/file", tags:["App","Crafting","Crafting and building","Android"], last_updated:"28-01-2026", file_size:"397 MB", featured:true },
-    { id:46, title:"Craftsman AB v0.15.1.20", description:"🔥 ¡La mejor experiencia de Minecraft 1.20 en tu móvil totalmente GRATIS! Gráficos mejorados, mundos infinitos, multijugador, y optimizado para cualquier dispositivo Android.", cover_image:"./img/craftsman-ab.jpg", version:"0.15.1.20 (1.20)", download_link:"https://www.mediafire.com/file/oqa6g3mk826k1xh/Craftsman-AB-v2-By-NEOMC11.apk/file", tags:["App","Craftsman","Minecraft 1.20","Android"], last_updated:"2024-12-13", file_size:"250 MB", featured:true },
+ { id:46, title:"Craftsman AB v0.15.1.20", description:"¡La mejor experiencia de Minecraft 1.20 en tu móvil totalmente GRATIS! Gráficos mejorados, mundos infinitos, multijugador, y optimizado para cualquier dispositivo Android.", cover_image:"./img/craftsman-ab.jpg", version:"0.15.1.20 (1.20)", download_link:"https://www.mediafire.com/file/oqa6g3mk826k1xh/Craftsman-AB-v2-By-NEOMC11.apk/file", tags:["App","Craftsman","Minecraft 1.20","Android"], last_updated:"2024-12-13", file_size:"250 MB", featured:true },
     { id:51, title:"Action and Stuff", description:"Action and Stuff es un paquete de texturas pensado para quienes disfrutan el crafting and building con más detalle y personalidad.", cover_image:"./img/action-and-stuff.jpg", download_link:"https://www.mediafire.com/file/wdct8msxwhk1iya/Actions_Stuff_1.9_BY_NEOMC11.mcpack/file", tags:["Texturas","Minecraft","Crafting and Building"], last_updated:"2026-01-03", file_size:"18 MB" },
     { id:49, title:"Jenny Addon", description:"Dale un toque diferente a tu mundo de Minecraft. Jenny Addon añade un personaje especial que hará tus partidas más intensas y divertidas.", cover_image:"./img/jenny-addon.jpg", download_link:"https://www.mediafire.com/file/x88ciegi3os5m1z/jennyaddon.mcaddon/file", tags:["Addon","Minecraft"], last_updated:"2024-12-13", file_size:"16 MB" },
     { id:20, title:"Craftsman AB0.15.1.19.50", description:"Craftsman AB - Una de las versiones más estables y populares de la comunidad.", cover_image:"./img/craftsman.png", version:"1.19.50", download_link:"https://www.mediafire.com/file/ah73nfy17woyh7j/Craftsman_AB.apk/file", tags:["App","Craftsman","Estable"], last_updated:"2024-10-22", file_size:"150 MB" },
-    { id:50, title:"Newb X Dragon Complementary", description:"🔥 Dale vida a tu mundo con Newb X Dragon Complementary para Android. Iluminación suave, colores intensos y sombras elegantes.", cover_image:"./img/newb-x-dragon-complementary.jpg", download_link:"https://www.mediafire.com/file/jtwqk9a0elf1phq/Newb_X_Dragon_Complementary_-_Android.mcpack/file", tags:["Shaders","Minecraft"], last_updated:"21-12-2025", file_size:"2 MB" },
+ { id:50, title:"Newb X Dragon Complementary", description:"Dale vida a tu mundo con Newb X Dragon Complementary para Android. Iluminación suave, colores intensos y sombras elegantes.", cover_image:"./img/newb-x-dragon-complementary.jpg", download_link:"https://www.mediafire.com/file/jtwqk9a0elf1phq/Newb_X_Dragon_Complementary_-_Android.mcpack/file", tags:["Shaders","Minecraft"], last_updated:"21-12-2025", file_size:"2 MB"},
     { id:1, title:"Craftsman ONE Android 14-15", description:"Versión especial de Craftsman ONE totalmente compatible con Android 14 y 15. ¡Funciona perfecto en los móviles más nuevos!", cover_image:"./img/craftsman-one.jpg", version:"1.1.5", download_link:"https://www.mediafire.com/file/5w2bbb09dsm5jpt/CRAFTSMAN_ONE_14-15_%25F0%259F%2591%25BE%25F0%259F%258E%2581.apk/file", tags:["App","Craftsman","Android 14"], last_updated:"2024-12-01", file_size:"85 MB" },
     { id:2, title:"NEOCRAFT v1", description:"La primera obra maestra de NEOMC11. Versión 1.20.12 con mejoras gráficas y optimizaciones.", cover_image:"./img/1NEOCRAFT.png", version:"1.20.12", download_link:"https://www.mediafire.com/file/cxqj0b3t0syd6vi/NEOCRAFT.apk/file", tags:["App","NEOCRAFT","Gráficos"], last_updated:"2024-11-28", file_size:"92 MB" },
     { id:3, title:"Craftsman Zero Demo 3 para Skins", description:"Demo 3 de Craftsman Zero optimizada especialmente para usar skins personalizadas sin errores.", cover_image:"./img/zero.png", version:"Demo 3 Skins", download_link:"https://www.mediafire.com/file/4koz7twgiqge5lu/CRAFTSMAN_ZERO_DEMO_3_FOR_SKINS_BY_NEOMC11.apk/file", tags:["App","Craftsman","Skins"], last_updated:"2024-11-25", file_size:"78 MB" },
     { id:4, title:"Textura Output", description:"Textura moderna con bordes definidos y colores vibrantes. Perfecta para construcciones épicas en 1.18+.", cover_image:"./img/out.png", version:"1.18+", download_link:"https://www.mediafire.com/file/yxuie1v5m6v0khg/outcut2.mcpack/file", tags:["Texturas","Moderno","HD"], last_updated:"2024-11-20", file_size:"12 MB" },
     { id:5, title:"Craftsman UNO", description:"Versión especial con temática única y mejoras exclusivas. Ideal para quienes buscan algo diferente.", cover_image:"./img/craftsman.png", version:"0.15.10", download_link:"https://www.mediafire.com/file/briwk3jkzyald7o/Craftsman_UNO.apk/file", tags:["App","Craftsman","Especial"], last_updated:"2024-11-18", file_size:"68 MB" },
     { id:6, title:"NEOCRAFT LTE", description:"Versión ligera y ultra optimizada de NEOCRAFT 1.21.92. Perfecta para móviles de gama baja/media.", cover_image:"./img/6NEOCRAFT.jpeg", version:"1.21.92 LTE", download_link:"https://www.mediafire.com/file/gbqt15tt1htjijv/NEOCRAFT_LTE.apk/file", tags:["App","NEOCRAFT","Ligero"], last_updated:"2024-12-05", file_size:"400 MB" },
-    { id:47, title:"Java UI", description:"✨ La interfaz más bella y moderna para Minecraft Java 1.21.120+. Inspirada en Bedrock con animaciones suaves.", cover_image:"./img/java-ui.jpg", version:"3.2.8 (1.21.120+)", download_link:"https://www.mediafire.com/file/hwhzuevm8i5mwok/VDX-DesktopUI-v3.2.8%2528Main%2529.mcpack/file", tags:["Texturas","Minecraft","Interfaz","UI"], last_updated:"2025-12-13", file_size:"4 MB" },
+ { id:47, title:"Java UI", description:"La interfaz más bella y moderna para Minecraft Java 1.21.120+. Inspirada en Bedrock con animaciones suaves.", cover_image:"./img/java-ui.jpg", version:"3.2.8 (1.21.120+)", download_link:"https://www.mediafire.com/file/hwhzuevm8i5mwok/VDX-DesktopUI-v3.2.8%2528Main%2529.mcpack/file", tags:["Texturas","Minecraft","Interfaz","UI"], last_updated:"2025-12-13", file_size:"4 MB"},
     { id:7, title:"Craftsman Zero 1.1.5", description:"Versión estable y completa de Craftsman Zero con todas las funciones básicas y mejoras de rendimiento.", cover_image:"./img/zero.png", version:"1.1.5", download_link:"https://www.mediafire.com/file/vudh0hmv9mjh2tz/Cratsman+Zero+1.1.apk/file", tags:["App","Craftsman","Estable"], last_updated:"2024-11-30", file_size:"82 MB" },
     { id:8, title:"Newb X Dragon Complementary PC", description:"Shader ultra realista con iluminación avanzada, reflejos, nubes volumétricas y agua perfecta.", cover_image:"./img/shader.jpg", version:"Latest", download_link:"https://www.mediafire.com/file/tk98dpuu1vfdfl4/Newb_X_Dragon_ComECCE_Complementary_Reimagined_-_Android.mcpack/file", tags:["Shaders","Realista","RTX"], last_updated:"2024-12-08", file_size:"2 MB" },
     { id:9, title:"Craftsman Trial", description:"Versión de prueba oficial con funciones limitadas. Ideal para probar antes de instalar la completa.", cover_image:"./img/craftsman.png", version:"1.0.0.16", download_link:"https://www.mediafire.com/file/p2vj2wjczn2qf3j/Craftsman_Trial_1.0.0.16.apk/file", tags:["App","Craftsman","Demo"], last_updated:"2024-11-15", file_size:"100 MB" },

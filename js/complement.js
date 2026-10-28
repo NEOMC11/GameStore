@@ -55,7 +55,7 @@ const addonsData = [
     {
     id: 46,
     title: "Craftsman AB v0.15.1.20",
-    description: "🔥 ¡La mejor experiencia de Minecraft 1.20 en tu móvil totalmente GRATIS! Gráficos mejorados, mundos infinitos, multijugador, y optimizado para cualquier dispositivo Android. Construye, explora y sobrevive sin límites. ¡Descarga la versión oficial y únete a miles de jugadores en la comunidad Craftsman AB! 🎮⚡",
+ description:"¡La mejor experiencia de Minecraft 1.20 en tu móvil totalmente GRATIS! Gráficos mejorados, mundos infinitos, multijugador, y optimizado para cualquier dispositivo Android. Construye, explora y sobrevive sin límites. ¡Descarga la versión oficial y únete a miles de jugadores en la comunidad Craftsman AB!",
     cover_image: "./img/craftsman-ab.jpg",
     version: "0.15.1.20 (1.20)",
     download_link: "https://www.mediafire.com/file/oqa6g3mk826k1xh/Craftsman-AB-v2-By-NEOMC11.apk/file",
@@ -76,7 +76,7 @@ const addonsData = [
 {
     id: 49,
     title: "Jenny Addon",
-    description: "😏 Dale un toque atrevido y diferente a tu mundo de Minecraft. Jenny Addon añade un personaje especial que hará tus partidas más intensas, curiosas y divertidas. Ideal para jugadores que buscan algo fuera de lo común y quieren subir la temperatura del juego… bajo su propio riesgo 😉🔥",
+ description:"Dale un toque atrevido y diferente a tu mundo de Minecraft. Jenny Addon añade un personaje especial que hará tus partidas más intensas, curiosas y divertidas. Ideal para jugadores que buscan algo fuera de lo común y quieren subir la temperatura del juego… bajo su propio riesgo",
     cover_image: "./img/jenny-addon.jpg",
     download_link: "https://www.mediafire.com/file/x88ciegi3os5m1z/jennyaddon.mcaddon/file",
     tags: ["Addon", "Minecraft"],
@@ -97,7 +97,7 @@ const addonsData = [
 {
   id: 50,
   title: "Newb X Dragon Complementary - Android",
-  description: "🔥✨ Dale vida a tu mundo con Newb X Dragon Complementary para Android. Este shader combina iluminación suave, colores intensos y sombras elegantes que hacen que cada bloque se vea simplemente delicioso. Atardeceres cinematográficos, agua cristalina y un rendimiento ligero para que tu Minecraft se vea brutal sin sacrificar FPS. Puro flow visual para los que quieren jugar con estilo. 🐉💎",
+ description:"Dale vida a tu mundo con Newb X Dragon Complementary para Android. Este shader combina iluminación suave, colores intensos y sombras elegantes que hacen que cada bloque se vea simplemente delicioso. Atardeceres cinematográficos, agua cristalina y un rendimiento ligero para que tu Minecraft se vea brutal sin sacrificar FPS. Puro flow visual para los que quieren jugar con estilo.",
   cover_image: "./img/newb-x-dragon-complementary.jpg",
   download_link: "https://www.mediafire.com/file/jtwqk9a0elf1phq/Newb_X_Dragon_Complementary_-_Android.mcpack/file",
   tags: ["Shaders", "Minecraft"],
@@ -173,7 +173,7 @@ last_updated: "21-12-2025",
     {
   "id": 47,
   "title": "Java UI",
-  "description": "✨ ¡REVOLUCIONA TU EXPERIENCIA DE JUEGO! La interfaz de usuario más bella, moderna y funcional para Minecraft Java 1.21.120 en adelante. Inspirada en la edición Bedrock pero con la potencia de Java, ofrece una navegación fluida, iconos rediseñados, animaciones suaves y una organización inteligente de menús. Perfecta para jugadores que buscan elegancia, claridad y máximo rendimiento. ¡Transforma tu juego con este pack de interfaz premium, ligero y totalmente gratuito! 🚀🎨",
+"description":"¡REVOLUCIONA TU EXPERIENCIA DE JUEGO! La interfaz de usuario más bella, moderna y funcional para Minecraft Java 1.21.120 en adelante. Inspirada en la edición Bedrock pero con la potencia de Java, ofrece una navegación fluida, iconos rediseñados, animaciones suaves y una organización inteligente de menús. Perfecta para jugadores que buscan elegancia, claridad y máximo rendimiento. ¡Transforma tu juego con este pack de interfaz premium, ligero y totalmente gratuito!",
   "cover_image": "./img/java-ui.jpg",
   "version": "3.2.8 (Para 1.21.120+)",
   "download_link": "https://www.mediafire.com/file/hwhzuevm8i5mwok/VDX-DesktopUI-v3.2.8%2528Main%2529.mcpack/file",

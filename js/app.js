@@ -115,7 +115,7 @@ function renderAppsGrid(data, container = null) {
           </div>
           <span class="app-name">${a.title}</span>
           <div class="app-meta">
-            <span class="star">★</span>
+            <span class="star"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.45 6.19 20.5 7.3 14.03 2.6 9.45l6.5-.95z"/></svg></span>
             <span>${a.file_size || ''}</span>
           </div>
         </div>
@@ -162,7 +162,7 @@ function renderHome() {
             ${lazyImg(a.cover_image, a.title, 'app-icon')}
           </div>
           <span class="app-name">${a.title}</span>
-          <div class="app-meta"><span class="star">★</span><span>${a.file_size || ''}</span></div>
+          <div class="app-meta"><span class="star"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.45 6.19 20.5 7.3 14.03 2.6 9.45l6.5-.95z"/></svg></span><span>${a.file_size || ''}</span></div>
         </div>
       `).join('')}
     </div>
@@ -179,7 +179,7 @@ function renderHome() {
             ${lazyImg(a.cover_image, a.title, 'app-icon')}
           </div>
           <span class="app-name">${a.title}</span>
-          <div class="app-meta"><span class="star">★</span><span>${a.file_size || ''}</span></div>
+          <div class="app-meta"><span class="star"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.45 6.19 20.5 7.3 14.03 2.6 9.45l6.5-.95z"/></svg></span><span>${a.file_size || ''}</span></div>
         </div>
       `).join('')}
     </div>
